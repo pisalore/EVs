@@ -18,6 +18,11 @@ Create and activate python virtual environment (be sure to use a >=3.6 python ve
 4. **Create a PostgreSQL DB** \
 EVs uses Postgres, so create a db and change DATABASES dictionary in ```settings.py```, if needed.
    
+6. **Migrate** \
+Make migrations and run them: \
+   ```python manage.py makemigrations```\
+   ```python manage.py migrate```
+   
 5. **Start** \
 Finally, start dev server: \
    ```python manage.py runserver```
