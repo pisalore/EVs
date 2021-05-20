@@ -14,9 +14,9 @@ In order to get started, do the following steps:
 3. Install requirements:\
 ```pip install -r requirements.txt```
    
-4. Create a PostgreSQL DB
+4. Create a PostgreSQL DB \
 EVs uses Postgres, so create a db and change DATABASES dictionary in ```settings.py```, if needed.
    
-5. Start
-Finally, start dev server:
+5. Start \
+Finally, start dev server: 
    ```python manage.py runserver```
