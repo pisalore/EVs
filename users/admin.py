@@ -6,7 +6,7 @@ from users.models import EvUser
 
 class CustomUserAdmin(UserAdmin):
     model = EvUser
-    list_display = ['username', 'first_name', 'last_name', 'email', 'city']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'city', 'birthday']
 
 
 admin.site.register(EvUser, CustomUserAdmin)
