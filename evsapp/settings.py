@@ -140,3 +140,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.EvUser'
 SITE_ID = 1
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

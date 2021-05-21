@@ -3,16 +3,23 @@ from django.urls import path, include, re_path
 from django_registration.backends.one_step.views import RegistrationView
 from core.views import IndexTemplateView
 
-
-from users.forms import EvUserForm
+from users.forms import EvUserForm, EvOrganizerForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("accounts/register/",
+    path("accounts/register/user/",
          RegistrationView.as_view(
              form_class=EvUserForm,
-             success_url="/"
-         ), name='django_registration_register'),
+             success_url="/",
+             template_name='django_registration/registration_form_user.html'
+         ), name='django_registration_register_user'),
+
+    path("accounts/register/organizer/",
+         RegistrationView.as_view(
+             form_class=EvOrganizerForm,
+             success_url="/",
+             template_name='django_registration/registration_form_organizer.html'
+         ), name='django_registration_register_organizer'),
 
     path("accounts/", include('django_registration.backends.one_step.urls')),
     path("accounts/", include('django.contrib.auth.urls')),

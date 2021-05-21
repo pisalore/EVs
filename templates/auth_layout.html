@@ -8,8 +8,6 @@
     }
 
     .auth-box {
-        border: 3px solid lightgrey;
-        border-radius: 10px;
         padding-top: 25px;
         padding-bottom: 25px;
         width: 600px;
@@ -21,20 +19,12 @@
         margin: auto;
     }
 
-    .registration-form-container {
-        width: 400px;
-        margin: auto;
-    }
-
-    .outer-area {
-        margin-top: 100px;
-    }
     </style>
 {% endblock %}
 
 {% block content %}
     <div class="outer-area">
-        <div class="auth-box text-center">
+        <div class="auth-box">
             {% block auth %}
             {% endblock %}
         </div>
