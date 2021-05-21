@@ -9,8 +9,15 @@ class EvUserForm(RegistrationForm):
     last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'City'}))
-    birthday = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Date of Birth'}))
+    birthday = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Your Birthday'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+
+    def save(self, commit=True):
+        user = super(EvUserForm, self).save(commit=False)
+        user.is_organizer = False
+        if commit:
+            user.save()
+        return user
 
     class Meta(RegistrationForm.Meta):
         model = EvUser
@@ -21,9 +28,15 @@ class EvUserForm(RegistrationForm):
 class EvOrganizerForm(RegistrationForm):
     organization_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Institution/Organization'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    birthday = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Date of Birth'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+
+    def save(self, commit=True):
+        organizer = super(EvOrganizerForm, self).save(commit=False)
+        organizer.is_organizer = True
+        if commit:
+            organizer.save()
+        return organizer
 
     class Meta(RegistrationForm.Meta):
         model = EvUser
-        fields = ["organization_name", "password1", "password2", "email"]
+        fields = ["username", "organization_name", "password1", "password2", "email"]
