@@ -38,11 +38,12 @@
             {{ form.password2|as_crispy_field }}
         </div>
         <div class="col text-center">
-            <button type="submit" class="btn btn-sm btn-success mt-2 ">Sign Up</button>
+            <button type="submit" class="btn btn-md btn-success mt-2 ">Sign Up</button>
         </div>
     </form>
-    <p class="mt-2">Registered yet? Please, <a href="{% url 'login' %}">login</a><br>
-        <span>Are you an organizer?<a
-                href="{% url 'django_registration_register_organizer' %}"> Register as organizer.</a></span>
+    <p class="mt-2">
+        <span>Registered yet? <a href="{% url 'login' %}">Login.</a></span>
+        <br>
+        <span>Are you an event organizer?<a href="{% url 'django_registration_register_organizer' %}"> Register as organizer.</a></span>
     </p>
 {% endblock %}

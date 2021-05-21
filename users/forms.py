@@ -1,5 +1,7 @@
 from django import forms
 from django_registration.forms import RegistrationForm
+from django.core.exceptions import ValidationError
+
 
 from users.models import EvUser
 
@@ -25,6 +27,12 @@ class EvUserForm(RegistrationForm):
             user.save()
         return user
 
+    # def clean(self):
+    #     email = self.cleaned_data.get('email')
+    #     if EvUser.objects.filter(email=email).exists():
+    #         raise ValidationError("Email exists")
+    #     return self.cleaned_data
+
     class Meta(RegistrationForm.Meta):
         model = EvUser
         fields = ["first_name", "last_name", "username", "password1", "password2", "email", "city",
@@ -48,6 +56,12 @@ class EvOrganizerForm(RegistrationForm):
         if commit:
             organizer.save()
         return organizer
+
+    # def clean(self):
+    #     email = self.cleaned_data.get('email')
+    #     if EvUser.objects.filter(email=email).exists():
+    #         raise ValidationError("Email exists")
+    #     return self.cleaned_data
 
     class Meta(RegistrationForm.Meta):
         model = EvUser
