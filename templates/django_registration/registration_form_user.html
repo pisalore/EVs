@@ -2,47 +2,47 @@
 {% load crispy_forms_tags %}
 
 {% block auth %}
-    <div class="container">
-        <div class="text-center mb-0">
-            <h2>Create your Account</h2>
-            <h5>It will help you to find your favorite events around you and all over the world.</h5>
-        </div>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.first_name|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.last_name|as_crispy_field }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.birthday|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.city|as_crispy_field }}
-                </div>
-            </div>
-            <div class="form-group mb-0">
-                {{ form.username|as_crispy_field }}
-            </div>
-            <div class="form-group  mb-0">
-                {{ form.email|as_crispy_field }}
-            </div>
-            <div class="form-group  mb-0">
-                {{ form.password1|as_crispy_field }}
-            </div>
-            <div class="form-group  mb-0">
-                {{ form.password2|as_crispy_field }}
-            </div>
-            <div class="col text-center">
-                <button type="submit" class="btn btn-sm btn-success mt-2 ">Sign Up</button>
-            </div>
-        </form>
-        <p class="mt-2">Registered yet? Please, <a href="{% url 'login' %}">login</a><br>
-            <span>Are you an organizer?<a href="{% url 'django_registration_register_organizer' %}"> Register as organizer.</a></span>
-        </p>
+    <div class="text-center mb-0 py-1">
+        <p class="registration-title">Create your Account</p>
+        <p class="registration-subtitle">It will help you to find your favorite events around you and all over the
+            world.</p>
     </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6 mb-0">
+                {{ form.first_name|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+                {{ form.last_name|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 mb-0">
+                {{ form.birthday|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+                {{ form.city|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-group mb-0">
+            {{ form.username|as_crispy_field }}
+        </div>
+        <div class="form-group  mb-0">
+            {{ form.email|as_crispy_field }}
+        </div>
+        <div class="form-group  mb-0">
+            {{ form.password1|as_crispy_field }}
+        </div>
+        <div class="form-group  mb-0">
+            {{ form.password2|as_crispy_field }}
+        </div>
+        <div class="col text-center">
+            <button type="submit" class="btn btn-sm btn-success mt-2 ">Sign Up</button>
+        </div>
+    </form>
+    <p class="mt-2">Registered yet? Please, <a href="{% url 'login' %}">login</a><br>
+        <span>Are you an organizer?<a
+                href="{% url 'django_registration_register_organizer' %}"> Register as organizer.</a></span>
+    </p>
 {% endblock %}

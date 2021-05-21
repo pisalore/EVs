@@ -12,6 +12,12 @@ class EvUserForm(RegistrationForm):
     birthday = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Your Birthday'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 
+    def __init__(self, *args, **kwargs):
+        super(EvUserForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+
     def save(self, commit=True):
         user = super(EvUserForm, self).save(commit=False)
         user.is_organizer = False
@@ -29,6 +35,12 @@ class EvOrganizerForm(RegistrationForm):
     organization_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Institution/Organization'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+
+    def __init__(self, *args, **kwargs):
+        super(EvOrganizerForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
 
     def save(self, commit=True):
         organizer = super(EvOrganizerForm, self).save(commit=False)
