@@ -10,7 +10,7 @@ class EvUserForm(RegistrationForm):
     last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'City'}))
-    birthday = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Your Birthday'}),
+    birthday = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'Your Birthday', 'type': 'date'}),
                                input_formats=settings.DATE_INPUT_FORMATS)
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 
