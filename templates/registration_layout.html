@@ -1,9 +1,28 @@
 {% extends "auth_layout.html" %}
 
 {% block content %}
+    <nav class="navbar shadow navbar-expand-md navbar-light bg-white fixed-top">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto px-5">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container-fluid h-100">
         <div class="row justify-content-center h-100">
-            <div class="col-sm-6 col-md-4 hidden-md-down" style="background-color: #4BABFA">
+            <div class="col-sm-6 col-md-4 " style="background-color: #4BABFA">
                 <div class="disclaimer py-2">Find your own way with EVs.</div>
             </div>
             <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8">
