@@ -1,0 +1,15 @@
+{% extends "auth_layout.html" %}
+
+{% block content %}
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-sm-4 hidden-md-down" style="background-color: #4BABFA">
+                Form Goes Here
+            </div>
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 red">
+                {% block registration_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -7,11 +7,8 @@
             font-family: "Roboto", serif;
         }
 
-        .auth-box {
-            padding-top: 25px;
-            padding-bottom: 25px;
-            width: 600px;
-            margin: auto;
+        body {
+            height: 100%;
         }
 
         p.light {
@@ -40,8 +37,8 @@
 {% endblock %}
 
 {% block content %}
-        <div class="container mt-5 col-4">
-            {% block auth %}
-            {% endblock %}
-        </div>
+    <div class="container-fluid h-100">
+        {% block auth %}
+        {% endblock %}
+    </div>
 {% endblock %}

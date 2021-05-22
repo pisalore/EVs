@@ -1,7 +1,7 @@
-{% extends "auth_layout.html" %}
+{% extends "registration_layout.html" %}
 {% load crispy_forms_tags %}
 
-{% block auth %}
+{% block registration_content %}
     <div class="text-center py-1">
         <p class="registration-title">Create your Account</p>
         <p class="registration-subtitle">It will help you to share your events and reach people easily.</p>
@@ -30,6 +30,7 @@
     <p class="mt-2">
         <span>Registered yet? <a href="{% url 'login' %}">Login.</a></span>
         <br>
-        <span>Are you an user?<a href="{% url 'django_registration_register_user' %}"> Register as user.</a></span>
+        <span>Are you an user?<a
+                href="{% url 'django_registration_register_user' %}"> Register as user.</a></span>
     </p>
 {% endblock %}
