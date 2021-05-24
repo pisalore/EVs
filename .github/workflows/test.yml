@@ -30,8 +30,6 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: psycopg2 prerequisites
         run: sudo apt-get install libpq-dev
-      - name: Run migrations
-        run: python manage.py migrate
       - name: Install Tox
         run: pip install tox
       - name: Run Tox
