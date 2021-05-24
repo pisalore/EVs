@@ -34,5 +34,5 @@ jobs:
         run: pip install tox
       - name: Run Tox
         env:
-          SECRET_KEY_EVS: d799ad944e4a59fc5ff0ab015f2b0834725c19d203f9819aea
+          SECRET_KEY_EVS: ${{ secrets.SECRET_KEY_EVS }}
         run: tox -e py
