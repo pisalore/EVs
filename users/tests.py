@@ -1,5 +1,9 @@
+import json
+
 from users.models import EvUser
 from django.test import TestCase
+from rest_framework.test import APITestCase
+from rest_framework import status
 
 
 class LogInTest(TestCase):
@@ -43,3 +47,40 @@ class RegistrationTest(TestCase):
 
         response = self.client.post(url, organizer_data)
         self.assertEqual(response.status_code, 302)
+
+
+class RetrieveUserInfoTest(APITestCase):
+    user_url = '/api/user/'
+
+    def setUp(self):
+        self.user = EvUser.objects.create_user(username="test",
+                                               password='test_password123',
+                                               email="test@mail.it",
+                                               is_organizer=False)
+        self.organizer = EvUser.objects.create_user(username="test_org",
+                                                    organization_name="org",
+                                                    password='test_password123',
+                                                    email="test_org@mail.it",
+                                                    is_organizer=True)
+
+    def test_retrieve_user_main_info(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.user_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            json.loads(response.content),
+            {"username": "test",
+             "organization_name": "",
+             "is_organizer": False})
+
+    def test_retrieve_organizer_main_info(self):
+        self.client.force_authenticate(user=self.organizer)
+        response = self.client.get(self.user_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            json.loads(response.content),
+            {"username": "test_org",
+             "organization_name": "org",
+             "is_organizer": True})
