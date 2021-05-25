@@ -7,6 +7,8 @@ from rest_framework import status
 
 
 class LogInTest(TestCase):
+    redirect_url = '/'
+
     def setUp(self):
         self.credentials = {
             'username': 'testuser',
@@ -16,9 +18,12 @@ class LogInTest(TestCase):
     def test_login(self):
         response = self.client.post('/accounts/login/', self.credentials, follow=True)
         self.assertTrue(response.context['user'].is_active)
+        self.assertRedirects(response=response, expected_url=self.redirect_url)
 
 
 class RegistrationTest(TestCase):
+    redirect_url = '/'
+
     def test_user_registration(self):
         url = '/accounts/register/user/'
         user_data = {
@@ -33,7 +38,7 @@ class RegistrationTest(TestCase):
         }
 
         response = self.client.post(url, user_data)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response=response, expected_url=self.redirect_url)
 
     def test_organizer_registration(self):
         url = '/accounts/register/organizer/'
@@ -46,7 +51,7 @@ class RegistrationTest(TestCase):
         }
 
         response = self.client.post(url, organizer_data)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response=response, expected_url=self.redirect_url)
 
 
 class RetrieveUserInfoTest(APITestCase):
