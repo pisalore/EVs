@@ -6,7 +6,7 @@ In order to get started, do the following steps:
 1. **Clone the repo**:\
 ```git clone https://github.com/pisalore/evs```
 2. **Virtualenv** \
-Create and activate python virtual environment (be sure to use a >=3.6 python version):\
+Create and activate python virtual environment (be sure to use a >=3.9 python version):\
 ```cd evs```
 ```python -m venv .venv```\
    ```. .venv/bin/activate```
