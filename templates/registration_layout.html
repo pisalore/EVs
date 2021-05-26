@@ -1,0 +1,52 @@
+{% extends "auth_layout.html" %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto px-5">
+                <li class="nav-item">
+                    <a class="nav-link footer-item" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link footer-item" href="#">Events</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link footer-item" href="{% url 'login' %}">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid d-flex flex-column" style="height: 100%">
+        <div class="row justify-content-center flex-fill">
+            <div class="col-sm-12 col-md-4" style="background-color: #4BABFA">
+                <div class="disclaimer py-2">Find your own way with EVs.</div>
+            </div>
+            <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                {% block registration_content %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="py-3 bg-light row">
+            <div class="col-xl-1 col-md-2 d-flex justify-content-md-start">
+                <a class="nav-link" href="">LOGO</a>
+            </div>
+            <div class="col-xl-8 col-md-6 d-flex justify-content-md-start">
+                <a class="nav-link footer-item" href="">About EVs</a>
+                <a class="nav-link footer-item" href="">Privacy Policy</a>
+                <a class="nav-link footer-item" href="">Contacts</a>
+                <a class="nav-link footer-item" href="">FAQ</a>
+            </div>
+            <div class="col-xl-3 col-md-6 px-3">
+                <span CLASS="px-3 py-2">Follow Us</span>
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-instagram"></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

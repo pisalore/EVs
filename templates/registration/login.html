@@ -1,0 +1,28 @@
+{% extends "login_recover_layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block auth %}
+    <div class="text-center py-5">
+        <p class="registration-title">Login to EVs.</p>
+        <p class="registration-subtitle">Welcome! Sign in and discover events from all around the world.</p>
+    </div>
+    <div class="login-form-container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="col text-center">
+                <button type="submit" class="btn btn-md btn-success mt-2 ">Log In</button>
+            </div>
+        </form>
+        <div class="d-flex justify-content-center">
+        <p class="mt-3">
+        <span>
+            Not a member? <a href="{% url 'django_registration_register_user' %}">Register an Account.</a>
+        </span>
+            <span>
+            Forgot password? <a href="{% url 'password_reset' %}">Recover your account credentials.</a>
+        </span>
+        </p>
+        </div>
+    </div>
+{% endblock %}
