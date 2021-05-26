@@ -1,1 +1,1 @@
-web: gunicorn evsapp.wsgi --log-file
+web: gunicorn evsapp.wsgi
