@@ -1,0 +1,14 @@
+
+dj-database-url
+Django
+django-allauth
+django-crispy-forms
+django-registration
+django-rest-auth
+djangorestframework
+gunicorn
+pip-tools
+psycopg2
+tox
+urllib3
+whitenoise
