@@ -76,6 +76,8 @@ pyjwt[crypto]==2.1.0
     # via django-allauth
 pyparsing==2.4.7
     # via packaging
+python-dotenv==0.17.1
+    # via -r requirements.in
 python3-openid==3.2.0
     # via django-allauth
 pytz==2021.1

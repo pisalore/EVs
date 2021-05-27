@@ -9,6 +9,7 @@ djangorestframework
 gunicorn
 pip-tools
 psycopg2
+python-dotenv
 tox
 urllib3
 whitenoise
