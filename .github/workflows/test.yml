@@ -35,4 +35,5 @@ jobs:
       - name: Run Tox
         env:
           SECRET_KEY_EVS: ${{ secrets.SECRET_KEY_EVS }}
+          DB_STRING: ${{secrets.DB_STRING}}
         run: tox -e py
