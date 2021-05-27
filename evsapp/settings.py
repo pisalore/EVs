@@ -173,5 +173,9 @@ REST_FRAMEWORK = {
 }
 
 # Storages
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storag'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3ManifestStaticStorage'
+DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = os.getenv("ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.getenv("SECRET_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("BUCKET_NAME")
