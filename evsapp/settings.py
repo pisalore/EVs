@@ -62,6 +62,8 @@ INSTALLED_APPS = [
 
     'crispy_forms',
 
+    'storages'
+
 ]
 
 MIDDLEWARE = [
@@ -181,4 +183,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Storages
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storag'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3ManifestStaticStorage'

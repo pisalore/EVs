@@ -1,4 +1,4 @@
-
+boto3
 dj-database-url
 Django
 django-allauth
@@ -6,6 +6,7 @@ django-crispy-forms
 django-registration
 django-rest-auth
 djangorestframework
+django-storages
 gunicorn
 pip-tools
 psycopg2
