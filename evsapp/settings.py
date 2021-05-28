@@ -151,8 +151,8 @@ EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_POST = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PSW')
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PSW')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
