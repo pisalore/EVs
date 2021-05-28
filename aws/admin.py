@@ -1,3 +1,4 @@
 from django.contrib import admin
+from aws.models import AWSDocument
 
-# Register your models here.
+admin.site.register(AWSDocument)

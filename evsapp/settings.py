@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
 }
 
 # Storages
-USE_S3 = os.getenv("USE_S3")
+USE_S3 = os.getenv("USE_S3") == 'True'
 if USE_S3:
     # aws settings
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -178,9 +178,6 @@ if USE_S3:
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'evsapp.storage_backends.PublicMediaStorage'
 
-    # s3 private media settings
-    AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-    PRIVATE_FILE_STORAGE = 'evsapp.storage_backends.PrivateMediaStorage'
 
 else:
     MEDIA_URL = '/mediafiles/'
