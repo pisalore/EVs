@@ -58,11 +58,11 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_auth.registration',
 
+    'aws',
     'users',
 
     'crispy_forms',
-
-    'storages'
+    'storages',
 
 ]
 
@@ -139,17 +139,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'evs/staticfiles')]
-
-# Media
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -173,9 +162,34 @@ REST_FRAMEWORK = {
 }
 
 # Storages
-DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+USE_S3 = os.getenv("USE_S3")
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_S3_SIGNATURE_VERSION = 's3v4'
+    AWS_S3_FILE_OVERWRITE = False
 
-AWS_ACCESS_KEY_ID = os.getenv("ACCESS_KEY")
-AWS_SECRET_ACCESS_KEY = os.getenv("SECRET_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("BUCKET_NAME")
+    # s3 public media settings
+    AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'evsapp.storage_backends.PublicMediaStorage'
+
+    # s3 private media settings
+    AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+    PRIVATE_FILE_STORAGE = 'evsapp.storage_backends.PrivateMediaStorage'
+
+else:
+    MEDIA_URL = '/mediafiles/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
