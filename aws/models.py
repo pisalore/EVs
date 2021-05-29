@@ -12,7 +12,7 @@ class AWSDocument(models.Model):
         EVENT_IMAGE = 'EI', _('Event Image')
 
     type = models.CharField(max_length=2, choices=DocumentType.choices)
-    document = models.FileField(max_length=100)
+    document = models.FileField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     loaded_by = models.ForeignKey(settings.AUTH_USER_MODEL,

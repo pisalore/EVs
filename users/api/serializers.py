@@ -20,11 +20,13 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         profile_image = validated_data.pop('profile_image')
-        image_type = profile_image.get('type')
         document = profile_image.get('document')
-        loaded_by = profile_image.get('loaded_by')
+        aws_document = None
+        if document:
+            image_type = profile_image.get('type')
+            loaded_by = profile_image.get('loaded_by')
+            aws_document = AWSDocument.objects.create(document=document, type=image_type, loaded_by=loaded_by)
 
-        aws_document = AWSDocument.objects.create(document=document, type=image_type, loaded_by=loaded_by)
         instance.profile_image = aws_document
         instance.save()
 

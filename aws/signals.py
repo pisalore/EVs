@@ -11,6 +11,6 @@ def remove_file_from_s3(sender, instance, using, **kwargs):
 
 @receiver(pre_save, sender=AWSDocument)
 def add_id_to_s3_document_before_upload(sender, instance, *args, **kwargs):
-    if instance:
+    if instance.document.name:
         user_folder = instance.loaded_by.__str__() + '/'
         instance.document.name = user_folder + generate_random_string() + instance.document.name

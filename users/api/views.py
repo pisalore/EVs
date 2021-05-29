@@ -14,7 +14,7 @@ class CurrentUserAPIView(APIView):
         return Response(serializer.data)
 
 
-class ProfileImageUpdateView(generics.UpdateAPIView):
+class ProfileImageUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileImageSerializer
     permission_classes = [IsAuthenticated]
 
