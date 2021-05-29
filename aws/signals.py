@@ -1,10 +1,16 @@
 from aws.models import AWSDocument
-
+from core.utils import generate_random_string
 from django.dispatch import receiver
-from django.db.models.signals import post_delete
+from django.db.models.signals import pre_save, post_delete
 
 
 @receiver(post_delete, sender=AWSDocument)
 def remove_file_from_s3(sender, instance, using, **kwargs):
+    instance.document.delete(save=False)
+
+
+@receiver(pre_save, sender=AWSDocument)
+def add_id_to_s3_document_before_upload(sender, instance, *args, **kwargs):
     if instance:
-        instance.document.delete(save=False)
+        user_folder = instance.loaded_by.__str__() + '/'
+        instance.document.name = user_folder + generate_random_string() + instance.document.name

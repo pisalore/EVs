@@ -4,6 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class AWSDocument(models.Model):
+    class Meta:
+        verbose_name_plural = 'AWS documents'
+
     class DocumentType(models.TextChoices):
         PROFILE_IMAGE = 'PI', _('Profile Image')
         EVENT_IMAGE = 'EI', _('Event Image')
@@ -13,6 +16,3 @@ class AWSDocument(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     loaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='documents')
-
-    class Meta:
-        verbose_name_plural = 'AWS documents'

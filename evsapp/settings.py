@@ -177,8 +177,6 @@ if USE_S3:
     AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'evsapp.storage_backends.PublicMediaStorage'
-
-
 else:
     MEDIA_URL = '/mediafiles/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
