@@ -101,29 +101,48 @@ class RetrieveUserInfoTest(APITestCase):
 
 class UploadFileTest(APITestCase):
     def setUp(self):
+        self.url = "/api/user/profile-image/"
+        uploaded_file = SimpleUploadedFile("file.jpg", self.generate_mock_image().getvalue(), content_type="image/jpg")
         self.user = EvUser.objects.create_user(username="test",
                                                password='test_password123',
                                                email="test@mail.it",
                                                is_organizer=False,
                                                profile_image=None)
-        self.url = "/api/user/profile-image/"
-
-    def test_image_upload(self):
-        # force login
-        self.client.force_authenticate(user=self.user)
-        # generate mock file
-        stream = BytesIO()
-        image = Image.new('RGB', (100, 100))
-        image.save(stream, format='jpeg')
-        # prepare data to be uploaded and pu
-        uploaded_file = SimpleUploadedFile("file.jpg", stream.getvalue(), content_type="image/jpg")
-        data = {
+        self.data = {
             "profile_image.type": "PI",
             "profile_image.document": uploaded_file,
             "profile_image.loaded_by": self.user.id
         }
 
-        response = self.client.put(self.url, data, format='multipart')
+        self.none_image_data = {
+            "profile_image.type": "PI",
+            "profile_image.document": "",
+            "profile_image.loaded_by": self.user.id
+        }
+
+    def generate_mock_image(self):
+        # generate mock file
+        stream = BytesIO()
+        image = Image.new('RGB', (100, 100))
+        image.save(stream, format='jpeg')
+        return stream
+
+    def test_profile_image_upload_user_not_authenticated(self):
+        response = self.client.put(self.url, self.data, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_set_none_image(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.put(self.url, self.none_image_data, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.user.profile_image, None)
+
+    def test_profile_image_upload(self):
+        # force login
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.put(self.url, self.data, format='multipart')
         aws_document = AWSDocument.objects.first()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
