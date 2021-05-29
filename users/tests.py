@@ -2,6 +2,7 @@ import json
 from PIL import Image
 from io import BytesIO
 from users.models import EvUser
+from aws.models import AWSDocument
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -108,12 +109,13 @@ class UploadFileTest(APITestCase):
         self.url = "/api/user/profile-image/"
 
     def test_image_upload(self):
+        # force login
         self.client.force_authenticate(user=self.user)
-
+        # generate mock file
         stream = BytesIO()
         image = Image.new('RGB', (100, 100))
         image.save(stream, format='jpeg')
-
+        # prepare data to be uploaded and pu
         uploaded_file = SimpleUploadedFile("file.jpg", stream.getvalue(), content_type="image/jpg")
         data = {
             "profile_image.type": "PI",
@@ -122,5 +124,8 @@ class UploadFileTest(APITestCase):
         }
 
         response = self.client.put(self.url, data, format='multipart')
+        aws_document = AWSDocument.objects.first()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.user.profile_image, aws_document)
+        self.assertEqual(aws_document.loaded_by, self.user)
