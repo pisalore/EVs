@@ -1,8 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
 
-from users.api.serializers import EvUserDisplaySerializer
+from users.api.serializers import EvUserDisplaySerializer, UserProfileImageSerializer
 
 
 class CurrentUserAPIView(APIView):
@@ -11,3 +12,12 @@ class CurrentUserAPIView(APIView):
     def get(self, request):
         serializer = EvUserDisplaySerializer(request.user)
         return Response(serializer.data)
+
+
+class ProfileImageUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileImageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        profile_object = self.request.user
+        return profile_object

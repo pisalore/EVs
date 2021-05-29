@@ -11,7 +11,7 @@ class EvUser(AbstractUser):
     is_organizer = models.BooleanField(default=False)
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
-    profile_image = models.OneToOneField(AWSDocument, on_delete=models.CASCADE, null=True)
+    profile_image = models.OneToOneField(AWSDocument, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.username
