@@ -8,6 +8,7 @@ django-rest-auth
 djangorestframework
 django-storages
 gunicorn
+Pillow
 pip-tools
 psycopg2
 python-dotenv
