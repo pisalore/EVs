@@ -4,6 +4,7 @@ from io import BytesIO
 from users.models import EvUser
 from aws.models import AWSDocument
 from django.test import TestCase
+from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from rest_framework.test import APITestCase
@@ -155,10 +156,25 @@ class UploadFileTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(self.user.profile_image, aws_document)
         self.assertEqual(aws_document.loaded_by, self.user)
-    
+
     def test_upload_invalid_format_file(self):
         # force login
         self.client.force_authenticate(user=self.user)
         response = self.client.put(self.url, self.invalid_data, format='multipart')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateUserProfileTest(APITestCase):
+    def setUp(self):
+        self.user = EvUser.objects.create_user(username="test",
+                                               password='test_password123',
+                                               email="test@mail.it",
+                                               is_organizer=False,
+                                               profile_image=None)
+
+    def test_profile_detail_retrieve(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(reverse('user-profile', kwargs={'pk': self.user.id}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['username'], 'test')

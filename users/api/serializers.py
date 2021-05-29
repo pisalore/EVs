@@ -11,6 +11,16 @@ class EvUserDisplaySerializer(serializers.ModelSerializer):
         fields = ["username", "organization_name", "is_organizer", "profile_image"]
 
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    profile_image = AWSDocumentSerializer(many=False, read_only=True)
+    is_organizer = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = EvUser
+        fields = ['first_name', 'last_name', 'organization_name', 'city', 'birthday', 'is_organizer', 'username',
+                  'email', 'profile_image']
+
+
 class UserProfileImageSerializer(serializers.ModelSerializer):
     profile_image = AWSDocumentSerializer(many=False)
 
