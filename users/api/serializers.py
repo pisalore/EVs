@@ -18,6 +18,13 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
         model = EvUser
         fields = ["profile_image"]
 
+    def validate(self, attrs):
+        if attrs.get('profile_image').get('document'):
+            document_ext = attrs.get('profile_image').get('document').name.split('.')[-1].lower()
+            if document_ext not in ['png', 'jpeg', 'jpg', ]:
+                raise serializers.ValidationError('The file must be a JPEG or PNG image.')
+        return attrs
+
     def update(self, instance, validated_data):
         profile_image = validated_data.pop('profile_image')
         document = profile_image.get('document')

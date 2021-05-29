@@ -102,7 +102,8 @@ class RetrieveUserInfoTest(APITestCase):
 class UploadFileTest(APITestCase):
     def setUp(self):
         self.url = "/api/user/profile-image/"
-        uploaded_file = SimpleUploadedFile("file.jpg", self.generate_mock_image().getvalue(), content_type="image/jpg")
+        valid_file = SimpleUploadedFile("file.jpg", self.generate_mock_image().getvalue())
+        invalid_file = SimpleUploadedFile("file.txt", self.generate_mock_image().getvalue())
         self.user = EvUser.objects.create_user(username="test",
                                                password='test_password123',
                                                email="test@mail.it",
@@ -110,13 +111,19 @@ class UploadFileTest(APITestCase):
                                                profile_image=None)
         self.data = {
             "profile_image.type": "PI",
-            "profile_image.document": uploaded_file,
+            "profile_image.document": valid_file,
             "profile_image.loaded_by": self.user.id
         }
 
         self.none_image_data = {
             "profile_image.type": "PI",
             "profile_image.document": "",
+            "profile_image.loaded_by": self.user.id
+        }
+
+        self.invalid_data = {
+            "profile_image.type": "PI",
+            "profile_image.document": invalid_file,
             "profile_image.loaded_by": self.user.id
         }
 
@@ -148,3 +155,10 @@ class UploadFileTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(self.user.profile_image, aws_document)
         self.assertEqual(aws_document.loaded_by, self.user)
+    
+    def test_upload_invalid_format_file(self):
+        # force login
+        self.client.force_authenticate(user=self.user)
+        response = self.client.put(self.url, self.invalid_data, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
