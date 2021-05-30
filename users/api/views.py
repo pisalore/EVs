@@ -17,6 +17,7 @@ class CurrentUserAPIView(APIView):
 
 
 class UserProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = "username"
     permission_classes = [IsAuthenticated, IsOwnProfileOrReadOnly]
     serializer_class = UserProfileSerializer
     queryset = EvUser.objects.all()

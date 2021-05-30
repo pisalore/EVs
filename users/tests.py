@@ -174,12 +174,12 @@ class UpdateUserProfileTest(APITestCase):
                                                profile_image=None)
 
     def test_profile_detail_retrieve_unauthenticated(self):
-        response = self.client.get(reverse('user-profile', kwargs={'pk': self.user.id}))
+        response = self.client.get(reverse('user-profile', kwargs={'username': self.user.username}))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_profile_detail_retrieve(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.get(reverse('user-profile', kwargs={'pk': self.user.id}))
+        response = self.client.get(reverse('user-profile', kwargs={'username': self.user.username}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], 'test')
 
@@ -192,6 +192,20 @@ class UpdateUserProfileTest(APITestCase):
             "email": "test1@mail.it"
         }
         self.client.force_authenticate(user=self.user)
-        response = self.client.put(reverse('user-profile', kwargs={'pk': self.user.id}), update_data)
+        response = self.client.put(reverse('user-profile', kwargs={'username': self.user.username}), update_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], 'test1')
+
+
+class DeleteTestAPI(APITestCase):
+    def setUp(self):
+        self.user = EvUser.objects.create_user(username="test",
+                                               password='test_password123',
+                                               email="test@mail.it",
+                                               is_organizer=False,
+                                               profile_image=None)
+
+    def test_delete_user(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(reverse('user-profile', kwargs={'username': self.user.username}),)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

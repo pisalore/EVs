@@ -3,6 +3,6 @@ from users.api.views import CurrentUserAPIView, UserProfileAPIView, ProfileImage
 
 urlpatterns = [
     path("user/", CurrentUserAPIView.as_view(), name="current-user"),
-    path("user/profile/<int:pk>/", UserProfileAPIView.as_view(), name="user-profile"),
+    path("user/profile/<str:username>/", UserProfileAPIView.as_view(), name="user-profile"),
     path("user/profile-image/", ProfileImageUpdateView.as_view(), name="profile-image"),
 ]
