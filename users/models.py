@@ -5,7 +5,7 @@ from aws.models import AWSDocument
 
 
 class EvUser(AbstractUser):
-    organization_name = models.CharField(max_length=240, blank=True)
+    organization_name = models.CharField(max_length=240, blank=True, unique=True)
     city = models.CharField(max_length=100)
     birthday = models.DateField(null=True)
     is_organizer = models.BooleanField(default=False)

@@ -173,8 +173,25 @@ class UpdateUserProfileTest(APITestCase):
                                                is_organizer=False,
                                                profile_image=None)
 
+    def test_profile_detail_retrieve_unauthenticated(self):
+        response = self.client.get(reverse('user-profile', kwargs={'pk': self.user.id}))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
     def test_profile_detail_retrieve(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(reverse('user-profile', kwargs={'pk': self.user.id}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], 'test')
+
+    def test_profile_update(self):
+        update_data = {
+            "username": "test1",
+            "first_name": "testname",
+            "last_name": "testsurname",
+            "city": "test city",
+            "email": "test1@mail.it"
+        }
+        self.client.force_authenticate(user=self.user)
+        response = self.client.put(reverse('user-profile', kwargs={'pk': self.user.id}), update_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['username'], 'test1')
