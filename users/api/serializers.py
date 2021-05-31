@@ -12,7 +12,7 @@ class EvUserDisplaySerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    profile_image = AWSDocumentSerializer(many=False, read_only=True)
+    profile_image = AWSDocumentSerializer(read_only=True)
     is_organizer = serializers.BooleanField(read_only=True)
 
     class Meta:
@@ -40,9 +40,8 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
         document = profile_image.get('document')
         aws_document = None
         if document:
-            image_type = profile_image.get('type')
             loaded_by = profile_image.get('loaded_by')
-            aws_document = AWSDocument.objects.create(document=document, type=image_type, loaded_by=loaded_by)
+            aws_document = AWSDocument.objects.create(document=document, loaded_by=loaded_by)
 
         instance.profile_image = aws_document
         instance.save()

@@ -35,6 +35,8 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = 'users.EvUser'
+EVENT_MODEL = 'events.Event'
+EVENT_PREFIX = 'event'
 SITE_ID = 1
 
 # Application definition

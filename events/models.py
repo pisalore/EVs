@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=20, null=False)
+    category = models.CharField(max_length=20, null=False, unique=True)
 
     def __str__(self):
         return self.category
@@ -21,7 +21,8 @@ class Event(models.Model):
     organizer = models.ForeignKey(EvUser, on_delete=models.CASCADE, related_name='events')
     name = models.CharField(max_length=300, null=False)
     description = models.TextField(blank=True, null=True)
-    profile_image = models.OneToOneField(AWSDocument, on_delete=models.SET_NULL, blank=True, null=True)
+    event_image = models.OneToOneField(AWSDocument, on_delete=models.SET_NULL, blank=True, null=True,
+                                       related_name='aws_document')
     status = models.CharField(max_length=1, choices=EventStatus.choices, null=False)
     venue = models.CharField(max_length=200, blank=True)
     start_date = models.DateField(blank=True, null=True)

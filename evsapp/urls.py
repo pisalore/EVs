@@ -23,6 +23,7 @@ urlpatterns = [
 
     # API
     path('api/', include('users.api.urls')),
+    path('api/', include('events.api.urls')),
 
     path("accounts/", include('django_registration.backends.one_step.urls')),
     path("accounts/", include('django.contrib.auth.urls')),
