@@ -19,3 +19,6 @@ class AWSDocument(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name='documents',
                                   null=True)
+
+    def __str__(self):
+        return '{}, {}'.format(type, self.document.name)
