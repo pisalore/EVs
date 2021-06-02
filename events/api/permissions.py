@@ -8,3 +8,10 @@ class IsEventOrganizerOrReadOnly(permissions.BasePermission):
             return True
 
         return obj.organizer == request.user
+
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if not request.user.is_anonymous:
+            return request.user.is_organizer
+        return False

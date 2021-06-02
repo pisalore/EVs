@@ -1,14 +1,22 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from events.api.serializers import EventSerializer, EventImageSerializer
+from events.api.serializers import CategorySerializer, EventSerializer, EventImageSerializer
 from events.api.permissions import IsEventOrganizerOrReadOnly
-from events.models import Event
+from events.api.pagination import EventSetPagination
+from events.models import Category, Event
 
 
-class EventsListAPIView(generics.ListAPIView):
+class CategoryListAPI(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all().order_by('id')
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all().order_by('start_date')
     serializer_class = EventSerializer
-    queryset = Event.objects.all()
+    permission_classes = [IsEventOrganizerOrReadOnly]
+    pagination_class = EventSetPagination
 
 
 class EventImageUpdateView(generics.RetrieveUpdateAPIView):

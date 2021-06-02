@@ -102,7 +102,7 @@ class RetrieveUserInfoTest(APITestCase):
 
 class UploadFileTest(APITestCase):
     def setUp(self):
-        self.url = "/api/user/profile-image/"
+        self.url = "/api/profile-image/"
         valid_file = SimpleUploadedFile("file.jpg", self.generate_mock_image().getvalue())
         invalid_file = SimpleUploadedFile("file.txt", self.generate_mock_image().getvalue())
         self.user = EvUser.objects.create_user(username="test",

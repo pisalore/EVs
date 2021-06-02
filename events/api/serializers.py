@@ -12,11 +12,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    organizer = serializers.StringRelatedField(read_only=True)
     event_image = AWSDocumentSerializer(read_only=True)
-    categories = CategorySerializer(many=True, read_only=True)
     interested_count = serializers.SerializerMethodField(read_only=True)
     participants_count = serializers.SerializerMethodField(read_only=True)
+    user_is_interested = serializers.SerializerMethodField(read_only=True)
+    user_is_going = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Event
@@ -27,6 +27,14 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_participants_count(self, instance):
         return instance.participants.count()
+
+    def get_user_is_interested(self, instance):
+        request = self.context.get("request")
+        return instance.interested.filter(pk=request.user.pk).exists()
+
+    def get_user_is_going(self, instance):
+        request = self.context.get("request")
+        return instance.participants.filter(pk=request.user.pk).exists()
 
 
 class EventImageSerializer(serializers.ModelSerializer):
