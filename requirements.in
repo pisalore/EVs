@@ -3,6 +3,7 @@ dj-database-url
 Django
 django-allauth
 django-crispy-forms
+django-filter
 django-registration
 django-rest-auth
 djangorestframework

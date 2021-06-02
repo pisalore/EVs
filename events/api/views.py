@@ -21,6 +21,8 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     permission_classes = [IsEventOrganizerOrReadOnly]
     pagination_class = EventSetPagination
+    filterset_fields = ('venue',)
+
 
 
 class EventInterestAPIView(APIView):
