@@ -11,6 +11,15 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EventSerializerAction(serializers.ModelSerializer):
+    organizer = serializers.StringRelatedField()
+    id = serializers.StringRelatedField()
+
+    class Meta:
+        model = Event
+        fields = ['name', 'id', 'organizer']
+
+
 class EventSerializer(serializers.ModelSerializer):
     event_image = AWSDocumentSerializer(read_only=True)
     interested_count = serializers.SerializerMethodField(read_only=True)
@@ -50,7 +59,7 @@ class EventImageSerializer(serializers.ModelSerializer):
             if document_ext not in ['png', 'jpeg', 'jpg', ]:
                 raise serializers.ValidationError('The file must be a JPEG or PNG image.')
         return attrs
-    
+
     def update(self, instance, validated_data):
         event_image = validated_data.pop('event_image')
         document = event_image.get('document')
