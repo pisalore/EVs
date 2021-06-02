@@ -82,7 +82,8 @@ class RetrieveUserInfoTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             json.loads(response.content),
-            {"username": "test",
+            {"id": self.user.id,
+             "username": "test",
              "organization_name": "",
              "is_organizer": False,
              "profile_image": None})
@@ -94,7 +95,8 @@ class RetrieveUserInfoTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             json.loads(response.content),
-            {"username": "test_org",
+            {"id": self.organizer.id,
+             "username": "test_org",
              "organization_name": "org",
              "is_organizer": True,
              "profile_image": None, })
@@ -104,7 +106,7 @@ class UploadFileTest(APITestCase):
     def setUp(self):
         self.url = "/api/profile-image/"
         valid_file = SimpleUploadedFile("file.jpg", self.generate_mock_image().getvalue())
-        invalid_file = SimpleUploadedFile("file.txt", self.generate_mock_image().getvalue())
+        invalid_file = SimpleUploadedFile("file.txt", b'this is some text - not an image')
         self.user = EvUser.objects.create_user(username="test",
                                                password='test_password123',
                                                email="test@mail.it",
@@ -207,5 +209,5 @@ class DeleteTestAPI(APITestCase):
 
     def test_delete_user(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.delete(reverse('user-profile', kwargs={'username': self.user.username}),)
+        response = self.client.delete(reverse('user-profile', kwargs={'username': self.user.username}), )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

@@ -8,7 +8,7 @@ from users.models import EvUser
 class EvUserDisplaySerializer(serializers.ModelSerializer):
     class Meta:
         model = EvUser
-        fields = ["username", "organization_name", "is_organizer", "profile_image"]
+        fields = ["id", "username", "organization_name", "is_organizer", "profile_image"]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
