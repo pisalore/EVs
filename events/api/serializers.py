@@ -13,11 +13,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class EventSerializerAction(serializers.ModelSerializer):
     organizer = serializers.StringRelatedField()
-    id = serializers.StringRelatedField()
+    interested = serializers.StringRelatedField(many=True, read_only=True)
+    participants = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Event
-        fields = ['name', 'id', 'organizer']
+        fields = ['name', 'organizer', 'interested', 'participants']
 
 
 class EventSerializer(serializers.ModelSerializer):
