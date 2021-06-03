@@ -37,7 +37,7 @@ class EventViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(start_date__gte=start_date)
         elif end_date:
             queryset = queryset.filter(start_date__lte=end_date)
-        return queryset.order_by('-id').order_by(ordering)
+        return queryset.filter(status='A').order_by(ordering)
 
 
 class EventInterestAPIView(APIView):
@@ -108,3 +108,24 @@ class EventImageUpdateView(generics.RetrieveUpdateAPIView):
         event_id = self.kwargs.get('pk')
         event_object = Event.objects.filter(pk=event_id).first()
         return event_object
+
+
+class UserEventsPersonalAreaListView(generics.ListAPIView):
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.request.user.username
+        user_events_interested_in = Event.objects.filter(interested__username=username)
+        user_events_going = Event.objects.filter(participants__username=username)
+        queryset = user_events_interested_in | user_events_going
+        return queryset.filter(status='A')
+
+
+class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        organizer = self.request.user
+        return Event.objects.filter(organizer=organizer)
