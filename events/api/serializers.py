@@ -46,6 +46,12 @@ class EventSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         return instance.participants.filter(pk=request.user.pk).exists()
 
+    def validate(self, attrs):
+        event_organizer = attrs.get('organizer')
+        if not event_organizer.is_organizer:
+            raise serializers.ValidationError('The event organizer MUST be an organizer.')
+        return attrs
+
 
 class EventImageSerializer(serializers.ModelSerializer):
     event_image = AWSDocumentSerializer(many=False)
