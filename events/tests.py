@@ -92,7 +92,7 @@ class EventManagingTest(APITestCase):
         response = self.client.post(url, test_event)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_retrieve_single_vent(self):
+    def test_retrieve_single_event(self):
         test_event = Event.objects.create(
             name="Test event 2",
             description="Fixed description",
@@ -107,6 +107,51 @@ class EventManagingTest(APITestCase):
         self.assertEqual(json.loads(response.content)['id'], test_event.id)
         self.assertEqual(json.loads(response.content)['name'], test_event.name)
         self.assertIn(test_event.categories.get(id=1).id, json.loads(response.content)['categories'])
+
+    def test_event_update(self):
+        self.client.force_authenticate(user=self.organizer)
+        test_event = Event.objects.create(
+            name="Test event 2",
+            description="Fixed description",
+            status="A",
+            organizer=self.organizer,
+        )
+        test_event.categories.add(Category.objects.get(id=1))
+        update_event_data = {
+            "name": "Test event renamed",
+            "description": "Fixed description",
+            "status": "A",
+            "venue": "Test Venue",
+            "start_date": "",
+            "finish_date": "",
+            "start_hour": "",
+            "finish_hour": "",
+            "evs_link": "",
+            "event_website": "",
+            "tickets_website": "",
+            "organizer": self.organizer.id,
+            "categories": [1]
+        }
+        url = '/api/events/{}/'.format(test_event.id)
+        response = self.client.put(url, update_event_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content)['name'], "Test event renamed")
+        self.assertEqual(json.loads(response.content)['venue'], "Test Venue")
+
+    def test_event_delete(self):
+        self.client.force_authenticate(user=self.organizer)
+        test_event = Event.objects.create(
+            name="Test event 2",
+            description="Fixed description",
+            status="A",
+            organizer=self.organizer,
+        )
+        url = '/api/events/{}/'.format(test_event.id)
+        test_event.categories.add(Category.objects.get(id=1))
+        self.client.delete(url)
+
+        self.assertFalse(Event.objects.filter(pk=test_event.id).exists())
 
 
 class EventImageUploadTest(APITestCase):
