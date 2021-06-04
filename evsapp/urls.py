@@ -27,11 +27,9 @@ urlpatterns = [
 
     path("accounts/", include('django_registration.backends.one_step.urls')),
     path("accounts/", include('django.contrib.auth.urls')),
+    path('accounts/', include('rest_registration.api.urls')),
 
     path('api-auth/', include('rest_framework.urls')),
-    path('api/rest-auth/', include('rest_auth.urls')),
-
-    path('api/rest-auth/registration/', include('rest_auth.registration.urls')),
 
     re_path(r"^.*$", IndexTemplateView.as_view(), name="entry-point")
 ]

@@ -52,14 +52,7 @@ INSTALLED_APPS = [
     'django_filters',
 
     'rest_framework',
-    'rest_framework.authtoken',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    'rest_auth',
-    'rest_auth.registration',
+    'rest_registration',
 
     'aws',
     'users',
@@ -164,6 +157,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+}
+
+# Used only for password change in frontend
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
 }
 
 # Storages

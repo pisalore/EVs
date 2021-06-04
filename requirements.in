@@ -7,6 +7,7 @@ django-filter
 django-registration
 django-rest-auth
 djangorestframework
+django-rest-registration
 django-storages
 gunicorn
 Pillow
