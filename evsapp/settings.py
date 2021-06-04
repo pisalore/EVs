@@ -178,6 +178,7 @@ if USE_S3:
     AWS_S3_SIGNATURE_VERSION = 's3v4'
     AWS_S3_FILE_OVERWRITE = False
     AWS_REGION = os.getenv('AWS_REGION')
+    AWS_DEFAULT_ACL = 'public-read'
 
     # s3 public media settings
     AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
