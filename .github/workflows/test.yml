@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        python: [3.8]
+        python: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -35,4 +35,5 @@ jobs:
       - name: Run Tox
         env:
           SECRET_KEY_EVS: ${{ secrets.SECRET_KEY_EVS }}
+          DB_STRING: ${{secrets.DB_STRING}}
         run: tox -e py
