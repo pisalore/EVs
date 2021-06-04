@@ -3,6 +3,7 @@ import string
 import boto3
 import shutil
 import os
+from django.core.mail import send_mail
 
 from evsapp import settings
 
@@ -34,3 +35,21 @@ def delete_related_user_files_local(username):
     user_dir_path = settings.MEDIA_ROOT + f'/{username}'
     if os.path.exists(user_dir_path):
         shutil.rmtree(user_dir_path)
+
+
+def send_request_email(**email):
+    user_email = email.get('user_email')
+    username = email.get('username')
+    message = email.get('user_message')
+
+    message_content = f'This message has been sent from: {user_email},' \
+                      f' please email this in order to answer.\n' \
+                      f'Message above \n' \
+                      f'{message}'
+    send_mail(
+        f'{username} - request',
+        message_content,
+        user_email,
+        [settings.EMAIL_HOST_USER],
+        fail_silently=False,
+    )

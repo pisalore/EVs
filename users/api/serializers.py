@@ -47,3 +47,9 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class RequestFormSerializer(serializers.Serializer):
+    user_email = serializers.EmailField(allow_blank=False)
+    username = serializers.CharField(max_length=150)
+    user_message = serializers.CharField(max_length=300)
