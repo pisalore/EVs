@@ -2,6 +2,7 @@ from rest_framework import generics, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import MethodNotAllowed
 
 from django.shortcuts import get_object_or_404
 
@@ -59,7 +60,8 @@ class EventInterestAPIView(APIView):
     def post(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
         user = self.request.user
-
+        if event.participants.filter(id=user.id).exists():
+            raise MethodNotAllowed(method='post', detail='You are participating to this event.')
         event.interested.add(user)
         event.save()
 
@@ -124,8 +126,9 @@ class UserEventsPersonalAreaListView(generics.ListAPIView):
 
 class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
+    pagination_class = EventSetPagination
+    permission_classes = [IsAuthenticated, IsEventOrganizerOrReadOnly]
 
     def get_queryset(self):
         organizer = self.request.user
-        return Event.objects.filter(organizer=organizer)
+        return Event.objects.order_by('start_date').filter(organizer=organizer)
