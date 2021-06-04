@@ -255,3 +255,45 @@ class ChangePasswordTest(APITestCase):
                 "Old password is not correct"
             ]
         })
+
+
+class ContactUsTest(APITestCase):
+    def setUp(self):
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        self.user = EvUser.objects.create_user(**self.credentials)
+
+    def test_send_email_request_success(self):
+        self.client.force_authenticate(user=self.user)
+        email = {
+            "user_email": "test@test.it",
+            "username": "testuser",
+            "user_message": "message"}
+
+        response = self.client.post(reverse("contact-us"), email)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content), {
+            "success_message": "The request has been successfully sent. We will contact you as soon as possible."}
+                         )
+
+    def test_send_email_request_fail(self):
+        self.client.force_authenticate(user=self.user)
+        email = {
+            "user_email": "",
+            "username": "",
+            "user_message": ""}
+
+        response = self.client.post(reverse("contact-us"), email)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(json.loads(response.content), {
+            "user_email": [
+                "This field may not be blank."
+            ],
+            "username": [
+                "This field may not be blank."
+            ],
+            "user_message": [
+                "This field may not be blank."
+            ]
+        })
