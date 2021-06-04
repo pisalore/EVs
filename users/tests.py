@@ -211,3 +211,47 @@ class DeleteTestAPI(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(reverse('user-profile', kwargs={'username': self.user.username}), )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class ChangePasswordTest(APITestCase):
+    def setUp(self):
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        self.user = EvUser.objects.create_user(**self.credentials)
+
+    def test_change_password_succed(self):
+        # force login
+        self.client.force_authenticate(user=self.user)
+        url = '/accounts/change-password/'
+
+        data = {
+            "old_password": "secret",
+            "password": "abcd123456*",
+            "password_confirm": "abcd123456*"
+        }
+
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content), {
+            "detail": "Password changed successfully"
+        })
+
+    def test_change_password_no_match_fail(self):
+        # force login
+        self.client.force_authenticate(user=self.user)
+        url = '/accounts/change-password/'
+
+        data = {
+            "old_password": "secret_wrong",
+            "password": "abcd123456*",
+            "password_confirm": "abcd123456*"
+        }
+
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(json.loads(response.content), {
+            "old_password": [
+                "Old password is not correct"
+            ]
+        })
