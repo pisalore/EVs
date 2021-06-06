@@ -9,6 +9,7 @@ django-rest-auth
 djangorestframework
 django-rest-registration
 django-storages
+django-webpack-loader<1.0.0
 gunicorn
 Pillow
 pip-tools

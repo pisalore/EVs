@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+{% load render_bundle from webpack_loader %}
+
 {% block content %}
-    <h1>Vue app</h1>
-{%  endblock %}
+    <noscript>
+        <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to
+            continue.</strong>
+    </noscript>
+    <h1>Vue JS</h1>
+    <div id="app"></div>
+    {% render_bundle 'app' %}
+{% endblock %}

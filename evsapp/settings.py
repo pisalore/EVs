@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'storages',
 
+    'webpack_loader'
+
 ]
 
 MIDDLEWARE = [
@@ -193,6 +195,18 @@ else:
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),
+                    os.path.join(BASE_DIR, 'assets'),
+                    os.path.join(BASE_DIR, 'frontend/dist'),)
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Frontend
+FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend')
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+    }
+}
