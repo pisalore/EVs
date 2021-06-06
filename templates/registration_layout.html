@@ -27,13 +27,13 @@
     </nav>
     <div class="container-fluid d-flex flex-column" style="height: 100%">
         <div class="row justify-content-center flex-fill">
-            <div class="col-sm-12 col-md-4" style="background-color: #4BABFA">
-                <div class="disclaimer py-2">Find your own way with EVs.</div>
-            </div>
-            <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8">
-                {% block registration_content %}
+            {% if 'register' in request.path %}
+                <div class="col-sm-12 col-md-4" style="background-color: #4BABFA">
+                    <div class="disclaimer py-2">Find your own way with EVs.</div>
+                </div>
+            {% endif %}
+                {% block main_content %}
                 {% endblock %}
-            </div>
         </div>
         <div class="py-3 bg-light row">
             <div class="col-xl-1 col-md-2 d-flex justify-content-md-start">
