@@ -1,7 +1,7 @@
 {% extends "registration_layout.html" %}
 {% load static %}
 
-{% block css %}
+{% block bundle_css %}
     <link href="{% static 'bundle.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -15,6 +15,6 @@
     </div>
 {% endblock %}
 
-{% block js %}
+{% block bundle_js %}
     <script src="{% static 'bundle.js' %}"></script>
 {% endblock %}
