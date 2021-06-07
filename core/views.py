@@ -5,7 +5,7 @@ import os
 class IndexTemplateView(TemplateView):
 
     def get_template_names(self):
-        if os.getenv('DEBUG') == 'True':
+        if os.getenv('DEBUG').lower() == 'true':
             template_name = 'index-dev.html'
         else:
             template_name = 'index.html'
