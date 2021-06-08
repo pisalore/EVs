@@ -1,11 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import EventsModule from "./modules/events/index";
+
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: {},
+  modules: {
+    events: EventsModule,
+  },
 });
+
+export default store;

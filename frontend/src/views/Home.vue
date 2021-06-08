@@ -5,23 +5,23 @@
         Discover all the best events around you.
       </p>
     </div>
-    <form @submit.prevent="searchCityEvents">
+    <form @submit.prevent="searchEventsByCity">
       <div class="input-group mb-3">
         <input
+          v-model.trim="searchedCity"
           type="text"
           class="form-control form-rounded input-lg mb-4"
           id="inputlg"
           placeholder="Where are you going?"
+          style="font-size: 40px; color: #bdbdbd"
         />
       </div>
+      <button type="submit" class="search-btn">Go!</button>
     </form>
-    <button type="button" class="search-btn">Go!</button>
   </div>
 </template>
 
 <script>
-import {apiService} from "../common/api.service";
-
 export default {
   name: "Home",
 
@@ -35,28 +35,20 @@ export default {
 
   methods: {
     validateSearchForm() {
+      console.log("ok");
       this.formIsValid = true;
       if (this.searchedCity === "") {
         this.searchedCity.isValid = false;
       }
     },
-    searchCityEvents() {
+    searchEventsByCity() {
       this.validateSearchForm();
       if (!this.formIsValid) {
         return;
       }
-      // const city = this.searchedCity;
+      const city = this.searchedCity;
+      this.$store.dispatch("events/searchEventsByCity", city);
     },
-    getEvents() {
-      let endpoint = "api/events/";
-      apiService(endpoint).then((data) => {
-        console.log(data.results);
-      });
-    },
-  },
-
-  created() {
-    this.getEvents();
   },
 };
 </script>
@@ -69,7 +61,8 @@ export default {
   width: 820px;
 }
 
-.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.form-control::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   position: absolute;
   left: 2.68%;
   right: 29.27%;
@@ -80,9 +73,8 @@ export default {
   font-size: 24px;
   line-height: 42px;
 
-  color: #BDBDBD;
+  color: #bdbdbd;
 }
-
 
 .home-claim {
   font-style: normal;
@@ -101,10 +93,10 @@ export default {
   height: 50px;
   left: 246px;
   top: 565px;
-  background: #2C98F0;
+  background: #2c98f0;
   /* Blue_3 */
 
-  border: 0.25px solid #1F6DAD;
+  border: 0.25px solid #1f6dad;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
@@ -112,9 +104,9 @@ export default {
   font-size: 24px;
 }
 
-button:hover, button:focus {
+button:hover,
+button:focus {
   outline: none;
   cursor: pointer;
-
 }
 </style>
