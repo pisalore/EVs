@@ -24,21 +24,15 @@
         <button type="submit" class="search-btn">Go!</button>
       </form>
     </div>
-    <ul>
-      <li v-for="ev in mostParticipatedEvents" :key="ev.id">
-        <p>{{ ev.name }}</p>
-      </li>
-    </ul>
-    <ul>
-      <li v-for="ev in mostInterestedEvents" :key="ev.id">
-        <p>{{ ev.name }}</p>
-      </li>
-    </ul>
-    <ul>
-      <li v-for="ev in expiringEvents" :key="ev.id">
-        <p>{{ ev.name }}</p>
-      </li>
-    </ul>
+    <div class="most-partecipated">
+      <ul>
+        <li
+          v-for="ev in mostParticipatedEvents"
+          :key="ev.id"
+        > {{ ev.name }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 

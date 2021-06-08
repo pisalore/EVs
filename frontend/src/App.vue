@@ -1,7 +1,5 @@
 <template>
-  <div class="mt-5" id="app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <style>
