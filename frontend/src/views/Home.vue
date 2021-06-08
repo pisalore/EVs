@@ -1,23 +1,29 @@
 <template>
-  <div class="container py-4">
+  <div class="container">
     <div>
       <p class="home-claim p-2 mb-5">
         Discover all the best events around you.
       </p>
     </div>
-    <form @submit.prevent="searchEventsByCity">
-      <div class="input-group mb-3">
-        <input
-          v-model.trim="searchedCity"
-          type="text"
-          class="form-control form-rounded input-lg mb-4"
-          id="inputlg"
-          placeholder="Where are you going?"
-          style="font-size: 40px; color: #bdbdbd"
-        />
-      </div>
-      <button type="submit" class="search-btn">Go!</button>
-    </form>
+    <div>
+      <form @submit.prevent="searchEventsByCity">
+        <div class="form-group mb-3">
+          <input
+            v-model.trim="searchedCity"
+            v-on:focus="clearErrors()"
+            type="text"
+            class="form-control form-rounded mb-4"
+            :class="{ invalid: !formIsValid }"
+            placeholder="Where are you going?"
+            style="font-size: 40px"
+          />
+        </div>
+        <p v-if="!formIsValid" style="color: #e32822">
+          Please, insert a city name.
+        </p>
+        <button type="submit" class="search-btn">Go!</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -35,11 +41,7 @@ export default {
 
   methods: {
     validateSearchForm() {
-      console.log("ok");
-      this.formIsValid = true;
-      if (this.searchedCity === "") {
-        this.searchedCity.isValid = false;
-      }
+      this.formIsValid = this.searchedCity !== "";
     },
     searchEventsByCity() {
       this.validateSearchForm();
@@ -48,6 +50,10 @@ export default {
       }
       const city = this.searchedCity;
       this.$store.dispatch("events/searchEventsByCity", city);
+      this.$router.push("/events");
+    },
+    clearErrors() {
+      this.formIsValid = true;
     },
   },
 };
@@ -58,7 +64,6 @@ export default {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
   border-radius: 40px;
   height: 80px;
-  width: 820px;
 }
 
 .form-control::placeholder {
@@ -70,7 +75,7 @@ export default {
   bottom: 26.25%;
 
   font-style: normal;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 42px;
 
   color: #bdbdbd;
@@ -108,5 +113,12 @@ button:hover,
 button:focus {
   outline: none;
   cursor: pointer;
+  background-color: white;
+  color: #2c98f0;
+}
+
+.invalid {
+   border:1px solid red;
+
 }
 </style>
