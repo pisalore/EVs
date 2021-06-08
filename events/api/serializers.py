@@ -3,6 +3,7 @@ from rest_framework import serializers
 from aws.api.serializers import AWSDocumentSerializer
 from aws.models import AWSDocument
 from events.models import Event, Category
+from users.models import EvUser
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,6 +28,7 @@ class EventSerializer(serializers.ModelSerializer):
     participants_count = serializers.SerializerMethodField(read_only=True)
     user_is_interested = serializers.SerializerMethodField(read_only=True)
     user_is_going = serializers.SerializerMethodField(read_only=True)
+    organizer_username = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Event
@@ -45,6 +47,9 @@ class EventSerializer(serializers.ModelSerializer):
     def get_user_is_going(self, instance):
         request = self.context.get("request")
         return instance.participants.filter(pk=request.user.pk).exists()
+
+    def get_organizer_username(self, instance):
+        return EvUser.objects.filter(pk=instance.organizer.id).first().username
 
     def validate(self, attrs):
         event_organizer = attrs.get('organizer')

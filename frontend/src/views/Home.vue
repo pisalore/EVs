@@ -24,22 +24,26 @@
         <button type="submit" class="search-btn">Go!</button>
       </form>
     </div>
-    <div class="most-partecipated">
-      <ul>
-        <li
-          v-for="ev in mostParticipatedEvents"
-          :key="ev.id"
-        > {{ ev.name }}
-        </li>
-      </ul>
+    <div class="most-partecipated row">
+      <event-card
+        v-for="ev in mostParticipatedEvents"
+        :key="ev.id"
+        :name="ev.name"
+        :organizer="ev.organizer_username"
+        :venue="ev.venue"
+        :start_date="ev.start_date"
+        :end_date="ev.end_date"
+      >
+      </event-card>
     </div>
   </div>
 </template>
 
 <script>
+import EventCard from "../components/events/EventCard";
 export default {
   name: "Home",
-
+  components: { EventCard },
   data() {
     return {
       searchedCity: "",
@@ -87,6 +91,7 @@ export default {
 
   created() {
     this.loadEvents();
+    // console.log(this.mostParticipatedEvents)
   },
 };
 </script>

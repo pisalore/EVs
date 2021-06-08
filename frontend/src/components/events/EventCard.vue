@@ -1,13 +1,13 @@
 <template>
-  <li>
-    {{ name }}
-  </li>
+  <div>
+   {{venue}}
+  </div>
 </template>
 
 <script>
 export default {
   name: "EventCard",
-  props: ["name"],
+  props: ["name", "organizer", "venue", "start_date", "end_date"],
 };
 </script>
 
