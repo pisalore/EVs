@@ -13,17 +13,32 @@
             v-on:focus="clearErrors()"
             type="text"
             class="form-control form-rounded mb-4"
-            :class="{ invalid: !formIsValid }"
+            :class="{ invalid: !searchFieldIsNotEmpty }"
             placeholder="Where are you going?"
             style="font-size: 40px"
           />
         </div>
-        <p v-if="!formIsValid" style="color: #e32822">
+        <p v-if="!searchFieldIsNotEmpty" style="color: #e32822">
           Please, insert a city name.
         </p>
         <button type="submit" class="search-btn">Go!</button>
       </form>
     </div>
+    <ul>
+      <li v-for="ev in mostParticipatedEvents" :key="ev.id">
+        <p>{{ ev.name }}</p>
+      </li>
+    </ul>
+    <ul>
+      <li v-for="ev in mostInterestedEvents" :key="ev.id">
+        <p>{{ ev.name }}</p>
+      </li>
+    </ul>
+    <ul>
+      <li v-for="ev in expiringEvents" :key="ev.id">
+        <p>{{ ev.name }}</p>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -34,18 +49,17 @@ export default {
   data() {
     return {
       searchedCity: "",
-      formIsValid: true,
-      questions: [],
+      searchFieldIsNotEmpty: true,
     };
   },
 
   methods: {
     validateSearchForm() {
-      this.formIsValid = this.searchedCity !== "";
+      this.searchFieldIsNotEmpty = this.searchedCity !== "";
     },
     searchEventsByCity() {
       this.validateSearchForm();
-      if (!this.formIsValid) {
+      if (!this.searchFieldIsNotEmpty) {
         return;
       }
       const city = this.searchedCity;
@@ -53,15 +67,39 @@ export default {
       this.$router.push("/events");
     },
     clearErrors() {
-      this.formIsValid = true;
+      this.searchFieldIsNotEmpty = true;
     },
+    async loadEvents() {
+      try {
+        await this.$store.dispatch("events/loadMostParticipatedEvents");
+        await this.$store.dispatch("events/loadMostInterestedEvents");
+        await this.$store.dispatch("events/loadExpiringEvents");
+      } catch (error) {
+        this.error = error.message || "Something went wrong!";
+      }
+    },
+  },
+  computed: {
+    mostParticipatedEvents() {
+      return this.$store.getters["events/getMostParticipatedEvents"];
+    },
+    mostInterestedEvents() {
+      return this.$store.getters["events/getMostInterestedEvents"];
+    },
+    expiringEvents() {
+      return this.$store.getters["events/getExpiringEvents"];
+    },
+  },
+
+  created() {
+    this.loadEvents();
   },
 };
 </script>
 
 <style scoped>
 .form-rounded {
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
   border-radius: 40px;
   height: 80px;
 }
@@ -103,7 +141,7 @@ export default {
 
   border: 0.25px solid #1f6dad;
   box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
   color: white;
   font-size: 24px;
@@ -118,7 +156,6 @@ button:focus {
 }
 
 .invalid {
-   border:1px solid red;
-
+  border: 1px solid red;
 }
 </style>

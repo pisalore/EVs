@@ -6,7 +6,9 @@ export default {
   namespaced: true,
   state() {
     return {
-      events: [],
+      mostParticipatedEvents: [],
+      mostInterestedEvents: [],
+      expiringEvents: [],
     };
   },
   actions,
