@@ -25,6 +25,6 @@ export default {
 
   created() {
     this.getEvents();
-  }
+  },
 };
 </script>

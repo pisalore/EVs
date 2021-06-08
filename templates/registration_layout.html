@@ -3,20 +3,25 @@
 
 {% block content %}
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-        <img width="50px" class="navbar-brand" src="{% static 'assets/evs_logo.png' %}" alt="logo">
+        <a href="/" class="navbar-brand">
+            <img width="50px" src="{% static 'assets/evs_logo.png' %}" alt="logo">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto px-5">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="/about">About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Events</a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'django_registration_register_user' %}">Sign Up</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -38,10 +43,12 @@
         </div>
         <div class="py-3 bg-light row">
             <div class="col-xl-1 col-md-12 d-flex">
-                <img width="50px" class="navbar-brand" src="{% static 'assets/evs_logo.png' %}" alt="logo">
+                <a href="/" class="navbar-brand">
+                    <img width="50px" src="{% static 'assets/evs_logo.png' %}" alt="logo">
+                </a>
             </div>
             <div class="col-xl-8 col-md-6 d-flex">
-                <a class="footer-item mt-3 mr-3" href="">About EVs</a>
+                <a class="footer-item mt-3 mr-3" href="/about">About EVs</a>
                 <a class="footer-item mt-3 mr-3" href="">Privacy Policy</a>
                 <a class="footer-item mt-3 mr-3" href="">Contacts</a>
                 <a class="footer-item mt-3 mr-3" href="">FAQ</a>
