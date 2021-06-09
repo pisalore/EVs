@@ -12,11 +12,13 @@ from core.utils import send_request_email
 
 
 class CurrentUserAPIView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = EvUserDisplaySerializer(request.user)
-        return Response(serializer.data)
+        if not request.user.is_anonymous:
+            serializer = EvUserDisplaySerializer(request.user)
+            return Response(serializer.data)
+        else:
+            return Response(status=204)
 
 
 class UserProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
