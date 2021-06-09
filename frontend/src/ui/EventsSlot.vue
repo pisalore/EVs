@@ -6,8 +6,11 @@
     <div class="row d-flex justify-content-around col-xl-12">
       <slot></slot>
     </div>
-    <div class="d-flex justify-content-end px-4 mt-2 discover">
-      <a href="www.google.com">Discover more...</a>
+    <div
+      class="d-flex justify-content-end px-4 mt-2 discover"
+      @click="loadNextEvents"
+    >
+      <p>Discover more...</p>
     </div>
   </div>
 </template>
@@ -15,6 +18,7 @@
 <script>
 export default {
   name: "EventsSlot",
+  emits: ["next-participated"],
   props: {
     background: {
       type: String,
@@ -24,6 +28,26 @@ export default {
     title: {
       type: String,
       required: true,
+    },
+    next: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    nextType: {
+      type: String,
+      required: false,
+    },
+  },
+  methods: {
+    async loadNextEvents() {
+      await this.$store.dispatch("events/loadNextEvents", {
+        endpoint: this.next,
+        type: this.nextType,
+      });
+      console.log(
+        this.$store.getters["events/getNextMostParticipatedEventsLink"]
+      );
     },
   },
 };
@@ -48,8 +72,13 @@ export default {
   color: #575757;
 }
 
-a {
+p {
   text-decoration: none;
+}
+
+p:hover {
+  color: #2c98f0;
+  cursor: pointer;
 }
 
 .discover {
@@ -57,6 +86,5 @@ a {
   font-weight: 300;
   font-size: 24px;
   line-height: 28px;
-  color: #575757;
 }
 </style>

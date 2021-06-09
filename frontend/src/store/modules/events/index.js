@@ -7,8 +7,11 @@ export default {
   state() {
     return {
       mostParticipatedEvents: [],
+      nextMostParticipatedEventsLink: null,
       mostInterestedEvents: [],
+      nextMostInterestedEvents: null,
       expiringEvents: [],
+      nextExpiringEvents: null,
     };
   },
   actions,

@@ -45,6 +45,7 @@ export default {
 .card {
   cursor: pointer;
   border-radius: 30px;
+  border: 0.5px solid #1f6dad;
 }
 
 .card-title {

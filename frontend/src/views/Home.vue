@@ -27,7 +27,12 @@
       </div>
     </div>
   </div>
-  <events-slot background="azure" title="Most participated">
+  <events-slot
+    background="azure"
+    title="Most participated"
+    :next="nextMostParticipatedEventsLink"
+    next-type="participated"
+  >
     <event-card
       v-for="ev in mostParticipatedEvents"
       :key="ev.id"
@@ -92,14 +97,14 @@ export default {
     validateSearchForm() {
       this.searchFieldIsNotEmpty = this.searchedCity !== "";
     },
-    searchEventsByCity() {
+    async searchEventsByCity() {
       this.validateSearchForm();
       if (!this.searchFieldIsNotEmpty) {
         return;
       }
       const city = this.searchedCity;
-      this.$store.dispatch("events/searchEventsByCity", city);
-      this.$router.push("/events");
+      await this.$store.dispatch("events/searchEventsByCity", city);
+      await this.$router.push("/events");
     },
     clearErrors() {
       this.searchFieldIsNotEmpty = true;
@@ -117,6 +122,9 @@ export default {
   computed: {
     mostParticipatedEvents() {
       return this.$store.getters["events/getMostParticipatedEvents"];
+    },
+    nextMostParticipatedEventsLink() {
+      return this.$store.getters["events/getNextMostParticipatedEventsLink"];
     },
     mostInterestedEvents() {
       return this.$store.getters["events/getMostInterestedEvents"];

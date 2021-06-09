@@ -9,4 +9,7 @@ export default {
   getMostParticipatedEvents(state) {
     return state.mostParticipatedEvents;
   },
+  getNextMostParticipatedEventsLink(state) {
+    return state.nextMostParticipatedEventsLink;
+  },
 };
