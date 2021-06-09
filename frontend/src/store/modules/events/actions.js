@@ -29,11 +29,13 @@ export default {
     context.commit("setExpiringEvents", response.results);
   },
   async loadNextEvents(context, info) {
-    const response = await apiService(info.endpoint);
-    console.log(" res: ", response)
-    if (info.type === "participated") {
-      context.commit("setNextMostParticipatedEventsLink", response.next);
-      context.commit("updateMostParticipatedEvents", response.results);
+    if (info.endpoint) {
+      const response = await apiService(info.endpoint);
+      console.log(" res: ", response);
+      if (info.type === "participated") {
+        context.commit("setNextMostParticipatedEventsLink", response.next);
+        context.commit("updateMostParticipatedEvents", response.results);
+      }
     }
     // if (type === "interested") {
     //   context.commit("setNextMostParticipatedEvents", response.next);
