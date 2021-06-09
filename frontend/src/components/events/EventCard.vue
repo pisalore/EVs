@@ -21,10 +21,30 @@
         :src="'../static/assets/event-placeholder.png'"
         alt=""
       />
-      <div v-if="website" class="text-center pt-3">
+      <div v-if="website && !isUser" class="text-center pt-3">
         <a :href="website">
-          <button type="button" class="btn simple-card-button">Go to website</button>
+          <button type="button" class="btn simple-card-button">
+            Go to website
+          </button>
         </a>
+      </div>
+      <div class="mt-2" v-else>
+        <div class="row d-flex justify-content-around">
+          <div>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger "
+            >
+              <i class="fa fa-heart" aria-hidden="true"></i>{{ interested }} likes
+            </button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-sm btn-outline-primary">
+              <i class="fa fa-calendar" aria-hidden="true"></i>{{ participants }} going
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -42,7 +62,14 @@ export default {
     "end_date",
     "image",
     "website",
+    "interested",
+    "participants",
   ],
+  data() {
+    return {
+      userInfo: null,
+    };
+  },
   methods: {
     eventDetail() {
       this.$router.push({
@@ -50,7 +77,6 @@ export default {
       });
     },
     computeDate() {
-      console.log()
       const startDate = this.start_date;
       const endDate = this.end_date;
       let dateInfo = startDate;
@@ -60,7 +86,14 @@ export default {
       return dateInfo;
     },
   },
-
+  computed: {
+    isUser() {
+      return !!this.userInfo;
+    },
+  },
+  created() {
+    this.userInfo = this.$store.getters["user/getUserInfo"];
+  },
 };
 </script>
 
@@ -71,6 +104,8 @@ export default {
   border: 0.5px solid #1f6dad;
   max-width: 400px;
   min-height: 300px;
+  background: #ffffff;
+  box-sizing: border-box;
 }
 
 .card-title {
@@ -121,5 +156,8 @@ export default {
 
 .simple-card-button:hover {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+}
+.btn-sm {
+  width: 120px;
 }
 </style>

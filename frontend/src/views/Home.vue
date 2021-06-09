@@ -44,6 +44,8 @@
       :end_date="ev.finish_date"
       :image="ev.event_image"
       :website="ev.event_website"
+      :interested="ev.interested_count"
+      :participants="ev.participants_count"
     >
     </event-card>
   </events-slot>
@@ -64,6 +66,8 @@
       :end_date="ev.finish_date"
       :image="ev.event_image"
       :website="ev.event_website"
+      :interested="ev.interested_count"
+      :participants="ev.participants_count"
     >
     </event-card>
   </events-slot>
@@ -71,18 +75,21 @@
     background="grey"
     title="Expiring"
     :next="nextExpiringEventsLink"
-    next-type="expiring">
+    next-type="expiring"
+  >
     <event-card
       v-for="ev in expiringEvents"
       :key="ev.id"
-      :name="ev.name"
       :id="ev.id"
+      :name="ev.name"
       :organizer="ev.organizer_username"
       :venue="ev.venue"
       :start_date="ev.start_date"
       :end_date="ev.finish_date"
       :image="ev.event_image"
       :website="ev.event_website"
+      :interested="ev.interested_count"
+      :participants="ev.participants_count"
     >
     </event-card>
   </events-slot>
