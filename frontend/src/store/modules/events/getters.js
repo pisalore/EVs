@@ -12,4 +12,10 @@ export default {
   getNextMostParticipatedEventsLink(state) {
     return state.nextMostParticipatedEventsLink;
   },
+  getNextMostInterestedEventsLink(state) {
+    return state.nextMostInterestedEventsLink;
+  },
+  getNextExpiringEventsLink(state) {
+    return state.nextExpiringEventsLink;
+  },
 };

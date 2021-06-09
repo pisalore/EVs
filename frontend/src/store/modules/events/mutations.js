@@ -11,16 +11,25 @@ export default {
   setNextMostParticipatedEventsLink(state, payload) {
     state.nextMostParticipatedEventsLink = payload;
   },
-  setNextMostInterestedEvents(state, payload) {
-    state.nextMostInterestedEvents = payload;
+  setNextMostInterestedEventsLink(state, payload) {
+    state.nextMostInterestedEventsLink = payload;
   },
-  setNextExpiringEvents(state, payload) {
-    state.nextExpiringEvents = payload;
+  setNextExpiringEventsLink(state, payload) {
+    state.nextExpiringEventsLink = payload;
   },
   updateMostParticipatedEvents(state, payload) {
     payload.forEach(function (ev) {
-      console.log(ev);
       state.mostParticipatedEvents.push(ev);
+    });
+  },
+  updateMostInterestedEvents(state, payload) {
+    payload.forEach(function (ev) {
+      state.mostInterestedEvents.push(ev);
+    });
+  },
+  updateExpiringEvents(state, payload) {
+    payload.forEach(function (ev) {
+      state.expiringEvents.push(ev);
     });
   },
 };

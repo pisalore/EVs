@@ -18,14 +18,15 @@ export default {
     let endpoint = `api/most-interested/`;
     const response = await apiService(endpoint);
 
-    context.commit("setNextMostInterestedEvents", response.next);
+    context.commit("setNextMostInterestedEventsLink", response.next);
     context.commit("setMostInterestedEvents", response.results);
+
   },
   async loadExpiringEvents(context) {
     let endpoint = `api/expiring/`;
     const response = await apiService(endpoint);
 
-    context.commit("setNextExpiringEvents", response.next);
+    context.commit("setNextExpiringEventsLink", response.next);
     context.commit("setExpiringEvents", response.results);
   },
   async loadNextEvents(context, info) {
@@ -35,15 +36,13 @@ export default {
       if (info.type === "participated") {
         context.commit("setNextMostParticipatedEventsLink", response.next);
         context.commit("updateMostParticipatedEvents", response.results);
+      } else if (info.type === "interested") {
+        context.commit("setNextMostInterestedEventsLink", response.next);
+        context.commit("updateMostInterestedEvents", response.results);
+      } else if (info.type === "expiring") {
+        context.commit("setNextExpiringEventsLink", response.next);
+        context.commit("updateExpiringEvents", response.results);
       }
     }
-    // if (type === "interested") {
-    //   context.commit("setNextMostParticipatedEvents", response.next);
-    //   context.commit("setMostParticipatedEvents", response.results);
-    // }
-    // if (type === "expiring") {
-    //   context.commit("setNextMostParticipatedEvents", response.next);
-    //   context.commit("setMostParticipatedEvents", response.results);
-    // }
   },
 };

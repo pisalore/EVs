@@ -47,7 +47,12 @@
     >
     </event-card>
   </events-slot>
-  <events-slot background="grey" title="Most interested">
+  <events-slot
+    background="grey"
+    title="Most interested"
+    :next="nextMostInterestedEventsLink"
+    next-type="interested"
+  >
     <event-card
       v-for="ev in mostInterestedEvents"
       :key="ev.id"
@@ -62,7 +67,11 @@
     >
     </event-card>
   </events-slot>
-  <events-slot background="grey" title="Expiring">
+  <events-slot
+    background="grey"
+    title="Expiring"
+    :next="nextExpiringEventsLink"
+    next-type="expiring">
     <event-card
       v-for="ev in expiringEvents"
       :key="ev.id"
@@ -129,8 +138,14 @@ export default {
     mostInterestedEvents() {
       return this.$store.getters["events/getMostInterestedEvents"];
     },
+    nextMostInterestedEventsLink() {
+      return this.$store.getters["events/getNextMostInterestedEventsLink"];
+    },
     expiringEvents() {
       return this.$store.getters["events/getExpiringEvents"];
+    },
+    nextExpiringEventsLink() {
+      return this.$store.getters["events/getNextExpiringEventsLink"];
     },
   },
 

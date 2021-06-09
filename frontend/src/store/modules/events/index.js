@@ -9,9 +9,9 @@ export default {
       mostParticipatedEvents: [],
       nextMostParticipatedEventsLink: null,
       mostInterestedEvents: [],
-      nextMostInterestedEvents: null,
+      nextMostInterestedEventsLink: null,
       expiringEvents: [],
-      nextExpiringEvents: null,
+      nextExpiringEventsLink: null,
     };
   },
   actions,
