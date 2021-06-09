@@ -29,5 +29,6 @@ export default {
     if (!response.results) {
       throw new Error("Failed to fetch events.");
     }
-    context.commit("setExpiringEvents", response.results);},
+    context.commit("setExpiringEvents", response.results);
+  },
 };

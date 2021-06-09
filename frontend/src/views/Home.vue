@@ -91,7 +91,6 @@ export default {
 
   created() {
     this.loadEvents();
-    // console.log(this.mostParticipatedEvents)
   },
 };
 </script>
