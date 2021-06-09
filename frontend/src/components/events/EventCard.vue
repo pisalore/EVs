@@ -6,10 +6,10 @@
       <h5 class="card-venue">{{ venue }}</h5>
       <h5 class="card-date">{{ start_date }} - {{ end_date }}</h5>
       <img
-          v-if="image"
-          class="card-img"
-          :src="image.document"
-          alt="event-image"
+        v-if="image"
+        class="card-img"
+        :src="image.document"
+        alt="event-image"
       />
       <div v-if="website" class="text-center pt-3">
         <a class="btn btn-primary" :href="website" role="button">Link</a>
@@ -42,9 +42,9 @@ export default {
 </script>
 
 <style scoped>
-
 .card {
   cursor: pointer;
+  border-radius: 30px;
 }
 
 .card-title {
@@ -82,7 +82,7 @@ export default {
   border-radius: 20px;
   border: none;
   width: 100%;
-  height: 150px;
+  height: 7vw;
   object-fit: cover;
 }
 </style>

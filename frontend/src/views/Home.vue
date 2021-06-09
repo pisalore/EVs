@@ -27,7 +27,7 @@
       </div>
     </div>
   </div>
-  <events-slot>
+  <events-slot background="azure" title="Most participated">
     <event-card
       v-for="ev in mostParticipatedEvents"
       :key="ev.id"
@@ -36,7 +36,37 @@
       :organizer="ev.organizer_username"
       :venue="ev.venue"
       :start_date="ev.start_date"
-      :end_date="ev.end_date"
+      :end_date="ev.finish_date"
+      :image="ev.event_image"
+      :website="ev.event_website"
+    >
+    </event-card>
+  </events-slot>
+  <events-slot background="grey" title="Most interested">
+    <event-card
+      v-for="ev in mostInterestedEvents"
+      :key="ev.id"
+      :name="ev.name"
+      :id="ev.id"
+      :organizer="ev.organizer_username"
+      :venue="ev.venue"
+      :start_date="ev.start_date"
+      :end_date="ev.finish_date"
+      :image="ev.event_image"
+      :website="ev.event_website"
+    >
+    </event-card>
+  </events-slot>
+  <events-slot background="grey" title="Expiring">
+    <event-card
+      v-for="ev in expiringEvents"
+      :key="ev.id"
+      :name="ev.name"
+      :id="ev.id"
+      :organizer="ev.organizer_username"
+      :venue="ev.venue"
+      :start_date="ev.start_date"
+      :end_date="ev.finish_date"
       :image="ev.event_image"
       :website="ev.event_website"
     >
