@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 
 import About from "../views/About";
 import Events from "../views/Events";
+import EventDetail from "../views/EventDetail";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     name: "Events",
     component: Events,
   },
+  {
+    path: "/events/:id",
+    component: EventDetail,
+    propd: true,
+  }
 ];
 
 const router = createRouter({

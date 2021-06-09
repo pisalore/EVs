@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 text-center">
+  <div class="mt-5">
     <router-view />
   </div>
 </template>
@@ -20,11 +20,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-}
-</style>

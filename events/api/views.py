@@ -45,23 +45,32 @@ class EventViewSet(viewsets.ModelViewSet):
 class ExpiringEventsListAPIView(generics.ListAPIView):
     pagination_class = EventSetPagination
     permission_classes = [IsEventOrganizerOrReadOnly]
-    queryset = Event.objects.order_by('start_date')
     serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.filter(status='A').order_by('start_date')
 
 
 class MostParticipatedEventsListAPIView(generics.ListAPIView):
     pagination_class = EventSetPagination
     permission_classes = [IsEventOrganizerOrReadOnly]
-    queryset = Event.objects.all().annotate(participants_count=Count('participants')).order_by('-participants_count')
     serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.all().annotate(participants_count=Count('participants'))\
+            .filter(status='A')\
+            .order_by('-participants_count')
 
 
 class MostInterestedEventsListAPIView(generics.ListAPIView):
     pagination_class = EventSetPagination
     permission_classes = [IsEventOrganizerOrReadOnly]
-    queryset = Event.objects.all().annotate(interested_count=Count('interested')).order_by('-interested_count')
     serializer_class = EventSerializer
 
+    def get_queryset(self):
+        return Event.objects.all().annotate(interested_count=Count('interested'))\
+            .filter(status='A')\
+            .order_by('-interested_count')
 
 class EventInterestAPIView(APIView):
     serializer_class = EventSerializerAction

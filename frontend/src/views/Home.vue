@@ -1,49 +1,56 @@
 <template>
   <div class="container">
-    <div>
-      <p class="home-claim p-2 mb-5">
-        Discover all the best events around you.
-      </p>
-    </div>
-    <div>
-      <form @submit.prevent="searchEventsByCity">
-        <div class="form-group mb-3">
-          <input
-            v-model.trim="searchedCity"
-            v-on:focus="clearErrors()"
-            type="text"
-            class="form-control form-rounded mb-4"
-            :class="{ invalid: !searchFieldIsNotEmpty }"
-            placeholder="Where are you going?"
-            style="font-size: 40px"
-          />
-        </div>
-        <p v-if="!searchFieldIsNotEmpty" style="color: #e32822">
-          Please, insert a city name.
+    <div class="text-center">
+      <div>
+        <p class="home-claim p-2 mb-5">
+          Discover all the best events around you.
         </p>
-        <button type="submit" class="search-btn">Go!</button>
-      </form>
-    </div>
-    <div class="most-partecipated row">
-      <event-card
-        v-for="ev in mostParticipatedEvents"
-        :key="ev.id"
-        :name="ev.name"
-        :organizer="ev.organizer_username"
-        :venue="ev.venue"
-        :start_date="ev.start_date"
-        :end_date="ev.end_date"
-      >
-      </event-card>
+      </div>
+      <div>
+        <form @submit.prevent="searchEventsByCity">
+          <div class="form-group mb-3">
+            <input
+              v-model.trim="searchedCity"
+              v-on:focus="clearErrors()"
+              type="text"
+              class="form-control form-rounded mb-4"
+              :class="{ invalid: !searchFieldIsNotEmpty }"
+              placeholder="Where are you going?"
+              style="font-size: 40px"
+            />
+          </div>
+          <p v-if="!searchFieldIsNotEmpty" style="color: #e32822">
+            Please, insert a city name.
+          </p>
+          <button type="submit" class="search-btn">Go!</button>
+        </form>
+      </div>
     </div>
   </div>
+  <events-slot>
+    <event-card
+      v-for="ev in mostParticipatedEvents"
+      :key="ev.id"
+      :name="ev.name"
+      :id="ev.id"
+      :organizer="ev.organizer_username"
+      :venue="ev.venue"
+      :start_date="ev.start_date"
+      :end_date="ev.end_date"
+      :image="ev.event_image"
+      :website="ev.event_website"
+    >
+    </event-card>
+  </events-slot>
 </template>
 
 <script>
 import EventCard from "../components/events/EventCard";
+import EventsSlot from "../ui/EventsSlot";
+
 export default {
   name: "Home",
-  components: { EventCard },
+  components: { EventsSlot, EventCard },
   data() {
     return {
       searchedCity: "",
