@@ -1,5 +1,5 @@
 <template>
-  <div class="card col-xl-2" style="width: 18rem" @click="eventDetail">
+  <div class="card col-xl-3 mx-3" style="width: 18rem" @click="eventDetail">
     <div class="card-body">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
@@ -46,6 +46,7 @@ export default {
   cursor: pointer;
   border-radius: 30px;
   border: 0.5px solid #1f6dad;
+  max-width: 400px;
 }
 
 .card-title {

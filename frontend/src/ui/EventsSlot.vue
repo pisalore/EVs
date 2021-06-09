@@ -3,8 +3,10 @@
     <div class="p-3">
       <h2 class="slot-title">{{ title }}</h2>
     </div>
-    <div class="row d-flex justify-content-around col-xl-12">
-      <slot></slot>
+    <div class="col">
+      <div class="d-flex justify-content-around row">
+        <slot></slot>
+      </div>
     </div>
     <div
       class="d-flex justify-content-end px-4 mt-2 discover"
@@ -46,7 +48,7 @@ export default {
         type: this.nextType,
       });
       console.log(
-        this.$store.getters["events/getNextMostParticipatedEventsLink"]
+          this.$store.getters["events/getNextMostParticipatedEventsLink"]
       );
     },
   },
