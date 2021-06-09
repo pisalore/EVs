@@ -1,18 +1,30 @@
 <template>
-  <div class="card col-xl-3 mx-3" style="width: 18rem" @click="eventDetail">
+  <div
+    class="card col-xl-3 mx-3 my-2"
+    style="width: 18rem"
+    @click="eventDetail"
+  >
     <div class="card-body">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">{{ venue }}</h5>
-      <h5 class="card-date">{{ start_date }} - {{ end_date }}</h5>
+      <h5 class="card-date">{{ computeDate() }}</h5>
       <img
         v-if="image"
         class="card-img"
         :src="image.document"
         alt="event-image"
       />
+      <img
+        v-else
+        class="card-img"
+        :src="'../static/assets/event-placeholder.png'"
+        alt=""
+      />
       <div v-if="website" class="text-center pt-3">
-        <a class="btn btn-primary" :href="website" role="button">Link</a>
+        <a :href="website">
+          <button type="button" class="btn simple-card-button">Go to website</button>
+        </a>
       </div>
     </div>
   </div>
@@ -37,7 +49,18 @@ export default {
         path: `/events/${this.id}`,
       });
     },
+    computeDate() {
+      console.log()
+      const startDate = this.start_date;
+      const endDate = this.end_date;
+      let dateInfo = startDate;
+      if (endDate) {
+        dateInfo += ` to ${endDate}`;
+      }
+      return dateInfo;
+    },
   },
+
 };
 </script>
 
@@ -47,6 +70,7 @@ export default {
   border-radius: 30px;
   border: 0.5px solid #1f6dad;
   max-width: 400px;
+  min-height: 300px;
 }
 
 .card-title {
@@ -86,5 +110,16 @@ export default {
   width: 100%;
   height: 7vw;
   object-fit: cover;
+}
+
+.simple-card-button {
+  background: #ffffff;
+  border: 1px solid #f1f1f1;
+  box-shadow: 0 0.5px 1px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+}
+
+.simple-card-button:hover {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 }
 </style>

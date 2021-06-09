@@ -4,7 +4,7 @@
       <h2 class="slot-title">{{ title }}</h2>
     </div>
     <div class="col">
-      <div class="d-flex justify-content-around row">
+      <div class="d-flex justify-content-center row">
         <slot></slot>
       </div>
     </div>
