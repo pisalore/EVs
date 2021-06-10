@@ -7,7 +7,7 @@
     <div class="card-body">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
-      <h5 class="card-venue">{{ venue }}</h5>
+      <h5 class="card-venue">@{{ venue }}</h5>
       <h5 class="card-date">{{ computeDate() }}</h5>
       <img
         v-if="image"
@@ -18,7 +18,7 @@
       <img
         v-else
         class="card-img"
-        :src="'../static/assets/event-placeholder.png'"
+        src="/static/assets/event-placeholder.png"
         alt=""
       />
       <div v-if="website && !isUser" class="text-center pt-3">
@@ -29,22 +29,20 @@
         </a>
       </div>
       <div class="mt-2" v-else>
-        <div class="row d-flex justify-content-around">
-          <div>
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-danger "
-            >
-              <i class="fa fa-heart" aria-hidden="true"></i>{{ interested }} likes
+        <div class="col-12 d-flex justify-content-around">
+          <div class="col-6">
+            <button type="button" class="btn btn-sm btn-outline-danger">
+              <i class="fa fa-heart" aria-hidden="true"></i
+              >{{ interested }} likes
             </button>
           </div>
-          <div>
+          <div class="col-6">
             <button type="button" class="btn btn-sm btn-outline-primary">
-              <i class="fa fa-calendar" aria-hidden="true"></i>{{ participants }} going
+              <i class="fa fa-calendar" aria-hidden="true"></i
+              >{{ participants }} going
             </button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -60,6 +58,7 @@ export default {
     "venue",
     "start_date",
     "end_date",
+    "start_hour",
     "image",
     "website",
     "interested",
@@ -77,13 +76,25 @@ export default {
       });
     },
     computeDate() {
-      const startDate = this.start_date;
-      const endDate = this.end_date;
-      let dateInfo = startDate;
-      if (endDate) {
-        dateInfo += ` to ${endDate}`;
+      const options = {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
       }
-      return dateInfo;
+      let startDate = new Date(this.start_date).toLocaleDateString(
+        "en",
+        options
+      );
+      let endDate = this.end_date;
+      let startHour = this.start_hour;
+      if (endDate) {
+        endDate = new Date(this.end_date).toLocaleDateString("en", options);
+        startDate += ` to ${endDate}`;
+      }
+      if (startHour) {
+        startDate += ` at ${startHour}`;
+      }
+      return startDate;
     },
   },
   computed: {
@@ -101,11 +112,14 @@ export default {
 .card {
   cursor: pointer;
   border-radius: 30px;
-  border: 0.5px solid #1f6dad;
   max-width: 400px;
   min-height: 300px;
   background: #ffffff;
   box-sizing: border-box;
+}
+
+.card:hover {
+  border: 0.5px solid #1f6dad;
 }
 
 .card-title {
