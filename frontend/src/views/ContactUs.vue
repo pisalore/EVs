@@ -1,4 +1,10 @@
 <template>
+  <snackbar
+    v-if="showSnackbar"
+    :color="snackBarColor"
+    :message="snackbarMessage"
+    @close="snackbarFalse"
+  ></snackbar>
   <div v-if="username">
     <div class="p-5">
       <h2 class="title">Contact Us</h2>
@@ -20,7 +26,7 @@
               <label for="exampleFormControlTextarea1">Example textarea</label>
               <textarea
                 class="form-control"
-                v-model="message"
+                v-model="snackbarMessage"
                 id="exampleFormControlTextarea1"
                 placeholder="Describe your doubts or problems here..."
                 rows="5"
@@ -37,24 +43,41 @@
 </template>
 
 <script>
+import { apiService } from "../common/api.service";
+import Snackbar from "../ui/Snackbar";
+
 export default {
   name: "ContactUs",
+  components: { Snackbar },
   data() {
     return {
-      message: "",
+      snackbarMessage: "ciao",
+      snackBarColor: "green",
+      showSnackbar: false,
     };
   },
   methods: {
     async loadUserInfo() {
       await this.$store.dispatch("user/loadUserInfo");
     },
-    sendHelpRequest() {
-      console.log(this.message);
+    async sendHelpRequest() {
+      let content = {
+        user_email: this.userEmail,
+        username: this.username,
+        user_message: this.snackbarMessage,
+      };
+      let endpoint = "api/contactus/";
+      const response = await apiService(endpoint, "POST", content);
+      console.log(response);
+      this.showSnackbar = true;
     },
+    snackbarFalse() {
+      console.log('handling the event')
+      this.showSnackbar = false;
+    }
   },
   computed: {
     username() {
-      console.log(this.$store.getters["user/getUserInfo"]);
       return this.$store.getters["user/getUserInfo"].username;
     },
     firstName() {
@@ -70,6 +93,9 @@ export default {
   created() {
     this.loadUserInfo();
   },
+  // mounted() {
+  //   this.showSnackbar = true;
+  // },
 };
 </script>
 
