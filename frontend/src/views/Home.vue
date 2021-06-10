@@ -27,84 +27,133 @@
       </div>
     </div>
   </div>
-  <events-slot
-    background="azure"
-    title="Most participated"
-    :next="nextMostParticipatedEventsLink"
-    next-type="participated"
-  >
-    <event-card
-      v-for="ev in mostParticipatedEvents"
-      :key="ev.id"
-      :name="ev.name"
-      :id="ev.id"
-      :organizer="ev.organizer_username"
-      :venue="ev.venue"
-      :start_date="ev.start_date"
-      :end_date="ev.finish_date"
-      :start_hour="ev.start_hour"
-      :image="ev.event_image"
-      :website="ev.event_website"
-      :interested="ev.interested_count"
-      :participants="ev.participants_count"
+  <div v-if="!isMobile">
+    <events-slot
+      background="azure"
+      title="Most participated"
+      :next="nextMostParticipatedEventsLink"
+      next-type="participated"
     >
-    </event-card>
-  </events-slot>
-  <events-slot
-    background="grey"
-    title="Most interested"
-    :next="nextMostInterestedEventsLink"
-    next-type="interested"
-  >
-    <event-card
-      v-for="ev in mostInterestedEvents"
-      :key="ev.id"
-      :name="ev.name"
-      :id="ev.id"
-      :organizer="ev.organizer_username"
-      :venue="ev.venue"
-      :start_date="ev.start_date"
-      :end_date="ev.finish_date"
-      :start_hour="ev.start_hour"
-      :image="ev.event_image"
-      :website="ev.event_website"
-      :interested="ev.interested_count"
-      :participants="ev.participants_count"
+      <event-card
+        v-for="ev in mostParticipatedEvents"
+        :key="ev.id"
+        :name="ev.name"
+        :id="ev.id"
+        :organizer="ev.organizer_username"
+        :venue="ev.venue"
+        :start_date="ev.start_date"
+        :end_date="ev.finish_date"
+        :start_hour="ev.start_hour"
+        :image="ev.event_image"
+        :website="ev.event_website"
+        :interested="ev.interested_count"
+        :participants="ev.participants_count"
+      >
+      </event-card>
+    </events-slot>
+    <events-slot
+      background="grey"
+      title="Most interested"
+      :next="nextMostInterestedEventsLink"
+      next-type="interested"
     >
-    </event-card>
-  </events-slot>
-  <events-slot
-    background="grey"
-    title="Expiring"
-    :next="nextExpiringEventsLink"
-    next-type="expiring"
-  >
-    <event-card
-      v-for="ev in expiringEvents"
-      :key="ev.id"
-      :id="ev.id"
-      :name="ev.name"
-      :organizer="ev.organizer_username"
-      :venue="ev.venue"
-      :start_date="ev.start_date"
-      :end_date="ev.finish_date"
-      :start_hour="ev.start_hour"
-      :image="ev.event_image"
-      :website="ev.event_website"
-      :interested="ev.interested_count"
-      :participants="ev.participants_count"
+      <event-card
+        v-for="ev in mostInterestedEvents"
+        :key="ev.id"
+        :name="ev.name"
+        :id="ev.id"
+        :organizer="ev.organizer_username"
+        :venue="ev.venue"
+        :start_date="ev.start_date"
+        :end_date="ev.finish_date"
+        :start_hour="ev.start_hour"
+        :image="ev.event_image"
+        :website="ev.event_website"
+        :interested="ev.interested_count"
+        :participants="ev.participants_count"
+      >
+      </event-card>
+    </events-slot>
+    <events-slot
+      background="grey"
+      title="Expiring"
+      :next="nextExpiringEventsLink"
+      next-type="expiring"
     >
-    </event-card>
-  </events-slot>
+      <event-card
+        v-for="ev in expiringEvents"
+        :key="ev.id"
+        :id="ev.id"
+        :name="ev.name"
+        :organizer="ev.organizer_username"
+        :venue="ev.venue"
+        :start_date="ev.start_date"
+        :end_date="ev.finish_date"
+        :start_hour="ev.start_hour"
+        :image="ev.event_image"
+        :website="ev.event_website"
+        :interested="ev.interested_count"
+        :participants="ev.participants_count"
+      >
+      </event-card>
+    </events-slot>
+  </div>
+  <div v-else>
+    <events-slot-mobile
+      background="azure"
+      title="Most participated"
+      :next="nextMostParticipatedEventsLink"
+      next-type="participated"
+    >
+      <div
+        class="carousel-item"
+        v-for="(ev, idx) in mostParticipatedEvents"
+        :key="ev.id"
+        :class="{ active: idx === 0 }"
+      >
+        <event-card
+          :name="ev.name"
+          :id="ev.id"
+          :organizer="ev.organizer_username"
+          :venue="ev.venue"
+          :start_date="ev.start_date"
+          :end_date="ev.finish_date"
+          :start_hour="ev.start_hour"
+          :image="ev.event_image"
+          :website="ev.event_website"
+          :interested="ev.interested_count"
+          :participants="ev.participants_count"
+        >
+        </event-card>
+      </div>
+    </events-slot-mobile>
+    <events-slot-mobile
+      background="grey"
+      title="Most interested"
+      :next="nextMostInterestedEventsLink"
+      next-type="interested"
+    >
+      most interested mobile
+    </events-slot-mobile>
+    <events-slot-mobile
+      background="grey"
+      title="Expiring"
+      :next="nextExpiringEventsLink"
+      next-type="expiring"
+    >
+      expiring mobile
+    </events-slot-mobile>
+  </div>
 </template>
 
 <script>
 import EventCard from "../components/events/EventCard";
 import EventsSlot from "../ui/EventsSlot";
+import EventsSlotMobile from "../ui/EventsSlotMobile";
 
 export default {
   name: "Home",
-  components: { EventsSlot, EventCard },
+  components: { EventsSlot, EventsSlotMobile, EventCard },
   data() {
     return {
       searchedCity: "",
@@ -156,6 +205,11 @@ export default {
     },
     nextExpiringEventsLink() {
       return this.$store.getters["events/getNextExpiringEventsLink"];
+    },
+    isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
     },
   },
 

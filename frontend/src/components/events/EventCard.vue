@@ -29,15 +29,15 @@
         </a>
       </div>
       <div class="mt-2" v-else>
-        <div class="col-12 d-flex justify-content-around">
-          <div class="col-6">
-            <button type="button" class="btn btn-sm btn-outline-danger">
+        <div class="row d-flex justify-content-around">
+          <div>
+            <button type="button" class="btn btn-sm btn-outline-danger px-2">
               <i class="fa fa-heart" aria-hidden="true"></i
               >{{ interested }} likes
             </button>
           </div>
-          <div class="col-6">
-            <button type="button" class="btn btn-sm btn-outline-primary">
+          <div>
+            <button type="button" class="btn btn-sm btn-outline-primary px-2">
               <i class="fa fa-calendar" aria-hidden="true"></i
               >{{ participants }} going
             </button>
