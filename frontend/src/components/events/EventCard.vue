@@ -10,13 +10,13 @@
       <h5 class="card-venue">@{{ venue }}</h5>
       <h5 class="card-date">{{ computeDate() }}</h5>
       <img
-        v-if="image"
+        v-if="image && !is_mobile"
         class="card-img"
         :src="image.document"
         alt="event-image"
       />
       <img
-        v-else
+        v-else-if="!image && !is_mobile"
         class="card-img"
         src="/static/assets/event-placeholder.png"
         alt=""
@@ -29,7 +29,7 @@
         </a>
       </div>
       <div class="mt-2" v-else>
-        <div class="row d-flex justify-content-around">
+        <div class="row d-flex justify-content-around mt-5">
           <div>
             <button type="button" class="btn btn-sm btn-outline-danger px-2">
               <i class="fa fa-heart" aria-hidden="true"></i
@@ -60,6 +60,7 @@ export default {
     "end_date",
     "start_hour",
     "image",
+    "is_mobile",
     "website",
     "interested",
     "participants",

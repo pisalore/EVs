@@ -119,7 +119,7 @@
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
           :start_hour="ev.start_hour"
-          :image="ev.event_image"
+          :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
@@ -128,20 +128,60 @@
       </div>
     </events-slot-mobile>
     <events-slot-mobile
-      background="grey"
+      background="gray"
       title="Most interested"
       :next="nextMostInterestedEventsLink"
       next-type="interested"
     >
-      most interested mobile
+      <div
+        class="carousel-item"
+        v-for="(ev, idx) in mostInterestedEvents"
+        :key="ev.id"
+        :class="{ active: idx === 0 }"
+      >
+        <event-card
+          :name="ev.name"
+          :id="ev.id"
+          :organizer="ev.organizer_username"
+          :venue="ev.venue"
+          :start_date="ev.start_date"
+          :end_date="ev.finish_date"
+          :start_hour="ev.start_hour"
+          :is_mobile="true"
+          :website="ev.event_website"
+          :interested="ev.interested_count"
+          :participants="ev.participants_count"
+        >
+        </event-card>
+      </div>
     </events-slot-mobile>
     <events-slot-mobile
-      background="grey"
+      background="gray"
       title="Expiring"
       :next="nextExpiringEventsLink"
       next-type="expiring"
     >
-      expiring mobile
+      <div
+        class="carousel-item"
+        v-for="(ev, idx) in expiringEvents"
+        :key="ev.id"
+        :class="{ active: idx === 0 }"
+      >
+        <event-card
+          :name="ev.name"
+          :id="ev.id"
+          :organizer="ev.organizer_username"
+          :venue="ev.venue"
+          :start_date="ev.start_date"
+          :end_date="ev.finish_date"
+          :start_hour="ev.start_hour"
+          :is_mobile="true"
+          :website="ev.event_website"
+          :interested="ev.interested_count"
+          :participants="ev.participants_count"
+        >
+        </event-card>
+      </div>
     </events-slot-mobile>
   </div>
 </template>

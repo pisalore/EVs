@@ -1,14 +1,17 @@
 <template>
-  <div class="mt-5 py-4" :class="background">
+  <div class="mt-5 py-4 text-center" :class="background">
     <div class="p-3">
       <h2 class="slot-title">{{ title }}</h2>
     </div>
     <div class="col">
       <div class="d-flex justify-content-center row">
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div
+          id="carouselExampleControls"
+          class="carousel slide"
+          data-interval="false"
+        >
           <div class="carousel-inner">
-
-              <slot></slot>
+            <slot></slot>
           </div>
           <a
             class="carousel-control-prev"
@@ -31,9 +34,7 @@
         </div>
       </div>
     </div>
-    <div
-        class="d-flex justify-content-end px-4 mt-2 discover"
-    >
+    <div class="d-flex justify-content-end px-4 mt-2 discover">
       <p>Discover more...</p>
     </div>
   </div>
@@ -62,8 +63,7 @@ export default {
       required: false,
     },
   },
-
-}
+};
 </script>
 
 <style scoped>
