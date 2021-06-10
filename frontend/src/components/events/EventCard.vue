@@ -2,9 +2,8 @@
   <div
     class="card col-xl-3 mx-3 my-2"
     style="width: 18rem"
-    @click="eventDetail"
   >
-    <div class="card-body">
+    <div class="card-body" @click="eventDetail">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">@{{ venue }}</h5>
@@ -31,16 +30,16 @@
       <div class="mt-2" v-else>
         <div class="row d-flex justify-content-around mt-5">
           <div>
-            <button type="button" class="btn btn-sm btn-outline-danger px-2">
+            <span class="px-2" style="color: #e32822">
               <i class="fa fa-heart" aria-hidden="true"></i
               >{{ interested }} likes
-            </button>
+            </span>
           </div>
           <div>
-            <button type="button" class="btn btn-sm btn-outline-primary px-2">
+            <span class="px-2" style="color: #1f6dad">
               <i class="fa fa-calendar" aria-hidden="true"></i
               >{{ participants }} going
-            </button>
+            </span>
           </div>
         </div>
       </div>
