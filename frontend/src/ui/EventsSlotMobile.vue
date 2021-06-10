@@ -5,17 +5,13 @@
     </div>
     <div class="col">
       <div class="d-flex justify-content-center row">
-        <div
-          id="carouselExampleControls"
-          class="carousel slide"
-          data-interval="false"
-        >
+        <div :id="sliderId" class="carousel slide" data-interval="false">
           <div class="carousel-inner">
             <slot></slot>
           </div>
           <a
             class="carousel-control-prev"
-            href="#carouselExampleControls"
+            :href="getSliderId"
             role="button"
             data-slide="prev"
           >
@@ -24,7 +20,7 @@
           </a>
           <a
             class="carousel-control-next"
-            href="#carouselExampleControls"
+            :href="getSliderId"
             role="button"
             data-slide="next"
           >
@@ -34,8 +30,10 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-end px-4 mt-2 discover">
-      <p>Discover more...</p>
+    <div>
+      <button type="button" class="btn btn-sm btn-success px-4 mt-2">
+        Go to events!
+      </button>
     </div>
   </div>
 </template>
@@ -61,6 +59,14 @@ export default {
     nextType: {
       type: String,
       required: false,
+    },
+    sliderId: {
+      required: true,
+    },
+  },
+  computed: {
+    getSliderId() {
+      return "#" + this.sliderId;
     },
   },
 };

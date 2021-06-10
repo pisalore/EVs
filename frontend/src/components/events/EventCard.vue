@@ -81,7 +81,7 @@ export default {
         month: "long",
         day: "numeric",
         year: "numeric",
-      }
+      };
       let startDate = new Date(this.start_date).toLocaleDateString(
         "en",
         options

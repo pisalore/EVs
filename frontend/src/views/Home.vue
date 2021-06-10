@@ -102,6 +102,7 @@
     <events-slot-mobile
       background="azure"
       title="Most participated"
+      sliderId="slider1"
       :next="nextMostParticipatedEventsLink"
       next-type="participated"
     >
@@ -128,7 +129,8 @@
       </div>
     </events-slot-mobile>
     <events-slot-mobile
-      background="gray"
+      background="grey"
+      sliderId="slider2"
       title="Most interested"
       :next="nextMostInterestedEventsLink"
       next-type="interested"
@@ -156,7 +158,8 @@
       </div>
     </events-slot-mobile>
     <events-slot-mobile
-      background="gray"
+      background="grey"
+      sliderId="slider3"
       title="Expiring"
       :next="nextExpiringEventsLink"
       next-type="expiring"
