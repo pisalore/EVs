@@ -1,5 +1,5 @@
 <template>
-  <div class="card col-xl-3 mx-3" style="width: 18rem">
+  <div class="card col-xl-3 mx-3 my-2" style="width: 18rem">
     <div class="card-body" @click="eventDetail">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>

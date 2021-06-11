@@ -6,6 +6,8 @@ export default {
   namespaced: true,
   state() {
     return {
+      eventsPageEvs: [],
+      nextEventsPageEvsLink: null,
       mostParticipatedEvents: [],
       nextMostParticipatedEventsLink: null,
       mostInterestedEvents: [],

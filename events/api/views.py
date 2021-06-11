@@ -57,8 +57,8 @@ class MostParticipatedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.all().annotate(participants_count=Count('participants'))\
-            .filter(status='A')\
+        return Event.objects.all().annotate(participants_count=Count('participants')) \
+            .filter(status='A') \
             .order_by('-participants_count')
 
 
@@ -68,9 +68,10 @@ class MostInterestedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.all().annotate(interested_count=Count('interested'))\
-            .filter(status='A')\
+        return Event.objects.all().annotate(interested_count=Count('interested')) \
+            .filter(status='A') \
             .order_by('-interested_count')
+
 
 class EventInterestAPIView(APIView):
     serializer_class = EventSerializerAction

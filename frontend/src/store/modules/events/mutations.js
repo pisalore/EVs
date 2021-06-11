@@ -32,4 +32,15 @@ export default {
       state.expiringEvents.push(ev);
     });
   },
+  setEventsPageEvents(state, payload) {
+    state.eventsPageEvs = payload;
+  },
+  updateEventsPageEvents(state, payload) {
+    payload.forEach(function (ev) {
+      state.eventsPageEvs.push(ev);
+    });
+  },
+  setNextEventsPageEvsLink(state, payload) {
+    state.nextEventsPageEvsLink = payload;
+  },
 };

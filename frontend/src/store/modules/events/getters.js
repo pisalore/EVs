@@ -18,4 +18,10 @@ export default {
   getNextExpiringEventsLink(state) {
     return state.nextExpiringEventsLink;
   },
+  getShowedEventsInEventsPage(state) {
+    return state.eventsPageEvs;
+  },
+  getNextShowedEventsInEventsLink(state) {
+    return state.nextEventsPageEvsLink;
+  },
 };
