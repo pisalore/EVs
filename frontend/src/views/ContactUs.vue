@@ -1,6 +1,7 @@
 <template>
   <snackbar
     v-if="showSnackbar"
+    :is_error="isError"
     :color="snackBarColor"
     :message="snackbarMessage"
     @close="snackbarFalse"
@@ -26,7 +27,7 @@
               <label for="exampleFormControlTextarea1">Example textarea</label>
               <textarea
                 class="form-control"
-                v-model="snackbarMessage"
+                v-model="userMessage"
                 id="exampleFormControlTextarea1"
                 placeholder="Describe your doubts or problems here..."
                 rows="5"
@@ -51,8 +52,10 @@ export default {
   components: { Snackbar },
   data() {
     return {
-      snackbarMessage: "ciao",
-      snackBarColor: "green",
+      isError: false,
+      snackbarMessage: "",
+      userMessage: "",
+      snackBarColor: "",
       showSnackbar: false,
     };
   },
@@ -64,15 +67,28 @@ export default {
       let content = {
         user_email: this.userEmail,
         username: this.username,
-        user_message: this.snackbarMessage,
+        user_message: this.userMessage,
       };
-      let endpoint = "api/contactus/";
-      const response = await apiService(endpoint, "POST", content);
-      console.log(response);
-      this.showSnackbar = true;
+      try {
+        let endpoint = "api/contactus/";
+        const response = await apiService(endpoint, "POST", content);
+        console.log(response);
+        this.snackbarMessage = "Message sent correctly.";
+        this.snackBarColor = "#3DB834";
+        this.showSnackbar = true;
+      } catch (error) {
+        console.log(error);
+        this.isError = true;
+        this.snackbarMessage = error;
+        this.snackBarColor = "#E32822";
+        this.showSnackbar = true;
+      }
     },
     snackbarFalse() {
       this.showSnackbar = false;
+      this.isError = false;
+      this.snackbarMessage = "";
+      this.snackBarColor = "";
     },
   },
   computed: {

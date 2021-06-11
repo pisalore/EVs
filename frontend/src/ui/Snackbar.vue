@@ -1,23 +1,19 @@
 <template>
   <div class="d-flex justify-content-center">
     <div id="snackbar" :style="{ backgroundColor: color }">
-      <div class="d-flex">
-        <div class="justify-content-start">
-          <i class="fa fa-check" aria-hidden="true"></i>
-        </div>
-        <div class="justify-content-center">
-          {{ message }}
-        </div>
+      <div class="text-center mt-2">
+        <i v-if="!is_error" class="fa fa-check fa-5x" aria-hidden="true"></i>
+        <i v-else class="fa fa-times fa-5x" aria-hidden="true"></i>
+        <span>{{ message }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   emits: ["close"],
-  props: ["color", "message"],
+  props: ["is_error", "color", "message"],
   name: "Snackbar",
   mounted() {
     var that = this;

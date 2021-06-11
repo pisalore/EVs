@@ -1,8 +1,13 @@
 import { CSRF_TOKEN } from "./csrf_token.js";
 
 async function getJSON(response) {
-  if (response.status === 204) return "";
-  return response.json();
+  if (response.ok) {
+    if (response.status === 204) return "";
+    return response.json();
+  } else {
+    console.log("error", response);
+    throw new Error(`${response.status}- ${response.statusText}`);
+  }
 }
 
 function apiService(endpoint, method, data) {
@@ -11,12 +16,7 @@ function apiService(endpoint, method, data) {
     body: data !== undefined ? JSON.stringify(data) : null,
     headers: { "content-type": "application/json", "X-CSRFToken": CSRF_TOKEN },
   };
-  return fetch(endpoint, config)
-    .then(getJSON)
-    .catch((error) => {
-      console.log(error);
-      throw error;
-    });
+  return fetch(endpoint, config).then(getJSON);
 }
 
 export { apiService };
