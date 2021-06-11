@@ -1,5 +1,5 @@
 <template>
-  <div class="card col-xl-3 mx-3 my-2" style="width: 18rem">
+  <div class="card col-xl-3 mx-3" style="width: 18rem">
     <div class="card-body" @click="eventDetail">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
@@ -31,7 +31,7 @@
         </a>
       </div>
       <div class="mt-2" v-else>
-        <div class="row d-flex justify-content-around mt-5">
+        <div class="row d-flex justify-content-around mt-2">
           <div>
             <span class="px-2" style="color: #e32822">
               <i class="fa fa-heart" aria-hidden="true"></i

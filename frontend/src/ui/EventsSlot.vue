@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 py-4" :class="background">
+  <div class="mt-4" :class="background">
     <div class="p-3">
       <h2 class="slot-title">{{ title }}</h2>
     </div>
