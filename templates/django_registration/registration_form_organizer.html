@@ -1,38 +1,40 @@
 {% extends "registration_layout.html" %}
 {% load crispy_forms_tags %}
 
-{% block registration_content %}
-    <div class="text-center py-2">
-        <p class="registration-title">Create your Account</p>
-        <p class="registration-subtitle">It will help you to share your events and reach people easily.</p>
-    </div>
-    <div class="container col-xl-6 col-md-8 col-sm-12 my-auto">
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group mb-0">
-                {{ form.organization_name|as_crispy_field }}
-            </div>
-            <div class="form-group mb-0">
-                {{ form.username|as_crispy_field }}
-            </div>
-            <div class="form-group  mb-0">
-                {{ form.email|as_crispy_field }}
-            </div>
-            <div class="form-group  mb-0">
-                {{ form.password1|as_crispy_field }}
-            </div>
-            <div class="form-group  mb-0">
-                {{ form.password2|as_crispy_field }}
-            </div>
-            <div class="col text-center">
-                <button type="submit" class="btn btn-md btn-success mt-2">Sign Up</button>
-            </div>
-        </form>
-        <p class="mt-4">
-            <span>Registered yet? <a href="{% url 'login' %}">Login.</a></span>
-            <br>
-            <span>Are you an user?<a
-                    href="{% url 'django_registration_register_user' %}"> Register as user.</a></span>
-        </p>
+{% block main_content %}
+    <div class="col-sm-6 col-md-8 col-lg-8 col-xl-8">
+        <div class="text-center py-2">
+            <p class="registration-title">Create your Account</p>
+            <p class="registration-subtitle">It will help you to share your events and reach people easily.</p>
+        </div>
+        <div class="container col-xl-6 col-md-8 col-sm-12 my-auto">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mb-0">
+                    {{ form.organization_name|as_crispy_field }}
+                </div>
+                <div class="form-group mb-0">
+                    {{ form.username|as_crispy_field }}
+                </div>
+                <div class="form-group  mb-0">
+                    {{ form.email|as_crispy_field }}
+                </div>
+                <div class="form-group  mb-0">
+                    {{ form.password1|as_crispy_field }}
+                </div>
+                <div class="form-group  mb-0">
+                    {{ form.password2|as_crispy_field }}
+                </div>
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-md btn-success mt-2">Sign Up</button>
+                </div>
+            </form>
+            <p class="mt-4">
+                <span>Registered yet? <a href="{% url 'login' %}">Login.</a></span>
+                <br>
+                <span>Are you an user?<a
+                        href="{% url 'django_registration_register_user' %}"> Register as user.</a></span>
+            </p>
+        </div>
     </div>
 {% endblock %}

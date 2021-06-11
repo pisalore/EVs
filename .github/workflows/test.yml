@@ -34,6 +34,7 @@ jobs:
         run: pip install tox
       - name: Run Tox
         env:
-          SECRET_KEY_EVS: ${{ secrets.SECRET_KEY_EVS }}
           DB_STRING: ${{secrets.DB_STRING}}
+          DEBUG: True
+          SECRET_KEY_EVS: ${{ secrets.SECRET_KEY_EVS }}
         run: tox -e py

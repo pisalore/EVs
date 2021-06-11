@@ -84,6 +84,9 @@ class RetrieveUserInfoTest(APITestCase):
             json.loads(response.content),
             {"id": self.user.id,
              "username": "test",
+             "first_name": "",
+             "last_name": "",
+             "email": "test@mail.it",
              "organization_name": "",
              "is_organizer": False,
              "profile_image": None})
@@ -97,6 +100,9 @@ class RetrieveUserInfoTest(APITestCase):
             json.loads(response.content),
             {"id": self.organizer.id,
              "username": "test_org",
+             "first_name": "",
+             "last_name": "",
+             "email": "test_org@mail.it",
              "organization_name": "org",
              "is_organizer": True,
              "profile_image": None, })

@@ -1,8 +1,14 @@
 {% extends "login_recover_layout.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block auth %}
-    <div class="text-center py-5">
+    <div class="text-center py-1">
+        <div class="mb-2">
+            <a href="/">
+                <img width="100px" src="{% static 'assets/evs_logo.png' %}" alt="logo">
+            </a>
+
+        </div>
         <p class="registration-title">Login to EVs.</p>
         <p class="registration-subtitle">Welcome! Sign in and discover events from all around the world.</p>
     </div>
@@ -15,14 +21,14 @@
             </div>
         </form>
         <div class="d-flex justify-content-center">
-        <p class="mt-3">
+            <p class="mt-3">
         <span>
             Not a member? <a href="{% url 'django_registration_register_user' %}">Register an Account.</a>
         </span>
-            <span>
+                <span>
             Forgot password? <a href="{% url 'password_reset' %}">Recover your account credentials.</a>
         </span>
-        </p>
+            </p>
         </div>
     </div>
 {% endblock %}

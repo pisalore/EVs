@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 
 from events.api.filters import EventFilter
 from events.api.serializers import CategorySerializer, EventSerializer, EventImageSerializer, EventSerializerAction
@@ -40,6 +41,36 @@ class EventViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(start_date__lte=end_date)
         return queryset.filter(status='A').order_by(ordering)
 
+
+class ExpiringEventsListAPIView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    permission_classes = [IsEventOrganizerOrReadOnly]
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.filter(status='A').order_by('start_date')
+
+
+class MostParticipatedEventsListAPIView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    permission_classes = [IsEventOrganizerOrReadOnly]
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.all().annotate(participants_count=Count('participants'))\
+            .filter(status='A')\
+            .order_by('-participants_count')
+
+
+class MostInterestedEventsListAPIView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    permission_classes = [IsEventOrganizerOrReadOnly]
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.all().annotate(interested_count=Count('interested'))\
+            .filter(status='A')\
+            .order_by('-interested_count')
 
 class EventInterestAPIView(APIView):
     serializer_class = EventSerializerAction

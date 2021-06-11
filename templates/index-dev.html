@@ -1,0 +1,13 @@
+{% extends "registration_layout.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block main_content %}
+    <div class="py-2 col-sm-6 col-md-8 col-lg-8 col-xl-12">
+        <noscript>
+            <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to
+                continue.</strong>
+        </noscript>
+        <div id="app"></div>
+        {% render_bundle 'app' %}
+    </div>
+{% endblock %}

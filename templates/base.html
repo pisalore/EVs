@@ -8,6 +8,8 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
     {% block style %}
         <style media="screen">
             html, body {
@@ -111,7 +113,15 @@
                 color: white;
             }
 
+            .btn:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
         </style>
+    {% endblock %}
+
+    {% block bundle_css %}
     {% endblock %}
 </head>
 <body>
@@ -127,6 +137,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block bundle_js %}
 {% endblock %}
 
 
