@@ -35,6 +35,13 @@ export default {
       return this.$store.getters["events/getNextShowedEventsInEventsLink"];
     },
   },
+  async created() {
+    const state = this.$store.getters["events/getShowedEventsInEventsPage"];
+    if (!state.length) {
+      console.log("objects");
+      await this.$store.dispatch("events/loadEventsInPageEvents");
+    }
+  },
 };
 </script>
 

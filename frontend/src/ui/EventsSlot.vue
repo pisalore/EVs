@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     async loadNextEvents() {
-      console.log(this.next, this.nextType)
+      console.log(this.next, this.nextType);
       await this.$store.dispatch("events/loadNextEvents", {
         endpoint: this.next,
         type: this.nextType,

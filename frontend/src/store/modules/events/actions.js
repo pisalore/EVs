@@ -47,4 +47,11 @@ export default {
       }
     }
   },
+  async loadEventsInPageEvents(context) {
+    let endpoint = `api/events/`;
+    const response = await apiService(endpoint);
+
+    context.commit("setNextEventsPageEvsLink", response.next);
+    context.commit("setEventsPageEvents", response.results);
+  },
 };
