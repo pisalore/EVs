@@ -20,7 +20,6 @@ export default {
 
     context.commit("setNextMostInterestedEventsLink", response.next);
     context.commit("setMostInterestedEvents", response.results);
-
   },
   async loadExpiringEvents(context) {
     let endpoint = `api/expiring/`;

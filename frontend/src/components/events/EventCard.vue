@@ -1,28 +1,31 @@
 <template>
-  <div
-    class="card col-xl-3 mx-3 my-2"
-    style="width: 18rem"
-  >
+  <div class="card col-xl-3 mx-3 my-2" style="width: 18rem">
     <div class="card-body" @click="eventDetail">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">@{{ venue }}</h5>
       <h5 class="card-date">{{ computeDate() }}</h5>
-      <img
-        v-if="image && !is_mobile"
-        class="card-img"
-        :src="image.document"
-        alt="event-image"
-      />
-      <img
-        v-else-if="!image && !is_mobile"
-        class="card-img"
-        src="/static/assets/event-placeholder.png"
-        alt=""
-      />
-      <div v-if="website && !isUser" class="text-center pt-3">
+      <div class="img-div">
+        <img
+          v-if="image && !is_mobile"
+          class="card-img"
+          :src="image.document"
+          alt="event-image"
+        />
+        <img
+          v-else-if="!image && !is_mobile"
+          class="card-img"
+          src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/event-placeholder.png"
+          alt=""
+        />
+      </div>
+      <div v-if="website && !isUser" class="text-center pt-5">
         <a :href="website">
-          <button type="button" class="btn simple-card-button">
+          <button
+            type="button"
+            class="btn simple-card-button"
+            onclick="event.stopPropagation()"
+          >
             Go to website
           </button>
         </a>
@@ -171,7 +174,8 @@ export default {
 .simple-card-button:hover {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 }
-.btn-sm {
-  width: 120px;
+
+.img-div {
+  padding-top: 30px;
 }
 </style>
