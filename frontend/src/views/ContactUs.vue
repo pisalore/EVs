@@ -72,9 +72,8 @@ export default {
       this.showSnackbar = true;
     },
     snackbarFalse() {
-      console.log('handling the event')
       this.showSnackbar = false;
-    }
+    },
   },
   computed: {
     username() {

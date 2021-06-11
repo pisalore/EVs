@@ -1,7 +1,14 @@
 <template>
   <div class="d-flex justify-content-center">
     <div id="snackbar" :style="{ backgroundColor: color }">
-      <div class="mt-3">{{ message }}</div>
+      <div class="d-flex">
+        <div class="justify-content-start">
+          <i class="fa fa-check" aria-hidden="true"></i>
+        </div>
+        <div class="justify-content-center">
+          {{ message }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -44,8 +51,6 @@ export default {
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 #snackbar.show {
   visibility: visible; /* Show the snackbar */
-  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-  However, delay the fade out process for 2.5 seconds */
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
