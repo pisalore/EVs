@@ -6,36 +6,50 @@
     :message="snackbarMessage"
     @close="snackbarFalse"
   ></snackbar>
-  <div v-if="username">
-    <div class="p-5">
-      <h2 class="title">Contact Us</h2>
-      <h3 class="subtitle">
-        Hello <span class="username">@{{ username }}</span
-        >! Please, read our
-        <router-link to="/faq">FAQ</router-link>
-        , otherwise contact us compiling the above form, we will answer as soon
-        possible.
-      </h3>
-    </div>
+  <div class="p-5">
+    <h2 class="title">Contact Us</h2>
+    <h3 class="subtitle">
+      Hello <span class="username">@{{ username }}</span
+      >! Please, read our
+      <router-link to="/faq">FAQ</router-link>
+      , otherwise contact us compiling the above form, we will answer as soon
+      possible.
+    </h3>
+  </div>
+  <div>
     <div class="mt-5 container">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{ firstName }} {{ lastName }}</h5>
           <h5 class="card-title">{{ userEmail }}</h5>
           <form @submit.prevent="sendHelpRequest">
+            <div v-if="username === 'visitor'" class="form-group">
+              <label for="inputEmail1">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                v-model="userEmailForm"
+                id="inputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="Enter your email"
+              />
+              <small id="emailHelp" class="form-text text-muted"
+                >We'll never share your email with anyone else.</small
+              >
+            </div>
             <div class="form-group">
-              <label for="exampleFormControlTextarea1">Example textarea</label>
               <textarea
                 class="form-control"
                 v-model="userMessage"
-                id="exampleFormControlTextarea1"
                 placeholder="Describe your doubts or problems here..."
-                rows="5"
+                rows="7"
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-lg btn-primary">
-              Email Us!
-            </button>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-lg btn-primary">
+                Email Us!
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -55,6 +69,7 @@ export default {
       isError: false,
       snackbarMessage: "",
       userMessage: "",
+      userEmailForm: "",
       snackBarColor: "",
       showSnackbar: false,
     };
@@ -65,19 +80,18 @@ export default {
     },
     async sendHelpRequest() {
       let content = {
-        user_email: this.userEmail,
+        user_email: this.userEmail ? this.userEmail : this.userEmailForm,
         username: this.username,
         user_message: this.userMessage,
       };
       try {
         let endpoint = "api/contactus/";
-        const response = await apiService(endpoint, "POST", content);
-        console.log(response);
+        await apiService(endpoint, "POST", content);
         this.snackbarMessage = "Message sent correctly.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
+        this.userMessage = "";
       } catch (error) {
-        console.log(error);
         this.isError = true;
         this.snackbarMessage = error;
         this.snackBarColor = "#E32822";
@@ -93,7 +107,12 @@ export default {
   },
   computed: {
     username() {
-      return this.$store.getters["user/getUserInfo"].username;
+      const username = this.$store.getters["user/getUserInfo"].username;
+      if (username) {
+        return username;
+      } else {
+        return "visitor";
+      }
     },
     firstName() {
       return this.$store.getters["user/getUserInfo"].first_name;
@@ -108,13 +127,19 @@ export default {
   created() {
     this.loadUserInfo();
   },
-  // mounted() {
-  //   this.showSnackbar = true;
-  // },
 };
 </script>
 
 <style scoped>
+.card {
+  background-color: #dfebf9;
+  border-radius: 30px;
+}
+
+.form-control {
+  border-radius: 10px;
+}
+
 .title {
   font-style: normal;
   font-weight: 400;

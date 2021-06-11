@@ -38,7 +38,6 @@ class ProfileImageUpdateView(generics.RetrieveUpdateAPIView):
 
 
 class ContactUsAPIView(APIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = RequestFormSerializer
 
     def post(self, request, *args, **kwargs):
