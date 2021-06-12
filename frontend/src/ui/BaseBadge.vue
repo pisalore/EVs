@@ -1,7 +1,13 @@
 <template>
-  <span class="badge mt-5" :class="category">
-    {{ category }}
-  </span>
+  <div class="chip ">
+    <div class="row justify-content-around">
+      <div>
+        {{ category }}
+      </div>
+      <div class="material-icons" style="margin-top: 11px">close</div>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -11,12 +17,14 @@ export default {
 </script>
 
 <style scoped>
-.badge {
-  background-color: #ccc;
-  color: #252525;
-  border-radius: 30px;
-  padding: 0.5rem 1.5rem;
+.chip {
   display: inline-block;
-  margin-right: 0.5rem;
+  padding: 0 25px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #f1f1f1;
+  text-align: center;
+  width: 200px;;
 }
 </style>
