@@ -10,7 +10,7 @@
         <form @submit.prevent="searchEventsByCity">
           <div class="form-group mb-3">
             <input
-              v-model.trim="searchedCity"
+              v-model="searchedCity"
               v-on:focus="clearErrors()"
               type="text"
               class="form-control form-rounded mb-4"

@@ -1,5 +1,5 @@
 <template>
-  <div class="chip" :class="categoryStyle">
+  <div class="chip mx-2 my-2" :class="categoryStyle">
     <div class="row justify-content-around">
       <div>
         {{ category }}
@@ -20,9 +20,6 @@ export default {
       this.$emit("close-chip", this.category);
     },
   },
-  mounted() {
-    console.log(this.categoryStyle)
-  }
 };
 </script>
 
@@ -30,68 +27,50 @@ export default {
 .chip {
   display: inline-block;
   padding: 0 25px;
-  font-size: 16px;
   line-height: 50px;
-  border-radius: 25px;
   text-align: center;
-  width: 200px;
+  width: 150px;
+  border-radius: 40px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+}
+
+.material-icons {
+  cursor: pointer;
 }
 
 .music {
   background: #ffcad0;
   border: 1px solid #fa4a43;
-  box-sizing: border-box;
   border-radius: 40px;
   font-style: normal;
   font-weight: 300;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 22px;
   color: #fa4a43;
 }
 
 .sport {
   background: #ffe8c6;
   border: 1px solid #ffbb33;
-  box-sizing: border-box;
-  border-radius: 40px;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 16px;
   color: #8c5d00;
 }
 
 .art {
   background: #d1d9ff;
   border: 1px solid #1f6dad;
-  box-sizing: border-box;
-  border-radius: 40px;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 16px;
   color: #1f6dad;
 }
 
 .food {
   background: #9aeb94;
   border: 1px solid #13572f;
-  border-radius: 40px;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 22px;
-  color: #13572f;
+  color: #575757;
 }
 
 .other {
   background: #d6d6d6;
-  border: 1px solid #13572f;
-  box-sizing: border-box;
-  border-radius: 40px;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 16px;
+  border: 1px solid #575757;
   color: #575757;
 }
 </style>

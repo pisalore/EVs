@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <form>
+    <form @submit.prevent="searchEventsUsingFilters">
       <div class="container-fluid">
         <div class="row justify-content-around">
           <div class="col-xl-2 mt-4">
@@ -10,6 +10,7 @@
             <div class="input-group-lg">
               <input
                 type="text"
+                v-model="filterCity"
                 class="form-control"
                 id="inlineFormInputGroup"
                 placeholder="Enter a city..."
@@ -22,6 +23,7 @@
                 class="form-control"
                 placeholder="From date..."
                 type="text"
+                v-model="fromDate"
                 onfocus="(this.type='date')"
               />
             </div>
@@ -30,6 +32,7 @@
                 class="form-control"
                 placeholder="...to date"
                 type="text"
+                v-model="toDate"
                 onfocus="(this.type='date')"
               />
             </div>
@@ -54,14 +57,26 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-6">
-          <base-badge
-            v-for="category in searchCategories"
-            :key="category.id"
-            :category="category"
-            :categoryStyle="badgeStyle(category)"
-            @close-chip="removeCategory"
-          ></base-badge>
+      </div>
+      <div class="container-fluid my-2">
+        <div class="row">
+          <div class="col-xl-2">
+            <span class="title">Selected categories:</span>
+          </div>
+          <div class="col-xl-8">
+            <base-badge
+              v-for="category in searchCategories"
+              :key="category.id"
+              :category="category"
+              :categoryStyle="badgeStyle(category)"
+              @close-chip="removeCategory"
+            ></base-badge>
+          </div>
+          <div class="col-xl-2">
+            <button type="submit" class="btn btn-lg btn-success mx-2">
+              Search
+            </button>
+          </div>
         </div>
       </div>
     </form>
@@ -77,8 +92,12 @@ export default {
   components: { BaseBadge },
   data() {
     return {
+      searchIsValid: false,
       categories: [],
       searchCategories: [],
+      filterCity: "",
+      fromDate: "",
+      toDate: "",
     };
   },
   methods: {
@@ -92,9 +111,7 @@ export default {
       this.searchCategories.splice(index, 1);
     },
     badgeStyle(category) {
-      console.log(category);
-      if (category.category === "Food") {
-        console.log(category)
+      if (category === "Food") {
         return "food";
       }
       if (category === "Art & Culture") {
@@ -110,6 +127,24 @@ export default {
         return "sport";
       }
     },
+    validateForm() {
+      const toDate = new Date(this.toDate);
+      const fromDate = new Date(this.fromDate);
+      if (this.toDate && this.fromDate){
+        this.searchIsValid = fromDate >= toDate;
+      }
+    },
+    searchEventsUsingFilters() {
+      this.validateForm();
+      if(this.searchIsValid) {
+        console.log(
+          this.filterCity,
+          this.fromDate,
+          this.toDate,
+          this.searchCategories
+        );
+      }
+    }
   },
   async created() {
     let endpoint = "api/categories/";
@@ -128,5 +163,7 @@ export default {
   color: #000000;
 }
 
-
+.dropdown-menu a {
+  cursor: pointer;
+}
 </style>

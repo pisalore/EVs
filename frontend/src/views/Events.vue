@@ -1,12 +1,12 @@
 <template>
   <div class="input-group px-4">
-     <span>
+    <span>
       <i class="fa fa-search"></i>
     </span>
     <input
       type="search"
       class="form-control rounded"
-      placeholder="Search"
+      placeholder="Search by city name..."
       aria-label="Search"
       aria-describedby="search-addon"
       v-model="searchedEventName"
