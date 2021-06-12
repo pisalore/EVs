@@ -1,10 +1,12 @@
 <template>
-  <div class="chip ">
+  <div class="chip">
     <div class="row justify-content-around">
       <div>
         {{ category }}
       </div>
-      <div class="material-icons" style="margin-top: 11px">close</div>
+      <div class="material-icons" style="margin-top: 11px" @click="close">
+        close
+      </div>
     </div>
 
   </div>
@@ -12,7 +14,13 @@
 
 <script>
 export default {
+  emits: ["close-chip"],
   props: ["category"],
+  methods: {
+    close() {
+      this.$emit("close-chip", this.category);
+    },
+  },
 };
 </script>
 

@@ -9,43 +9,43 @@
           <div class="col-xl-3 my-3">
             <div class="input-group-lg">
               <input
-                type="text"
-                class="form-control"
-                id="inlineFormInputGroup"
-                placeholder="Enter a city..."
+                  type="text"
+                  class="form-control"
+                  id="inlineFormInputGroup"
+                  placeholder="Enter a city..."
               />
             </div>
           </div>
           <div class="col-xl-3 my-3">
             <div class="input-group-lg">
               <input
-                class="form-control"
-                type="date"
-                id="example-date-input1"
+                  class="form-control"
+                  type="date"
+                  id="example-date-input1"
               />
             </div>
             <div class="input-group-lg my-3">
               <input
-                class="form-control"
-                type="date"
-                id="example-date-input2"
+                  class="form-control"
+                  type="date"
+                  id="example-date-input2"
               />
             </div>
           </div>
           <div class="dropdown col-xl-3 my-3">
             <button
-              type="button"
-              class="btn btn-lg btn-outline-primary dropdown-toggle"
-              data-toggle="dropdown"
+                type="button"
+                class="btn btn-lg btn-outline-primary dropdown-toggle"
+                data-toggle="dropdown"
             >
               Select some event category...
             </button>
             <div class="dropdown-menu">
               <a
-                class="dropdown-item"
-                v-for="category in categories"
-                :key="category.id"
-                @click="addCategory(category.category)"
+                  class="dropdown-item"
+                  v-for="category in categories"
+                  :key="category.id"
+                  @click="addCategory(category.category)"
               >
                 {{ category.category }}
               </a>
@@ -54,9 +54,10 @@
         </div>
         <div class="col-xl-6">
           <base-badge
-            v-for="category in searchCategories"
-            :key="category.id"
-            :category="category"
+              v-for="category in searchCategories"
+              :key="category.id"
+              :category="category"
+              @close-chip="removeCategory"
           ></base-badge>
         </div>
       </div>
@@ -65,12 +66,12 @@
 </template>
 
 <script>
-import { apiService } from "../../common/api.service";
+import {apiService} from "../../common/api.service";
 import BaseBadge from "../../ui/BaseBadge";
 
 export default {
   name: "FilterEvents",
-  components: { BaseBadge },
+  components: {BaseBadge},
   data() {
     return {
       categories: [],
@@ -82,6 +83,10 @@ export default {
       if (this.searchCategories.indexOf(category) === -1)
         this.searchCategories.push(category);
       console.log(this.searchCategories);
+    },
+    removeCategory(category) {
+      const index = this.searchCategories.indexOf(category);
+      this.searchCategories.splice(index, 1);
     },
   },
   async created() {
