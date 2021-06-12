@@ -1,4 +1,15 @@
 <template>
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    <input
+      id="searchByName"
+      type="text"
+      class="form-control"
+      name="search"
+      placeholder="Search events by name..."
+      v-model="searchedEventName"
+    />
+  </div>
   <div>
     <events-slot :next="nextShowedEventsInEventsLink" next-type="evs">
       <event-card
@@ -27,9 +38,26 @@ import EventsSlot from "../ui/EventsSlot";
 export default {
   name: "Events",
   components: { EventCard, EventsSlot },
+  data() {
+    return {
+      searchedEventName: "",
+    };
+  },
   computed: {
     showedEvents() {
-      return this.$store.getters["events/getShowedEventsInEventsPage"];
+      const events = this.$store.getters["events/getShowedEventsInEventsPage"];
+      if (this.searchedEventName === "") {
+        return events;
+      }
+      return events.filter((event) => {
+        if (
+          event.name
+            .toLowerCase()
+            .includes(this.searchedEventName.toLocaleLowerCase())
+        ) {
+          return true;
+        }
+      });
     },
     nextShowedEventsInEventsLink() {
       return this.$store.getters["events/getNextShowedEventsInEventsLink"];
@@ -38,7 +66,6 @@ export default {
   async created() {
     const state = this.$store.getters["events/getShowedEventsInEventsPage"];
     if (!state.length) {
-      console.log("objects");
       await this.$store.dispatch("events/loadEventsInPageEvents");
     }
   },
