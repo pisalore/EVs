@@ -1,15 +1,18 @@
 <template>
-  <div class="input-group">
-    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+  <div class="input-group px-4">
+     <span>
+      <i class="fa fa-search"></i>
+    </span>
     <input
-      id="searchByName"
-      type="text"
-      class="form-control"
-      name="search"
-      placeholder="Search events by name..."
+      type="search"
+      class="form-control rounded"
+      placeholder="Search"
+      aria-label="Search"
+      aria-describedby="search-addon"
       v-model="searchedEventName"
     />
   </div>
+  <filter-events></filter-events>
   <div>
     <events-slot :next="nextShowedEventsInEventsLink" next-type="evs">
       <event-card
@@ -35,9 +38,11 @@
 <script>
 import EventCard from "../components/events/EventCard";
 import EventsSlot from "../ui/EventsSlot";
+import FilterEvents from "../components/events/FilterEvents";
+
 export default {
   name: "Events",
-  components: { EventCard, EventsSlot },
+  components: { EventCard, EventsSlot, FilterEvents },
   data() {
     return {
       searchedEventName: "",
