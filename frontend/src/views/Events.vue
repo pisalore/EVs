@@ -29,9 +29,11 @@
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :is_mobile="isMobile"
       >
       </event-card>
     </events-slot>
+    <scroll-to-top-arrow></scroll-to-top-arrow>
   </div>
 </template>
 
@@ -39,10 +41,11 @@
 import EventCard from "../components/events/EventCard";
 import EventsSlot from "../ui/EventsSlot";
 import FilterEvents from "../components/events/FilterEvents";
+import ScrollToTopArrow from "../ui/ScrollToTopArrow";
 
 export default {
   name: "Events",
-  components: { EventCard, EventsSlot, FilterEvents },
+  components: { ScrollToTopArrow, EventCard, EventsSlot, FilterEvents },
   data() {
     return {
       searchedEventName: "",
@@ -67,6 +70,11 @@ export default {
     nextShowedEventsInEventsLink() {
       return this.$store.getters["events/getNextShowedEventsInEventsLink"];
     },
+    isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    },
   },
   async created() {
     const state = this.$store.getters["events/getShowedEventsInEventsPage"];
@@ -76,5 +84,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

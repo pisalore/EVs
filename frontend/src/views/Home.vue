@@ -193,16 +193,18 @@
       </div>
     </events-slot-mobile>
   </div>
+  <scroll-to-top-arrow></scroll-to-top-arrow>
 </template>
 
 <script>
 import EventCard from "../components/events/EventCard";
 import EventsSlot from "../ui/EventsSlot";
 import EventsSlotMobile from "../ui/EventsSlotMobile";
+import ScrollToTopArrow from "../ui/ScrollToTopArrow";
 
 export default {
   name: "Home",
-  components: { EventsSlot, EventsSlotMobile, EventCard },
+  components: { EventsSlot, EventsSlotMobile, EventCard, ScrollToTopArrow },
   data() {
     return {
       searchedCity: "",
