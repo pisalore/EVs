@@ -24,4 +24,7 @@ export default {
   getNextShowedEventsInEventsLink(state) {
     return state.nextEventsPageEvsLink;
   },
+  setSearchedCity(state) {
+    return state.searchedCity;
+  },
 };

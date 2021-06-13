@@ -190,6 +190,7 @@ export default {
   async created() {
     let endpoint = "api/categories/";
     this.categories = await apiService(endpoint);
+    this.filterCity = this.$store.getters["events/setSearchedCity"];
   },
 };
 </script>

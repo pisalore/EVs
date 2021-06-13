@@ -14,6 +14,7 @@ export default {
       nextMostInterestedEventsLink: null,
       expiringEvents: [],
       nextExpiringEventsLink: null,
+      searchedCity: null
     };
   },
   actions,

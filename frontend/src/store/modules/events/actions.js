@@ -4,6 +4,7 @@ export default {
   async searchEventsByCity(context, city) {
     let endpoint = `api/events/?venue=${city}`;
     const response = await apiService(endpoint);
+    context.commit("setSearchedCity", city)
     context.commit("setEventsPageEvents", response.results);
     context.commit("setNextEventsPageEvsLink", response.next);
   },
@@ -52,5 +53,8 @@ export default {
 
     context.commit("setNextEventsPageEvsLink", response.next);
     context.commit("setEventsPageEvents", response.results);
+  },
+  resetSearchedCity(context) {
+    context.commit("events/setSearchedCity", null);
   },
 };

@@ -43,4 +43,7 @@ export default {
   setNextEventsPageEvsLink(state, payload) {
     state.nextEventsPageEvsLink = payload;
   },
+  setSearchedCity(state, payload) {
+    state.searchedCity = payload;
+  },
 };
