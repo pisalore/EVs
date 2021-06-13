@@ -127,7 +127,7 @@
           :interested="ev.interested_count"
           :participants="ev.participants_count"
           :user_going="ev.user_is_going"
-        :user_interested="ev.user_is_interested"
+          :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>
@@ -280,7 +280,7 @@ export default {
 .form-control::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   position: absolute;
-  left: 2.68%;
+  left: 15px;
   right: 29.27%;
   top: 27.5%;
   bottom: 26.25%;

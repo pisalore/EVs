@@ -153,7 +153,7 @@ export default {
       this.validateForm();
       console.log(this.searchIsValid);
       if (this.searchIsValid) {
-        let searchString = "?";
+        let searchString = "api/events/?";
         if (this.filterCity) {
           searchString += `venue=${this.filterCity}`;
         }

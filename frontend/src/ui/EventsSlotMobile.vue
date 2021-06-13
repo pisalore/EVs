@@ -31,8 +31,8 @@
       </div>
     </div>
     <div>
-      <button type="button" class="btn btn-sm btn-success px-4 mt-2">
-        Go to events!
+      <button @click="goToEventsPageByType" type="button" class="btn btn-success px-4 mt-2">
+        {{ goTostring }}
       </button>
     </div>
   </div>
@@ -67,6 +67,31 @@ export default {
   computed: {
     getSliderId() {
       return "#" + this.sliderId;
+    },
+    goTostring() {
+      if (this.nextType === "expiring") {
+        return "See all expiring events!";
+      } else if (this.nextType === "participated") {
+        return "See all most participated events!";
+      } else if (this.nextType === "interested") {
+        return "See all most interested events!";
+      }
+      return "Go to events";
+    },
+  },
+  methods: {
+    async goToEventsPageByType() {
+      let searchString = "api/";
+      if (this.nextType === "expiring") {
+        searchString += "expiring";
+      } else if (this.nextType === "participated") {
+        searchString += "most-participated";
+      } else if (this.nextType === "interested") {
+        searchString += "most-interested";
+      }
+      searchString += "/";
+      await this.$store.dispatch("events/loadEventsInPageEvents", searchString);
+      await this.$router.push("/events");
     },
   },
 };
