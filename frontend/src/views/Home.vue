@@ -43,11 +43,12 @@
         :venue="ev.venue"
         :start_date="ev.start_date"
         :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
         :image="ev.event_image"
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
       >
       </event-card>
     </events-slot>
@@ -66,11 +67,12 @@
         :venue="ev.venue"
         :start_date="ev.start_date"
         :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
         :image="ev.event_image"
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
       >
       </event-card>
     </events-slot>
@@ -89,11 +91,12 @@
         :venue="ev.venue"
         :start_date="ev.start_date"
         :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
         :image="ev.event_image"
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
       >
       </event-card>
     </events-slot>
@@ -119,11 +122,12 @@
           :venue="ev.venue"
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
-          :start_hour="ev.start_hour"
           :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>
@@ -148,11 +152,12 @@
           :venue="ev.venue"
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
-          :start_hour="ev.start_hour"
           :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+          :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>
@@ -177,11 +182,12 @@
           :venue="ev.venue"
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
-          :start_hour="ev.start_hour"
           :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+          :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>

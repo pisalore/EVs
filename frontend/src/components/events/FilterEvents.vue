@@ -73,10 +73,10 @@
               @close-chip="removeCategory"
             ></base-badge>
           </div>
-          <div class="mt-5 row col-xl-12 d-flex justify-content-center">
+          <div class="mt-5 col-xl-12 d-flex justify-content-center">
             <div class="py-2">
               <button type="submit" class="btn btn-lg btn-success mx-2">
-                Search by filters
+                Search
               </button>
             </div>
             <div class="py-2">
@@ -85,7 +85,7 @@
                 type="submit"
                 class="btn btn-lg btn-outline-danger mx-2"
               >
-                Clear all filters
+                Clear
               </button>
             </div>
           </div>
