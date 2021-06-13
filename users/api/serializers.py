@@ -6,6 +6,8 @@ from users.models import EvUser
 
 
 class EvUserDisplaySerializer(serializers.ModelSerializer):
+    profile_image = AWSDocumentSerializer(read_only=True)
+
     class Meta:
         model = EvUser
         fields = ["id", "username", "first_name", "last_name", "email", "organization_name", "is_organizer", "profile_image"]
