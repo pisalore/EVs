@@ -3,7 +3,7 @@
     <form @submit.prevent="searchEventsUsingFilters">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-xl-2 mt-4">
+          <div class="col-xl-3 mt-4">
             <span class="title">Filter by:</span>
           </div>
           <div class="col-xl-3 my-3">
@@ -63,7 +63,7 @@
           <div class="col-xl-2 py-2">
             <span class="title">Selected categories:</span>
           </div>
-          <div class="col-xl-8 text-center">
+          <div class="col-xl-10">
             <base-badge
               v-for="category in searchCategories"
               :key="category.id"
@@ -72,10 +72,21 @@
               @close-chip="removeCategory"
             ></base-badge>
           </div>
-          <div class="col-xl-2 py-3">
-            <button type="submit" class="btn btn-lg btn-success mx-2">
-              Search by filters
-            </button>
+          <div class="mt-5 row col-xl-12 d-flex justify-content-center">
+            <div class="py-2">
+              <button type="submit" class="btn btn-lg btn-success mx-2">
+                Search by filters
+              </button>
+            </div>
+            <div class="py-2">
+              <button
+                @click="clearAllFilters"
+                type="submit"
+                class="btn btn-lg btn-outline-danger mx-2"
+              >
+                Clear all filters
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -133,12 +144,12 @@ export default {
         const fromDate = new Date(this.fromDate);
         this.searchIsValid = fromDate <= toDate;
       } else {
-       this.searchIsValid = true;
+        this.searchIsValid = true;
       }
     },
-    searchEventsUsingFilters() {
+    async searchEventsUsingFilters() {
       this.validateForm();
-      console.log(this.searchIsValid)
+      console.log(this.searchIsValid);
       if (this.searchIsValid) {
         let searchString = "?";
         if (this.filterCity) {
@@ -160,8 +171,18 @@ export default {
           searchString.slice(0, -1);
         }
         console.log(searchString);
-        this.$store.dispatch("events/loadEventsInPageEvents", searchString);
+        await this.$store.dispatch(
+          "events/loadEventsInPageEvents",
+          searchString
+        );
       }
+    },
+    async clearAllFilters() {
+      this.filterCity = "";
+      this.toDate = null;
+      this.fromDate = null;
+      this.searchCategories = [];
+      this.searchIsValid = false;
     },
   },
   async created() {
