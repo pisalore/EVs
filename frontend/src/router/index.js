@@ -6,6 +6,7 @@ import ContactUs from "../views/ContactUs";
 import FAQ from "../views/FAQ";
 import Events from "../views/Events";
 import EventDetail from "../views/EventDetail";
+import NotFound from "../views/NotFound";
 
 const routes = [
   {
@@ -38,6 +39,7 @@ const routes = [
     component: EventDetail,
     props: true,
   },
+  { path: "/:notFound(.*)", component: NotFound },
 ];
 
 const router = createRouter({
