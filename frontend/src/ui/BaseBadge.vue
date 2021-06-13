@@ -2,7 +2,7 @@
   <div class="chip mx-2 my-2" :class="categoryStyle">
     <div class="row justify-content-around">
       <div>
-        {{ category }}
+        {{ category.category }}
       </div>
       <div class="material-icons" style="margin-top: 11px" @click="close">
         close
@@ -17,6 +17,7 @@ export default {
   props: ["category", "categoryStyle"],
   methods: {
     close() {
+      console.log(this.category)
       this.$emit("close-chip", this.category);
     },
   },

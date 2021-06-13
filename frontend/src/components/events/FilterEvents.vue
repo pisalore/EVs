@@ -59,6 +59,7 @@
         </div>
       </div>
       <div class="container-fluid my-2">
+        <hr>
         <div class="row">
           <div class="col-xl-2 py-2">
             <span class="title">Selected categories:</span>
@@ -67,7 +68,7 @@
             <base-badge
               v-for="category in searchCategories"
               :key="category.id"
-              :category="category.category"
+              :category="category"
               :categoryStyle="badgeStyle(category.category)"
               @close-chip="removeCategory"
             ></base-badge>
@@ -118,6 +119,7 @@ export default {
       console.log(this.searchCategories);
     },
     removeCategory(category) {
+      console.log(category);
       const index = this.searchCategories.indexOf(category);
       this.searchCategories.splice(index, 1);
     },
