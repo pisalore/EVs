@@ -2,7 +2,7 @@
   <div class="p-4">
     <form @submit.prevent="searchEventsUsingFilters">
       <div class="container-fluid">
-        <div class="row justify-content-around">
+        <div class="row">
           <div class="col-xl-2 mt-4">
             <span class="title">Filter by:</span>
           </div>
@@ -60,10 +60,10 @@
       </div>
       <div class="container-fluid my-2">
         <div class="row">
-          <div class="col-xl-2">
+          <div class="col-xl-2 py-2">
             <span class="title">Selected categories:</span>
           </div>
-          <div class="col-xl-8">
+          <div class="col-xl-8 text-center">
             <base-badge
               v-for="category in searchCategories"
               :key="category.id"
@@ -72,9 +72,9 @@
               @close-chip="removeCategory"
             ></base-badge>
           </div>
-          <div class="col-xl-2">
+          <div class="col-xl-2 py-3">
             <button type="submit" class="btn btn-lg btn-success mx-2">
-              Search
+              Search by filters
             </button>
           </div>
         </div>

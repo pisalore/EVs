@@ -6,7 +6,7 @@
     <input
       type="search"
       class="form-control rounded"
-      placeholder="Search by city name..."
+      placeholder="Search by event name..."
       aria-label="Search"
       aria-describedby="search-addon"
       v-model="searchedEventName"
