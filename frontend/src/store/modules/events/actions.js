@@ -47,8 +47,9 @@ export default {
       }
     }
   },
-  async loadEventsInPageEvents(context) {
-    let endpoint = `api/events/`;
+  async loadEventsInPageEvents(context, searchString) {
+    const baseEndpoint = `api/events/`;
+    let endpoint = searchString ? baseEndpoint + searchString : baseEndpoint;
     const response = await apiService(endpoint);
 
     context.commit("setNextEventsPageEvsLink", response.next);

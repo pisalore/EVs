@@ -50,7 +50,7 @@
                 class="dropdown-item color-category"
                 v-for="category in categories"
                 :key="category.id"
-                @click="addCategory(category.category)"
+                @click="addCategory(category)"
               >
                 {{ category.category }}
               </a>
@@ -67,8 +67,8 @@
             <base-badge
               v-for="category in searchCategories"
               :key="category.id"
-              :category="category"
-              :categoryStyle="badgeStyle(category)"
+              :category="category.category"
+              :categoryStyle="badgeStyle(category.category)"
               @close-chip="removeCategory"
             ></base-badge>
           </div>
@@ -96,8 +96,8 @@ export default {
       categories: [],
       searchCategories: [],
       filterCity: "",
-      fromDate: "",
-      toDate: "",
+      fromDate: null,
+      toDate: null,
     };
   },
   methods: {
@@ -128,23 +128,41 @@ export default {
       }
     },
     validateForm() {
-      const toDate = new Date(this.toDate);
-      const fromDate = new Date(this.fromDate);
-      if (this.toDate && this.fromDate){
-        this.searchIsValid = fromDate >= toDate;
+      if (this.toDate && this.fromDate) {
+        const toDate = new Date(this.toDate);
+        const fromDate = new Date(this.fromDate);
+        this.searchIsValid = fromDate <= toDate;
+      } else {
+       this.searchIsValid = true;
       }
     },
     searchEventsUsingFilters() {
       this.validateForm();
-      if(this.searchIsValid) {
-        console.log(
-          this.filterCity,
-          this.fromDate,
-          this.toDate,
-          this.searchCategories
-        );
+      console.log(this.searchIsValid)
+      if (this.searchIsValid) {
+        let searchString = "?";
+        if (this.filterCity) {
+          searchString += `venue=${this.filterCity}`;
+        }
+        if (this.fromDate) {
+          searchString += `&start_date=${this.fromDate}`;
+        }
+        if (this.toDate) {
+          searchString += `&end_date=${this.toDate}`;
+        }
+        if (this.searchCategories.length) {
+          searchString += "&categories=";
+          this.searchCategories.forEach((category) => {
+            searchString += `${category.id}&`;
+          });
+        }
+        if (searchString.charAt(-1) === "&") {
+          searchString.slice(0, -1);
+        }
+        console.log(searchString);
+        this.$store.dispatch("events/loadEventsInPageEvents", searchString);
       }
-    }
+    },
   },
   async created() {
     let endpoint = "api/categories/";

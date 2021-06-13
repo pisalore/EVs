@@ -71,7 +71,7 @@ export default {
   async created() {
     const state = this.$store.getters["events/getShowedEventsInEventsPage"];
     if (!state.length) {
-      await this.$store.dispatch("events/loadEventsInPageEvents");
+      await this.$store.dispatch("events/loadEventsInPageEvents", null);
     }
   },
 };
