@@ -106,6 +106,21 @@
             <div class="mt-4 pr-5">
               <h1 class="subtitle">Event detail</h1>
               <p class="description">{{ selectedEvent.description }}</p>
+              <div class="action-button going-action-button">
+                <base-action-button
+                  :icon="'event_available'"
+                  :label="'Going'"
+                  :user-going="userIsGoing"
+                  @click="going"
+                ></base-action-button>
+                <base-action-button
+                  :icon="'favorite'"
+                  :label="'Like'"
+                  :user-interested="userIsInterested"
+                  @click="going"
+                  class="action-button like-action-button"
+                ></base-action-button>
+              </div>
             </div>
           </div>
         </div>
@@ -127,8 +142,10 @@
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
 import BaseBadge from "../ui/BaseBadge";
+import BaseActionButton from "../ui/BaseActionButton";
+
 export default {
-  components: { GoogleMap, Marker, BaseBadge },
+  components: { BaseActionButton, GoogleMap, Marker, BaseBadge },
   props: ["id"],
   data() {
     return {
@@ -151,7 +168,6 @@ export default {
       );
     },
     computeDate() {
-      console.log(this.selectedEvent);
       const options = {
         month: "long",
         day: "numeric",
@@ -170,6 +186,13 @@ export default {
         startDate += `, at ${startHour}`;
       }
       return startDate;
+    },
+    userIsGoing() {
+      return this.selectedEvent.user_is_going;
+    },
+    userIsInterested() {
+      console.log(this.selectedEvent.user_is_interested);
+      return this.selectedEvent.user_is_interested;
     },
   },
   methods: {
@@ -204,6 +227,9 @@ export default {
       if (!category) {
         return "base";
       }
+    },
+    going() {
+      console.log("going");
     },
   },
   created() {
@@ -251,23 +277,43 @@ img {
   margin-bottom: 15px;
   color: #bdbdbd;
 }
+
 .subtitle {
   font-weight: 400;
   font-size: 24px;
   line-height: 28px;
   color: #2c98f0;
 }
+
 .main-info {
   border-bottom: 0.5px solid #bdbdbd;
   margin-right: 50px;
 }
+
 .info {
   font-size: 18px;
 }
+
 .description {
   font-style: normal;
   font-weight: 300;
   font-size: 18px;
   line-height: 21px;
+}
+.action-button {
+  display: block;
+  position: fixed;
+  z-index: 99;
+  right: 50px;
+}
+.going-action-button {
+  display: block;
+  position: fixed;
+  top: 200px;
+  z-index: 99;
+  right: 50px;
+}
+.like-action-button {
+  top: 280px;
 }
 </style>
