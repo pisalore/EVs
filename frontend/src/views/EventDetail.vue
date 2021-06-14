@@ -111,13 +111,13 @@
                   :icon="'event_available'"
                   :label="'Going'"
                   :user-going="userIsGoing"
-                  @click="going"
+                  @click="goingToggle"
                 ></base-action-button>
                 <base-action-button
                   :icon="'favorite'"
                   :label="'Like'"
                   :user-interested="userIsInterested"
-                  @click="going"
+                  @click="likeToggle"
                   class="action-button like-action-button"
                 ></base-action-button>
               </div>
@@ -141,6 +141,7 @@
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
+import {apiService} from "../common/api.service";
 import BaseBadge from "../ui/BaseBadge";
 import BaseActionButton from "../ui/BaseActionButton";
 
@@ -228,8 +229,29 @@ export default {
         return "base";
       }
     },
-    going() {
-      console.log("going");
+    async goingToggle() {
+      const endpoint = `/api/events/${this.selectedEvent.id}/going/`;
+      if (this.selectedEvent.user_is_going) {
+        await apiService(endpoint, "DELETE");
+      } else {
+        await apiService(endpoint, "POST");
+      }
+      await this.$store.dispatch(
+        "events/loadSelectedEvent",
+        this.selectedEvent.id
+      );
+    },
+    async likeToggle() {
+      const endpoint = `/api/events/${this.selectedEvent.id}/interesting/`;
+      if (this.selectedEvent.user_is_interested) {
+        await apiService(endpoint, "DELETE");
+      } else {
+        await apiService(endpoint, "POST");
+      }
+      await this.$store.dispatch(
+        "events/loadSelectedEvent",
+        this.selectedEvent.id
+      );
     },
   },
   created() {
