@@ -114,6 +114,7 @@
                   @click="goingToggle"
                 ></base-action-button>
                 <base-action-button
+                    v-if="!selectedEvent.user_is_going"
                   :icon="'favorite'"
                   :label="'Like'"
                   :user-interested="userIsInterested"
