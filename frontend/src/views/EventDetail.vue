@@ -4,10 +4,10 @@
     <GoogleMap
       :api-key="googleApiKey"
       style="width: 100%; height: 500px"
-      :center="center"
+      :center="coordinates"
       :zoom="15"
     >
-      <Marker :options="{ position: center }" />
+      <Marker :options="{ position: coordinates }" />
     </GoogleMap>
   </div>
 </template>
@@ -20,6 +20,7 @@ export default defineComponent({
   props: ["id"],
   data() {
     return {
+      coordinates: null,
       eventVenue: null,
     };
   },
@@ -41,18 +42,17 @@ export default defineComponent({
         this.googleApiKey
       }`;
       const response = await fetch(endpoint);
-      const data = await response.json()
-      console.log(data)
+      const data = await response.json();
+      this.coordinates = data.results[0].geometry.location;
     },
   },
   created() {
     this.loadSelectedEvent();
   },
-  setup() {
-    const center = { lat: 40.689247, lng: -74.044502 };
-
-    return { center };
-  },
+  // setup() {
+  //   const center = { lat: 40.689247, lng: -74.044502 };
+  //   return { center };
+  // },
 });
 </script>
 
