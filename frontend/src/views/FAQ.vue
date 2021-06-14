@@ -1,11 +1,11 @@
 <template>
   <div class="text-center py-1">
     <h2 class="title">
-      EVS Frequently Asked <br/>
+      EVS Frequently Asked <br />
       Questions
     </h2>
     <h3 class="subtitle">
-      Question or problems? Please, check the following FAQs, or <br/>
+      Question or problems? Please, check the following FAQs, or <br />
       <router-link to="/contacts">Contact Us</router-link>
       .
     </h3>

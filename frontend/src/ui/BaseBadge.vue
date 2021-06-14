@@ -1,10 +1,18 @@
 <template>
-  <div class="chip mx-2 my-2" :class="categoryStyle">
+  <div  class="chip mx-2 my-2" :class="categoryStyle">
     <div class="row justify-content-around">
-      <div>
+      <div v-if="category">
         {{ category.category }}
       </div>
-      <div class="material-icons" style="margin-top: 11px" @click="close">
+      <div v-else>
+        {{ content }}
+      </div>
+      <div
+        v-if="type !== 'badge'"
+        class="material-icons"
+        style="margin-top: 11px"
+        @click="close"
+      >
         close
       </div>
     </div>
@@ -14,10 +22,10 @@
 <script>
 export default {
   emits: ["close-chip"],
-  props: ["category", "categoryStyle"],
+  props: ["category", "categoryStyle", "type", "content"],
   methods: {
     close() {
-      console.log(this.category)
+      console.log(this.category);
       this.$emit("close-chip", this.category);
     },
   },
@@ -28,7 +36,7 @@ export default {
 .chip {
   display: inline-block;
   padding: 0 25px;
-  line-height: 50px;
+  line-height: 40px;
   text-align: center;
   width: 150px;
   border-radius: 40px;
@@ -73,5 +81,11 @@ export default {
   background: #d6d6d6;
   border: 1px solid #575757;
   color: #575757;
+}
+.base {
+  border: 0.5px solid #1f6dad;
+  color: #1f6dad;
+  font-weight: 500;
+
 }
 </style>

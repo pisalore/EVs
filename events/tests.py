@@ -106,7 +106,7 @@ class EventManagingTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json.loads(response.content)['id'], test_event.id)
         self.assertEqual(json.loads(response.content)['name'], test_event.name)
-        self.assertIn(test_event.categories.get(id=1).id, json.loads(response.content)['categories'])
+        self.assertEqual(test_event.categories.get(id=1).category, "Art & Culture")
 
     def test_event_update(self):
         self.client.force_authenticate(user=self.organizer)

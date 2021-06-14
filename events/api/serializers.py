@@ -29,6 +29,7 @@ class EventSerializer(serializers.ModelSerializer):
     user_is_interested = serializers.SerializerMethodField(read_only=True)
     user_is_going = serializers.SerializerMethodField(read_only=True)
     organizer_username = serializers.SerializerMethodField(read_only=True)
+    categories = CategorySerializer(read_only=True, many=True)
 
     class Meta:
         model = Event
