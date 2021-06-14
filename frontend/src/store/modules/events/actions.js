@@ -54,6 +54,12 @@ export default {
     context.commit("setNextEventsPageEvsLink", response.next);
     context.commit("setEventsPageEvents", response.results);
   },
+  async loadSelectedEvent(context, payload) {
+    let endpoint = `/api/events/${payload}/`;
+    const response = await apiService(endpoint);
+    console.log(response);
+    context.commit("setDetailEvent", response);
+  },
   resetSearchedCity(context) {
     context.commit("events/setSearchedCity", null);
   },

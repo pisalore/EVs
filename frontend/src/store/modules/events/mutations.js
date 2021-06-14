@@ -46,4 +46,7 @@ export default {
   setSearchedCity(state, payload) {
     state.searchedCity = payload;
   },
+  setDetailEvent(state, payload) {
+    state.selectedDetailEvent = payload;
+  },
 };

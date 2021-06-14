@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Event detail</h1>
+    <h1>{{ selectedEvent.name }}</h1>
     <GoogleMap
       :api-key="googleApiKey"
       style="width: 100%; height: 500px"
@@ -23,6 +23,17 @@ export default defineComponent({
     googleApiKey() {
       return process.env.VUE_APP_GOOGLE_API_KEY;
     },
+    selectedEvent() {
+      return this.$store.getters["events/getDetailEvent"];
+    },
+  },
+  methods: {
+    async loadSelectedEvent() {
+      await this.$store.dispatch("events/loadSelectedEvent", this.id);
+    },
+  },
+  created() {
+    this.loadSelectedEvent();
   },
   setup() {
     const center = { lat: 40.689247, lng: -74.044502 };
