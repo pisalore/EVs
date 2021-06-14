@@ -15,10 +15,14 @@
 <script>
 import { defineComponent } from "vue";
 import { GoogleMap, Marker } from "vue3-google-map";
-
 export default defineComponent({
   components: { GoogleMap, Marker },
   props: ["id"],
+  data() {
+    return {
+      eventVenue: null,
+    };
+  },
   computed: {
     googleApiKey() {
       return process.env.VUE_APP_GOOGLE_API_KEY;
@@ -29,7 +33,16 @@ export default defineComponent({
   },
   methods: {
     async loadSelectedEvent() {
+      const googleGeocodingAPI =
+        "https://maps.googleapis.com/maps/api/geocode/json?address=";
       await this.$store.dispatch("events/loadSelectedEvent", this.id);
+      this.eventVenue = this.selectedEvent.venue;
+      const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
+        this.googleApiKey
+      }`;
+      const response = await fetch(endpoint);
+      const data = await response.json()
+      console.log(data)
     },
   },
   created() {
