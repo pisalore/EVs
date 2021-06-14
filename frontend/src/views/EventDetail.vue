@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="selectedEvent" class="container">
     <h1>{{ selectedEvent.name }}</h1>
     <GoogleMap
       :api-key="googleApiKey"
