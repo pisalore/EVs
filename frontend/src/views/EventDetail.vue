@@ -1,14 +1,15 @@
 <template>
-  <h1>Event detail</h1>
-  <p>{{ env }}</p>
-  <GoogleMap
-    :api-key="googleApiKey"
-    style="width: 100%; height: 500px"
-    :center="center"
-    :zoom="15"
-  >
-    <Marker :options="{ position: center }" />
-  </GoogleMap>
+  <div class="container">
+    <h1>Event detail</h1>
+    <GoogleMap
+      :api-key="googleApiKey"
+      style="width: 100%; height: 500px"
+      :center="center"
+      :zoom="15"
+    >
+      <Marker :options="{ position: center }" />
+    </GoogleMap>
+  </div>
 </template>
 
 <script>
@@ -17,6 +18,7 @@ import { GoogleMap, Marker } from "vue3-google-map";
 
 export default defineComponent({
   components: { GoogleMap, Marker },
+  props: ["id"],
   computed: {
     googleApiKey() {
       return process.env.VUE_APP_GOOGLE_API_KEY;
