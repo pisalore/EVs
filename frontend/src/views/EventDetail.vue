@@ -1,6 +1,6 @@
 <template>
   <div v-if="selectedEvent" class="ml-3">
-    <div class="col-xl-12 px-4">
+    <div class="col-xl-12 container-fluid">
       <div class="row">
         <div class="col-xl-6 p-0 m-0">
           <h1 class="event-title my-3">{{ selectedEvent.name }}</h1>
@@ -59,49 +59,54 @@
             <h1 class="subtitle">Main information</h1>
           </div>
           <div class="main-info">
-            <div class="d-flex">
-              <div class="p-1">
-                <base-badge
-                  :content="'Organizer'"
-                  :categoryStyle="badgeStyle()"
-                  :type="'badge'"
-                ></base-badge>
+            <div class="p-4">
+              <div class="d-flex">
+                <div class="p-1">
+                  <base-badge
+                    :content="'Organizer'"
+                    :categoryStyle="badgeStyle()"
+                    :type="'badge'"
+                  ></base-badge>
+                </div>
+                <div class="ml-auto mt-4 p-1 info">
+                  {{ selectedEvent.organizer_username }}
+                </div>
               </div>
-              <div class="ml-auto mt-3 p-1">
-                {{ selectedEvent.organizer_username }}
+              <div class="d-flex">
+                <div class="p-1">
+                  <base-badge
+                    :content="'Website'"
+                    :categoryStyle="badgeStyle()"
+                    :type="'badge'"
+                  ></base-badge>
+                </div>
+                <div class="ml-auto mt-4 p-1 info">
+                  <a :href="selectedEvent.event_website">{{
+                    selectedEvent.event_website
+                  }}</a>
+                </div>
               </div>
-            </div>
-            <div class="d-flex">
-              <div class="p-1">
-                <base-badge
-                  :content="'Website'"
-                  :categoryStyle="badgeStyle()"
-                  :type="'badge'"
-                ></base-badge>
-              </div>
-              <div class="ml-auto mt-3 p-1">
-                <a :href="selectedEvent.event_website">{{
-                  selectedEvent.event_website
-                }}</a>
-              </div>
-            </div>
-            <div class="d-flex">
-              <div class="p-1">
-                <base-badge
-                  :content="'Tickets'"
-                  :categoryStyle="badgeStyle()"
-                  :type="'badge'"
-                ></base-badge>
-              </div>
-              <div class="ml-auto mt-3 p-1">
-                <a :href="selectedEvent.tickets_website">{{
-                  selectedEvent.tickets_website
-                }}</a>
+              <div class="d-flex">
+                <div class="p-1">
+                  <base-badge
+                    :content="'Tickets'"
+                    :categoryStyle="badgeStyle()"
+                    :type="'badge'"
+                  ></base-badge>
+                </div>
+                <div class="ml-auto mt-4 p-1 info">
+                  <a :href="selectedEvent.tickets_website">{{
+                    selectedEvent.tickets_website
+                  }}</a>
+                </div>
               </div>
             </div>
           </div>
           <div class="ev-description mt-">
-            ciao
+            <div class="mt-4 pr-5">
+              <h1 class="subtitle">Event detail</h1>
+              <p class="description">{{ selectedEvent.description }}</p>
+            </div>
           </div>
         </div>
         <div class="col-xl-6 p-0 m-0">
@@ -169,16 +174,16 @@ export default {
   },
   methods: {
     async loadSelectedEvent() {
-      // const googleGeocodingAPI =
-      //   "https://maps.googleapis.com/maps/api/geocode/json?address=";
+      const googleGeocodingAPI =
+        "https://maps.googleapis.com/maps/api/geocode/json?address=";
       await this.$store.dispatch("events/loadSelectedEvent", this.id);
       this.eventVenue = this.selectedEvent.venue;
-      // const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
-      //   this.googleApiKey
-      // }`;
-      // const response = await fetch(endpoint);
-      // const data = await response.json();
-      // this.coordinates = data.results[0].geometry.location;
+      const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
+        this.googleApiKey
+      }`;
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      this.coordinates = data.results[0].geometry.location;
     },
     badgeStyle(category) {
       if (category === "Food") {
@@ -202,15 +207,7 @@ export default {
     },
   },
   created() {
-    const body = document.getElementById("mainContent");
-    body.classList.add("p-0", "mr-0");
-    body.classList.remove("py-2");
     this.loadSelectedEvent();
-  },
-  unmounted() {
-    const body = document.getElementById("mainContent");
-    body.classList.remove("p-0", "mr-0");
-    body.classList.add("py-2");
   },
 };
 </script>
@@ -255,8 +252,7 @@ img {
   color: #bdbdbd;
 }
 .subtitle {
-  font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 24px;
   line-height: 28px;
   color: #2c98f0;
@@ -264,5 +260,14 @@ img {
 .main-info {
   border-bottom: 0.5px solid #bdbdbd;
   margin-right: 50px;
+}
+.info {
+  font-size: 18px;
+}
+.description {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 21px;
 }
 </style>

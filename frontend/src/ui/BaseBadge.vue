@@ -1,5 +1,5 @@
 <template>
-  <div  class="chip mx-2 my-2" :class="categoryStyle">
+  <div class="chip mx-2 my-2" :class="categoryStyle">
     <div class="row justify-content-around">
       <div v-if="category">
         {{ category.category }}
@@ -86,6 +86,5 @@ export default {
   border: 0.5px solid #1f6dad;
   color: #1f6dad;
   font-weight: 500;
-
 }
 </style>
