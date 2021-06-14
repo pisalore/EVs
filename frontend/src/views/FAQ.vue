@@ -6,7 +6,7 @@
     </h2>
     <h3 class="subtitle">
       Question or problems? Please, check the following FAQs, or <br/>
-      <router-link to="/contactus">Contact Us</router-link>
+      <router-link to="/contacts">Contact Us</router-link>
       .
     </h3>
   </div>
