@@ -41,7 +41,7 @@ export default {
       return this.label;
     },
     isPrimary() {
-      return this.label === "Going";
+      return this.label === "Going" || this.label === "Edit";
     },
     isLike() {
       return this.label === "Like";

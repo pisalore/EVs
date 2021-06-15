@@ -28,7 +28,7 @@
               </span>
             </div>
           </div>
-          <div :class="{ 'text-center': isMobile }">
+          <div :class="{ 'text-center': isMobile }" class="categories-div">
             <base-badge
               v-for="category in selectedEvent.categories"
               :key="category.id"
@@ -58,29 +58,39 @@
             }"
           />
         </div>
-        <div v-if="isMobile">
-          <div class="my-3">
+        <div v-if="isMobile && loggedUser">
+          <div class="my-3 text-center">
             <base-action-button
+              v-if="loggedUser.is_the_event_organizer"
+              :icon="'create'"
+              :label="'Edit'"
+              @click="editEvent"
+              class="my-1"
+            ></base-action-button>
+            <base-action-button
+              v-if="!loggedUser.is_the_event_organizer"
               :icon="'event_available'"
               :label="'Going'"
               :user-going="userIsGoing"
               @click="goingToggle"
-              class="mx-1"
+              class="mx-1 my-1"
             ></base-action-button>
             <base-action-button
-              v-if="!selectedEvent.user_is_going"
+              v-if="
+                !loggedUser.user_is_going && !loggedUser.is_the_event_organizer
+              "
               :icon="'favorite'"
               :label="'Like'"
               :user-interested="userIsInterested"
               @click="likeToggle"
-              class="mx-1"
+              class="mx-1 my-1"
             ></base-action-button>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xl-6 p-0">
-          <div class="mt-2">
+          <div class="mt-2 separator">
             <h1 class="subtitle">Main information</h1>
           </div>
           <div class="main-info">
@@ -106,7 +116,7 @@
                 }}</a>
               </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex mb-3">
               <base-badge
                 :content="'Tickets'"
                 :categoryStyle="badgeStyle()"
@@ -123,8 +133,16 @@
             <div class="mt-4 pr-5">
               <h1 class="subtitle">Event detail</h1>
               <p class="description">{{ selectedEvent.description }}</p>
-              <div v-if="!isMobile">
+              <div v-if="!isMobile && loggedUser">
                 <base-action-button
+                  v-if="loggedUser.is_the_event_organizer"
+                  :icon="'create'"
+                  :label="'Edit'"
+                  @click="editEvent"
+                  class="action-button edit-action-button"
+                ></base-action-button>
+                <base-action-button
+                  v-if="!loggedUser.is_the_event_organizer"
                   :icon="'event_available'"
                   :label="'Going'"
                   :user-going="userIsGoing"
@@ -132,7 +150,10 @@
                   class="action-button going-action-button"
                 ></base-action-button>
                 <base-action-button
-                  v-if="!selectedEvent.user_is_going"
+                  v-if="
+                    !loggedUser.user_is_going &&
+                    !loggedUser.is_the_event_organizer
+                  "
                   :icon="'favorite'"
                   :label="'Like'"
                   :user-interested="userIsInterested"
@@ -222,7 +243,6 @@ export default {
       return this.selectedEvent.user_is_going;
     },
     userIsInterested() {
-      console.log(this.selectedEvent.user_is_interested);
       return this.selectedEvent.user_is_interested;
     },
   },
@@ -232,7 +252,6 @@ export default {
         "https://maps.googleapis.com/maps/api/geocode/json?address=";
       await this.$store.dispatch("events/loadSelectedEvent", this.id);
       await this.$store.dispatch("user/loadUserInfo", `?event_id=${this.id}`);
-      console.log(this.$store.getters["user/getUserInfo"])
       this.eventVenue = this.selectedEvent.venue;
       const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
         this.googleApiKey
@@ -261,7 +280,7 @@ export default {
         if (this.isMobile) {
           return "base-mobile";
         } else {
-          return "base"
+          return "base";
         }
       }
     },
@@ -288,6 +307,9 @@ export default {
         "events/loadSelectedEvent",
         this.selectedEvent.id
       );
+    },
+    editEvent() {
+      this.$router.push(`/event-edit/${this.id}/`);
     },
   },
   created() {
@@ -341,11 +363,12 @@ img {
   font-size: 24px;
   line-height: 28px;
   color: #2c98f0;
+  margin-top: 20px;
 }
 
 .main-info {
   border-bottom: 0.5px solid #bdbdbd;
-  margin-right: 50px;
+  margin-right: 25px;
 }
 
 .info {
@@ -364,10 +387,17 @@ img {
   z-index: 99;
   right: 50px;
 }
+.edit-action-button {
+  top: 100px;
+}
 .going-action-button {
   top: 180px;
 }
 .like-action-button {
   top: 260px;
+}
+.separator {
+  border-top: 0.5px solid #bdbdbd;
+  margin-right: 25px;
 }
 </style>
