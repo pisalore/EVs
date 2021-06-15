@@ -11,11 +11,11 @@
       <h1 class="title">{{ titlePage }}</h1>
     </div>
     <div class="row">
-      <div class="col-xl-7 medium-text">
+      <div class="col-xl-7 medium-text my-1">
         Organizer - {{ organizer.first_name }} {{ organizer.last_name }}
       </div>
       <div class="ml-3 col-xl-3">
-        <div class="row">
+        <div class="row mt-1">
           <input
             type="file"
             style="
@@ -32,7 +32,7 @@
             ref="file"
             @change="selectFile"
           />
-          <div class="mt-2">
+          <div class="mt-1">
             {{ currentFile ? currentFile.name : "Add a cover for your Ev" }}
           </div>
           <i
@@ -42,10 +42,16 @@
           >
         </div>
       </div>
-
       <button class="btn btn-success ml-3" @click="onCoverUpload">
         Upload
       </button>
+    </div>
+    <div class="container-fluid mt-5">
+      <div class="row d-flex">
+        <div class="col-xl-12">
+          <event-form></event-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -53,10 +59,11 @@
 <script>
 import { uploadEventCover } from "../common/upload_service";
 import Snackbar from "../ui/Snackbar";
+import EventForm from "../components/events/EventForm";
 
 export default {
   name: "EditEvent",
-  components: { Snackbar },
+  components: { EventForm, Snackbar },
   props: ["id"],
   data() {
     return {
