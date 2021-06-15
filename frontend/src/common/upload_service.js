@@ -14,7 +14,6 @@ function uploadEventCover(endpoint, file, eventId, organizerId) {
       "X-CSRFToken": CSRF_TOKEN,
     },
   };
-  console.log(config);
   return fetch(endpoint, config).then(getJSON);
 }
 
