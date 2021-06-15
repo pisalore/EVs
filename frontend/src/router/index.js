@@ -45,6 +45,10 @@ const routes = [
     component: EditEvent,
     props: true,
   },
+  {
+    path: "/event-create/",
+    component: EditEvent,
+  },
   { path: "/:notFound(.*)", component: NotFound },
 ];
 

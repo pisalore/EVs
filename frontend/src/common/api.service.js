@@ -19,4 +19,4 @@ function apiService(endpoint, method, data) {
   return fetch(endpoint, config).then(getJSON);
 }
 
-export { apiService };
+export { apiService, getJSON };

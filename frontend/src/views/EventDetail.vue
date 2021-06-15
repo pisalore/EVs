@@ -1,7 +1,7 @@
 <template>
   <div v-if="selectedEvent" class="ml-3" style="overflow: hidden">
     <div class="col-xl-12 container-fluid">
-      <div class="row">
+      <div class="row" style="height: 40%">
         <div class="col-xl-6 p-0 m-0">
           <h1 class="event-title my-3">{{ selectedEvent.name }}</h1>
           <h2 class="event-venue my-3">@{{ selectedEvent.venue }}</h2>
