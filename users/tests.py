@@ -89,6 +89,7 @@ class RetrieveUserInfoTest(APITestCase):
              "email": "test@mail.it",
              "organization_name": "",
              "is_organizer": False,
+             'is_the_event_organizer': False,
              "profile_image": None})
 
     def test_retrieve_organizer_main_info(self):
@@ -105,6 +106,7 @@ class RetrieveUserInfoTest(APITestCase):
              "email": "test_org@mail.it",
              "organization_name": "org",
              "is_organizer": True,
+             'is_the_event_organizer': False,
              "profile_image": None, })
 
 

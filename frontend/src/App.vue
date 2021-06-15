@@ -9,14 +9,14 @@ export default {
   methods: {
     async loadUserInfo() {
       try {
-        await this.$store.dispatch("user/loadUserInfo");
+        await this.$store.dispatch("user/loadUserInfo", null);
       } catch (error) {
         this.error = error.message || "Something went wrong!";
       }
     },
   },
   created() {
-    this.loadUserInfo();
+    //this.loadUserInfo();
   },
 };
 </script>

@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     async loadUserInfo() {
-      await this.$store.dispatch("user/loadUserInfo");
+      await this.$store.dispatch("user/loadUserInfo", null);
     },
     async sendHelpRequest() {
       let content = {

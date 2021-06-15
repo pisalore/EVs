@@ -188,6 +188,9 @@ export default {
     selectedEvent() {
       return this.$store.getters["events/getDetailEvent"];
     },
+    loggedUser() {
+      return this.$store.getters["user/getUserInfo"];
+    },
     isMobile() {
       return (
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -228,6 +231,8 @@ export default {
       const googleGeocodingAPI =
         "https://maps.googleapis.com/maps/api/geocode/json?address=";
       await this.$store.dispatch("events/loadSelectedEvent", this.id);
+      await this.$store.dispatch("user/loadUserInfo", `?event_id=${this.id}`);
+      console.log(this.$store.getters["user/getUserInfo"])
       this.eventVenue = this.selectedEvent.venue;
       const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
         this.googleApiKey
