@@ -1,5 +1,5 @@
 <template>
-  <div v-if="selectedEvent" class="ml-3">
+  <div v-if="selectedEvent" class="ml-3" style="overflow: hidden">
     <div class="col-xl-12 container-fluid">
       <div class="row">
         <div class="col-xl-6 p-0 m-0">
@@ -28,7 +28,7 @@
               </span>
             </div>
           </div>
-          <div>
+          <div :class="{ 'text-center': isMobile }">
             <base-badge
               v-for="category in selectedEvent.categories"
               :key="category.id"
@@ -38,12 +38,9 @@
             ></base-badge>
           </div>
         </div>
-        <div
-          v-if="selectedEvent.event_image"
-          class="col-xl-6 p-0 m-0"
-          style="width: 100%; display: block"
-        >
+        <div class="col-xl-6 p-0 m-0" style="width: 100%; display: block">
           <img
+            v-if="selectedEvent.event_image"
             :src="selectedEvent.event_image.document"
             alt=""
             :class="{
@@ -51,6 +48,34 @@
               'desktop-img-height': !isMobile,
             }"
           />
+          <img
+            v-else
+            src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/event-placeholder.png"
+            alt=""
+            :class="{
+              'mobile-img-height': isMobile,
+              'desktop-img-height': !isMobile,
+            }"
+          />
+        </div>
+        <div v-if="isMobile">
+          <div class="my-3">
+            <base-action-button
+              :icon="'event_available'"
+              :label="'Going'"
+              :user-going="userIsGoing"
+              @click="goingToggle"
+              class="mx-1"
+            ></base-action-button>
+            <base-action-button
+              v-if="!selectedEvent.user_is_going"
+              :icon="'favorite'"
+              :label="'Like'"
+              :user-interested="userIsInterested"
+              @click="likeToggle"
+              class="mx-1"
+            ></base-action-button>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -59,46 +84,38 @@
             <h1 class="subtitle">Main information</h1>
           </div>
           <div class="main-info">
-            <div class="p-4">
-              <div class="d-flex">
-                <div class="p-1">
-                  <base-badge
-                    :content="'Organizer'"
-                    :categoryStyle="badgeStyle()"
-                    :type="'badge'"
-                  ></base-badge>
-                </div>
-                <div class="ml-auto mt-4 p-1 info">
-                  {{ selectedEvent.organizer_username }}
-                </div>
+            <div class="d-flex">
+              <base-badge
+                :content="'Organizer'"
+                :categoryStyle="badgeStyle()"
+                :type="'badge'"
+              ></base-badge>
+              <div class="ml-auto mt-4 p-1 info">
+                {{ selectedEvent.organizer_username }}
               </div>
-              <div class="d-flex">
-                <div class="p-1">
-                  <base-badge
-                    :content="'Website'"
-                    :categoryStyle="badgeStyle()"
-                    :type="'badge'"
-                  ></base-badge>
-                </div>
-                <div class="ml-auto mt-4 p-1 info">
-                  <a :href="selectedEvent.event_website">{{
-                    selectedEvent.event_website
-                  }}</a>
-                </div>
+            </div>
+            <div class="d-flex">
+              <base-badge
+                :content="'Website'"
+                :categoryStyle="badgeStyle()"
+                :type="'badge'"
+              ></base-badge>
+              <div class="ml-auto mt-4 p-1 info">
+                <a :href="selectedEvent.event_website">{{
+                  selectedEvent.event_website
+                }}</a>
               </div>
-              <div class="d-flex">
-                <div class="p-1">
-                  <base-badge
-                    :content="'Tickets'"
-                    :categoryStyle="badgeStyle()"
-                    :type="'badge'"
-                  ></base-badge>
-                </div>
-                <div class="ml-auto mt-4 p-1 info">
-                  <a :href="selectedEvent.tickets_website">{{
-                    selectedEvent.tickets_website
-                  }}</a>
-                </div>
+            </div>
+            <div class="d-flex">
+              <base-badge
+                :content="'Tickets'"
+                :categoryStyle="badgeStyle()"
+                :type="'badge'"
+              ></base-badge>
+              <div class="ml-auto mt-4 p-1 info">
+                <a :href="selectedEvent.tickets_website">{{
+                  selectedEvent.tickets_website
+                }}</a>
               </div>
             </div>
           </div>
@@ -106,15 +123,16 @@
             <div class="mt-4 pr-5">
               <h1 class="subtitle">Event detail</h1>
               <p class="description">{{ selectedEvent.description }}</p>
-              <div class="action-button going-action-button">
+              <div v-if="!isMobile">
                 <base-action-button
                   :icon="'event_available'"
                   :label="'Going'"
                   :user-going="userIsGoing"
                   @click="goingToggle"
+                  class="action-button going-action-button"
                 ></base-action-button>
                 <base-action-button
-                    v-if="!selectedEvent.user_is_going"
+                  v-if="!selectedEvent.user_is_going"
                   :icon="'favorite'"
                   :label="'Like'"
                   :user-interested="userIsInterested"
@@ -138,16 +156,24 @@
       </div>
     </div>
   </div>
+  <scroll-to-top-arrow></scroll-to-top-arrow>
 </template>
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
-import {apiService} from "../common/api.service";
+import { apiService } from "../common/api.service";
 import BaseBadge from "../ui/BaseBadge";
 import BaseActionButton from "../ui/BaseActionButton";
+import ScrollToTopArrow from "../ui/ScrollToTopArrow";
 
 export default {
-  components: { BaseActionButton, GoogleMap, Marker, BaseBadge },
+  components: {
+    ScrollToTopArrow,
+    BaseActionButton,
+    GoogleMap,
+    Marker,
+    BaseBadge,
+  },
   props: ["id"],
   data() {
     return {
@@ -227,7 +253,11 @@ export default {
         return "sport";
       }
       if (!category) {
-        return "base";
+        if (this.isMobile) {
+          return "base-mobile";
+        } else {
+          return "base"
+        }
       }
     },
     async goingToggle() {
@@ -330,13 +360,9 @@ img {
   right: 50px;
 }
 .going-action-button {
-  display: block;
-  position: fixed;
-  top: 200px;
-  z-index: 99;
-  right: 50px;
+  top: 180px;
 }
 .like-action-button {
-  top: 280px;
+  top: 260px;
 }
 </style>

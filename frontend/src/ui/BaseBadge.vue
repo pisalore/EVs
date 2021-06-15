@@ -38,7 +38,6 @@ export default {
   padding: 0 25px;
   line-height: 40px;
   text-align: center;
-  width: 150px;
   border-radius: 40px;
   font-style: normal;
   font-weight: 300;
@@ -57,34 +56,46 @@ export default {
   font-weight: 300;
   font-size: 22px;
   color: #fa4a43;
+  width: 150px;
 }
 
 .sport {
   background: #ffe8c6;
   border: 1px solid #ffbb33;
   color: #8c5d00;
+  width: 150px;
 }
 
 .art {
   background: #d1d9ff;
   border: 1px solid #1f6dad;
   color: #1f6dad;
+  width: 150px;
 }
 
 .food {
   background: #9aeb94;
   border: 1px solid #13572f;
   color: #575757;
+  width: 150px;
 }
 
 .other {
   background: #d6d6d6;
   border: 1px solid #575757;
   color: #575757;
+  width: 150px;
+}
+.base-mobile {
+  border: 0.5px solid #1f6dad;
+  color: #1f6dad;
+  font-weight: 500;
+  max-width: 90px;
 }
 .base {
   border: 0.5px solid #1f6dad;
   color: #1f6dad;
   font-weight: 500;
+  width: 200px;
 }
 </style>
