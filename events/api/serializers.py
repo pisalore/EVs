@@ -70,8 +70,13 @@ class EventSerializer(serializers.ModelSerializer):
         return event
 
     def update(self, instance, validated_data):
-        categories = validated_data.pop('categories')
-        instance.categories.clear()
+        categories = validated_data.pop('categories', None)
+        if categories:
+            instance.categories.clear()
+            for category in categories:
+                c = Category.objects.get(category=category['category'])
+                instance.categories.add(c)
+
         instance.status = validated_data.get("status", instance.status)
         instance.name = validated_data.get("name", instance.name)
         instance.description = validated_data.get("description", instance.description)
@@ -83,9 +88,6 @@ class EventSerializer(serializers.ModelSerializer):
         instance.evs_link = validated_data.get("evs_link", instance.evs_link)
         instance.event_website = validated_data.get("event_website", instance.event_website)
         instance.tickets_website = validated_data.get("tickets_website", instance.tickets_website)
-        for category in categories:
-            c = Category.objects.get(category=category['category'])
-            instance.categories.add(c)
         instance.save()
         return instance
 

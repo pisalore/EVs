@@ -49,7 +49,11 @@
     <div class="container-fluid mt-5">
       <div class="row d-flex">
         <div class="col-xl-12">
-          <event-form :event="event"></event-form>
+          <event-form
+            :event="event"
+            :organizer="organizer"
+            @update-event="updateEvent"
+          ></event-form>
         </div>
       </div>
     </div>
@@ -58,6 +62,7 @@
 
 <script>
 import { uploadEventCover } from "../common/upload_service";
+import { apiService } from "../common/api.service";
 import Snackbar from "../ui/Snackbar";
 import EventForm from "../components/events/EventForm";
 
@@ -72,7 +77,6 @@ export default {
       currentFile: undefined,
       isError: false,
       snackbarMessage: "",
-      userEmailForm: "",
       snackBarColor: "",
       showSnackbar: false,
     };
@@ -99,6 +103,21 @@ export default {
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         this.currentFile = undefined;
+        console.log(response);
+      } catch (error) {
+        this.isError = true;
+        this.snackbarMessage = error;
+        this.snackBarColor = "#E32822";
+        this.showSnackbar = true;
+      }
+    },
+    async updateEvent(formData) {
+      try {
+        let endpoint = `/api/events/${this.id}/`;
+        const response = await apiService(endpoint, "PATCH", formData);
+        this.snackbarMessage = "Event uploaded successfully.";
+        this.snackBarColor = "#3DB834";
+        this.showSnackbar = true;
         console.log(response);
       } catch (error) {
         this.isError = true;

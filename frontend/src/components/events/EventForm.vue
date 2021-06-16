@@ -210,7 +210,8 @@ import BaseBadge from "../../ui/BaseBadge";
 export default {
   name: "EventForm",
   components: { BaseBadge },
-  props: ["event"],
+  props: ["event", "organizer"],
+  emits: ["update-event"],
   data() {
     return {
       formEventName: this.event.name ? this.event.name : "",
@@ -248,6 +249,7 @@ export default {
         },
       ],
       eventStatus: this.computeEventStatus(this.event.status),
+      selectedStatus: this.event.status ? this.event.status : "S",
     };
   },
   computed: {
@@ -261,15 +263,14 @@ export default {
   },
   methods: {
     changeStatus(status) {
+      this.selectedStatus = status;
       this.eventStatus = this.computeEventStatus(status);
     },
     addCategory(category) {
       if (this.selectedCategories.indexOf(category) === -1)
         this.selectedCategories.push(category);
-      console.log(this.selectedCategories);
     },
     removeCategory(category) {
-      console.log(category);
       const index = this.selectedCategories.indexOf(category);
       this.selectedCategories.splice(index, 1);
     },
@@ -339,11 +340,10 @@ export default {
     submitForm() {
       this.validateForm();
       if (!this.nameError && !this.formError2 && !this.formError3) {
-        console.log("submit");
         let formData = {
           name: this.formEventName,
           description: this.formEventDescription,
-          status: this.computeEventStatus().charAt(0),
+          status: this.selectedStatus,
           venue: this.formEventVenue,
           start_date: this.formEventStartDate,
           finish_date: this.formEventEndDate,
@@ -351,8 +351,10 @@ export default {
           finish_hour: this.formEventEndTime,
           event_website: this.formEventWebsite,
           tickets_website: this.formEventTickets,
+          organizer: this.organizer.id,
+          categories: this.selectedCategories
         };
-        console.log(formData);
+        this.$emit("update-event", formData);
       }
     },
   },
