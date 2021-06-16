@@ -141,6 +141,7 @@
                 v-for="category in categories"
                 :key="category.id"
                 @click="addCategory(category)"
+                style="cursor: pointer"
               >
                 {{ category.category }}
               </a>
@@ -232,7 +233,7 @@ export default {
       websiteError: false,
       ticketsError: false,
       categories: [],
-      selectedCategories: [],
+      selectedCategories: this.event ? this.event.categories : [],
       statuses: [
         {
           status: "A",
@@ -266,8 +267,13 @@ export default {
       this.eventStatus = this.computeEventStatus(status);
     },
     addCategory(category) {
-      if (this.selectedCategories.indexOf(category) === -1)
+      let existing = this.selectedCategories.filter((c) => {
+        return c.id === category.id;
+      });
+      if (!existing.length) {
         this.selectedCategories.push(category);
+      }
+      console.log(existing);
     },
     removeCategory(category) {
       const index = this.selectedCategories.indexOf(category);
@@ -335,7 +341,12 @@ export default {
     },
     submitForm() {
       this.validateForm();
-      if (!this.nameError && !this.formError2 && !this.websiteError && !this.ticketsError) {
+      if (
+        !this.nameError &&
+        !this.formError2 &&
+        !this.websiteError &&
+        !this.ticketsError
+      ) {
         let formData = {
           name: this.formEventName,
           description: this.formEventDescription,
