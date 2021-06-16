@@ -10,6 +10,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+        extra_kwargs = {
+            'category': {'validators': []},
+        }
 
 
 class EventSerializerAction(serializers.ModelSerializer):
@@ -29,7 +32,7 @@ class EventSerializer(serializers.ModelSerializer):
     user_is_interested = serializers.SerializerMethodField(read_only=True)
     user_is_going = serializers.SerializerMethodField(read_only=True)
     organizer_username = serializers.SerializerMethodField(read_only=True)
-    categories = CategorySerializer(read_only=True, many=True)
+    categories = CategorySerializer(many=True)
 
     class Meta:
         model = Event
@@ -57,6 +60,22 @@ class EventSerializer(serializers.ModelSerializer):
         if not event_organizer.is_organizer:
             raise serializers.ValidationError('The event organizer MUST be an organizer.')
         return attrs
+
+    def create(self, validated_data):
+        categories = validated_data.pop('categories')
+        event = Event.objects.create(**validated_data)
+        for category in categories:
+            c = Category.objects.get(category=category['category'])
+            event.categories.add(c)
+        return event
+
+    def update(self, instance, validated_data):
+        categories = validated_data.pop('categories')
+        instance.categories.clear()
+        for category in categories:
+            c = Category.objects.get(category=category['category'])
+            instance.categories.add(c)
+        return instance
 
 
 class EventImageSerializer(serializers.ModelSerializer):
