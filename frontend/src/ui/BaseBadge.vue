@@ -10,7 +10,7 @@
       <div
         v-if="type !== 'badge'"
         class="material-icons"
-        style="margin-top: 11px"
+        style="margin-top: 9px"
         @click="close"
       >
         close

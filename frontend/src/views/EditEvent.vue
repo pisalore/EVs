@@ -49,7 +49,7 @@
     <div class="container-fluid mt-5">
       <div class="row d-flex">
         <div class="col-xl-12">
-          <event-form></event-form>
+          <event-form :event="event"></event-form>
         </div>
       </div>
     </div>
@@ -80,6 +80,9 @@ export default {
   computed: {
     organizer() {
       return this.$store.getters["user/getUserInfo"];
+    },
+    event() {
+      return this.$store.getters["events/getDetailEvent"];
     },
   },
   methods: {
@@ -127,7 +130,6 @@ export default {
     } else {
       this.titlePage = "Create new Event";
     }
-    console.log(event);
   },
 };
 </script>

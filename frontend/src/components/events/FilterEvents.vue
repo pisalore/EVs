@@ -47,7 +47,7 @@
             </button>
             <div class="dropdown-menu">
               <a
-                class="dropdown-item color-category"
+                class="dropdown-item"
                 v-for="category in categories"
                 :key="category.id"
                 @click="addCategory(category)"
@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="container-fluid my-2">
-        <hr>
+        <hr />
         <div class="row">
           <div class="col-xl-2 py-2">
             <span class="title">Selected categories:</span>
