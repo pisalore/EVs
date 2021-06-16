@@ -1,11 +1,11 @@
 <template>
-  <form>
+  <form @submit.prevent="submitForm">
     <div class="form-div">
       <div class="p-4">
         <h1 class="title">1. Add ev’s main information.</h1>
         <h2 class="subtitle">
           Provide an evocative name and information you think are useful for
-          potential partecipants. For example: age range, restrictions, how to
+          potential participants. For example: age range, restrictions, how to
           get ev location, services...
         </h2>
         <div class="form-group">
@@ -16,6 +16,8 @@
             class="form-control"
             id="evName"
             placeholder="Event name..."
+            :class="{ invalid: nameError }"
+            @focus="nameError = false"
           />
         </div>
         <div class="form-group">
@@ -49,18 +51,44 @@
         <div class="col-xl-12">
           <div class="row my-2">
             <div class="col-xl-4 mt-2"><span>Start date and hour</span></div>
-            <div class="col-xl-8">
+            <div class="col-xl-4">
               <input
+                v-model="formEventStartDate"
                 class="form-control"
-                type="datetime-local"
+                type="date"
                 id="startDate"
+                :class="{ invalid: formError2 }"
+                @focus="formError2 = false"
+              />
+            </div>
+            <div class="col-xl-4">
+              <input
+                v-model="formEventStartTime"
+                class="form-control"
+                type="time"
+                id="startTime"
+                @focus="formError2 = false"
               />
             </div>
           </div>
           <div class="row my-2">
             <div class="col-xl-4 mt-2"><span>Finish date and hour</span></div>
-            <div class="col-xl-8">
-              <input class="form-control" type="datetime-local" id="endDate" />
+            <div class="col-xl-4">
+              <input
+                v-model="formEventEndDate"
+                class="form-control"
+                type="date"
+                id="endDate"
+                :class="{ invalid: formError2 }"
+              />
+            </div>
+            <div class="col-xl-4">
+              <input
+                v-model="formEventEndTime"
+                class="form-control"
+                type="time"
+                id="endTime"
+              />
             </div>
           </div>
         </div>
@@ -168,7 +196,9 @@
       </div>
     </div>
     <div class="d-flex justify-content-center">
-      <button class="btn btn-success btn-lg mt-4">Update Event</button>
+      <button type="submit" class="btn btn-success btn-lg mt-4">
+        Update Event
+      </button>
     </div>
   </form>
 </template>
@@ -194,6 +224,13 @@ export default {
       formEventTickets: this.event.tickets_website
         ? this.event.tickets_website
         : "",
+      formEventStartDate: this.event.start_date ? this.event.start_date : "",
+      formEventEndDate: this.event.finish_date ? this.event.finish_date : "",
+      formEventStartTime: this.event.start_hour ? this.event.start_hour : "",
+      formEventEndTime: this.event.finish_hour ? this.event.finish_hour : "",
+      nameError: false,
+      formError2: false,
+      formError3: false,
       categories: [],
       selectedCategories: [],
       statuses: [
@@ -272,6 +309,39 @@ export default {
       }
       return "";
     },
+    validURL(str) {
+      var pattern = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+          "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+          "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // fragment locator
+      return !!pattern.test(str);
+    },
+    validateForm() {
+      if (!this.formEventName) {
+        this.nameError = true;
+      }
+      const fromDate = new Date(this.formEventStartDate);
+      const toDate = new Date(this.formEventEndDate);
+      this.formError2 = fromDate > toDate;
+      if (this.formEventWebsite) {
+        this.formError3 = !this.validURL(this.formEventWebsite);
+      }
+      if (this.formEventTickets) {
+        this.formError3 = !this.validURL(this.formEventTickets);
+      }
+      console.log(this.nameError, this.formError2, this.formError3)
+    },
+    submitForm() {
+      this.validateForm();
+      if (!this.nameError && !this.formError2 && !this.formError3) {
+        console.log("submit");
+      }
+    },
   },
   async created() {
     console.log(this.event);
@@ -304,5 +374,8 @@ export default {
   font-size: 24px;
   line-height: 28px;
   color: #575757;
+}
+.invalid {
+  border: 1px solid red;
 }
 </style>
