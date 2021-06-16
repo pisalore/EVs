@@ -307,7 +307,7 @@ export default {
       } else if (status === "C") {
         return "Canceled";
       }
-      return "";
+      return "Scheduled";
     },
     validURL(str) {
       var pattern = new RegExp(
@@ -334,12 +334,25 @@ export default {
       if (this.formEventTickets) {
         this.formError3 = !this.validURL(this.formEventTickets);
       }
-      console.log(this.nameError, this.formError2, this.formError3)
+      console.log(this.nameError, this.formError2, this.formError3);
     },
     submitForm() {
       this.validateForm();
       if (!this.nameError && !this.formError2 && !this.formError3) {
         console.log("submit");
+        let formData = {
+          name: this.formEventName,
+          description: this.formEventDescription,
+          status: this.computeEventStatus().charAt(0),
+          venue: this.formEventVenue,
+          start_date: this.formEventStartDate,
+          finish_date: this.formEventEndDate,
+          start_hour: this.formEventStartTime,
+          finish_hour: this.formEventEndTime,
+          event_website: this.formEventWebsite,
+          tickets_website: this.formEventTickets,
+        };
+        console.log(formData);
       }
     },
   },
