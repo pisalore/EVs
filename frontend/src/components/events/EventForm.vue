@@ -110,6 +110,8 @@
             class="form-control"
             id="evWebsite"
             placeholder="Event website..."
+            :class="{ invalid: websiteError }"
+            @focus="websiteError = false"
           />
         </div>
         <div class="form-group">
@@ -120,6 +122,8 @@
             class="form-control"
             id="evTickets"
             placeholder="Event tickets..."
+            :class="{ invalid: ticketsError }"
+            @focus="ticketsError = false"
           />
         </div>
         <div class="col-xl-12" :class="{ row: !isMobile }">
@@ -214,24 +218,19 @@ export default {
   emits: ["update-event"],
   data() {
     return {
-      formEventName: this.event.name ? this.event.name : "",
-      formEventDescription: this.event.description
-        ? this.event.description
-        : "",
-      formEventVenue: this.event.venue ? this.event.venue : "",
-      formEventWebsite: this.event.event_website
-        ? this.event.event_website
-        : "",
-      formEventTickets: this.event.tickets_website
-        ? this.event.tickets_website
-        : "",
-      formEventStartDate: this.event.start_date ? this.event.start_date : "",
-      formEventEndDate: this.event.finish_date ? this.event.finish_date : "",
-      formEventStartTime: this.event.start_hour ? this.event.start_hour : "",
-      formEventEndTime: this.event.finish_hour ? this.event.finish_hour : "",
+      formEventName: this.event ? this.event.name : "",
+      formEventDescription: this.event ? this.event.description : "",
+      formEventVenue: this.event ? this.event.venue : "",
+      formEventWebsite: this.event ? this.event.event_website : "",
+      formEventTickets: this.event ? this.event.tickets_website : "",
+      formEventStartDate: this.event ? this.event.start_date : "",
+      formEventEndDate: this.event ? this.event.finish_date : "",
+      formEventStartTime: this.event ? this.event.start_hour : "",
+      formEventEndTime: this.event ? this.event.finish_hour : "",
       nameError: false,
       formError2: false,
-      formError3: false,
+      websiteError: false,
+      ticketsError: false,
       categories: [],
       selectedCategories: [],
       statuses: [
@@ -310,17 +309,14 @@ export default {
       }
       return "Scheduled";
     },
-    validURL(str) {
-      var pattern = new RegExp(
-        "^(https?:\\/\\/)?" + // protocol
-          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-          "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-          "(\\#[-a-z\\d_]*)?$",
-        "i"
-      ); // fragment locator
-      return !!pattern.test(str);
+    validURL(url) {
+      console.log(url);
+      try {
+        new URL(url);
+      } catch (e) {
+        return false;
+      }
+      return true;
     },
     validateForm() {
       if (!this.formEventName) {
@@ -329,17 +325,17 @@ export default {
       const fromDate = new Date(this.formEventStartDate);
       const toDate = new Date(this.formEventEndDate);
       this.formError2 = fromDate > toDate;
+
       if (this.formEventWebsite) {
-        this.formError3 = !this.validURL(this.formEventWebsite);
+        this.websiteError = !this.validURL(this.formEventWebsite);
       }
       if (this.formEventTickets) {
-        this.formError3 = !this.validURL(this.formEventTickets);
+        this.ticketsError = !this.validURL(this.formEventTickets);
       }
-      console.log(this.nameError, this.formError2, this.formError3);
     },
     submitForm() {
       this.validateForm();
-      if (!this.nameError && !this.formError2 && !this.formError3) {
+      if (!this.nameError && !this.formError2 && !this.websiteError && !this.ticketsError) {
         let formData = {
           name: this.formEventName,
           description: this.formEventDescription,
@@ -352,7 +348,7 @@ export default {
           event_website: this.formEventWebsite,
           tickets_website: this.formEventTickets,
           organizer: this.organizer.id,
-          categories: this.selectedCategories
+          categories: this.selectedCategories,
         };
         this.$emit("update-event", formData);
       }

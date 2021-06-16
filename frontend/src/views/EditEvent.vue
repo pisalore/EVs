@@ -112,6 +112,7 @@ export default {
       }
     },
     async updateEvent(formData) {
+      console.log(formData)
       try {
         let endpoint = `/api/events/${this.id}/`;
         const response = await apiService(endpoint, "PATCH", formData);
