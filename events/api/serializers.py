@@ -72,9 +72,21 @@ class EventSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         categories = validated_data.pop('categories')
         instance.categories.clear()
+        instance.status = validated_data.get("status", instance.status)
+        instance.name = validated_data.get("name", instance.name)
+        instance.description = validated_data.get("description", instance.description)
+        instance.venue = validated_data.get("venue", instance.venue)
+        instance.start_date = validated_data.get("start_date", instance.start_date)
+        instance.finish_date = validated_data.get("finish_date", instance.finish_date)
+        instance.start_hour = validated_data.get("start_hour", instance.start_hour)
+        instance.finish_hour = validated_data.get("finish_hour", instance.finish_hour)
+        instance.evs_link = validated_data.get("evs_link", instance.evs_link)
+        instance.event_website = validated_data.get("event_website", instance.event_website)
+        instance.tickets_website = validated_data.get("tickets_website", instance.tickets_website)
         for category in categories:
             c = Category.objects.get(category=category['category'])
             instance.categories.add(c)
+        instance.save()
         return instance
 
 
