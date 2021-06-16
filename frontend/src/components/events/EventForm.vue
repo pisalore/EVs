@@ -114,6 +114,39 @@
           ></base-badge>
         </div>
       </div>
+      <div class="col-xl-12" :class="{ row: !isMobile }">
+        <div class="dropdown mt-3">
+          <button
+            type="button"
+            class="btn btn-lg btn-outline-primary dropdown-toggle"
+            data-toggle="dropdown"
+          >
+            Add event status
+          </button>
+          <div class="dropdown-menu">
+            <a
+              class="dropdown-item text-center"
+              v-for="status in statuses"
+              :key="status.status"
+              @click="changeStatus(status)"
+            >
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-8 mt-2" :class="{ 'd-flex justify-content-center': isMobile }">
+          <base-badge
+            :content="eventStatus"
+            :type="'badge'"
+            :category-style="'available'"
+          ></base-badge>
+        </div>
+        <div class="mt-4">
+          You can delete the event only if it is set on "Canceled" status.
+        </div>
+        <div class="col-xl-2 mt-3 d-flex justify-content-center">
+          <button class="btn btn-danger">Delete Event</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -130,6 +163,21 @@ export default {
     return {
       categories: [],
       selectedCategories: [],
+      statuses: [
+        {
+          status: "A",
+          label: "Available",
+        },
+        {
+          status: "S",
+          label: "Scheduled",
+        },
+        {
+          status: "C",
+          label: "Canceled",
+        },
+      ],
+      eventStatus: this.computeEventStatus(this.event.status),
     };
   },
   computed: {
@@ -142,6 +190,7 @@ export default {
     },
   },
   methods: {
+    changeStatus() {},
     addCategory(category) {
       if (this.selectedCategories.indexOf(category) === -1)
         this.selectedCategories.push(category);
@@ -169,8 +218,19 @@ export default {
         return "sport";
       }
     },
+    computeEventStatus(status) {
+      if (status === "A") {
+        return "Available";
+      } else if (status === "S") {
+        return "Scheduled";
+      } else if (status === "C") {
+        return "Canceled";
+      }
+      return "";
+    },
   },
   async created() {
+    console.log(this.event);
     let endpoint = "/api/categories/";
     this.categories = await apiService(endpoint);
   },

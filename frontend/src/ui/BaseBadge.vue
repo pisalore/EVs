@@ -98,4 +98,16 @@ export default {
   font-weight: 500;
   width: 200px;
 }
+.available {
+  color: #3db834;
+  font-weight: 500;
+}
+.scheduled {
+  color: #ffbb33;
+  font-weight: 500;
+}
+.canceled {
+  color: #e32822;
+  font-weight: 500;
+}
 </style>
