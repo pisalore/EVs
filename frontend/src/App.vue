@@ -4,19 +4,15 @@
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    async loadUserInfo() {
-      try {
-        await this.$store.dispatch("user/loadUserInfo");
-      } catch (error) {
-        this.error = error.message || "Something went wrong!";
-      }
-    },
-  },
-  created() {
-    this.loadUserInfo();
-  },
-};
-</script>
+<style>
+.spinner {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  background-size: 100%;
+}
+</style>

@@ -28,10 +28,6 @@ export default {
 </script>
 
 <style scoped>
-.success {
-  background-color: red;
-}
-
 #snackbar {
   visibility: hidden; /* Hidden by default. Visible on click */
   min-width: 350px;

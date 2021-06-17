@@ -10,6 +10,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+        extra_kwargs = {
+            'category': {'validators': []},
+        }
 
 
 class EventSerializerAction(serializers.ModelSerializer):
@@ -29,6 +32,7 @@ class EventSerializer(serializers.ModelSerializer):
     user_is_interested = serializers.SerializerMethodField(read_only=True)
     user_is_going = serializers.SerializerMethodField(read_only=True)
     organizer_username = serializers.SerializerMethodField(read_only=True)
+    categories = CategorySerializer(many=True)
 
     class Meta:
         model = Event
@@ -56,6 +60,36 @@ class EventSerializer(serializers.ModelSerializer):
         if not event_organizer.is_organizer:
             raise serializers.ValidationError('The event organizer MUST be an organizer.')
         return attrs
+
+    def create(self, validated_data):
+        categories = validated_data.pop('categories')
+        event = Event.objects.create(**validated_data)
+        for category in categories:
+            c = Category.objects.get(category=category['category'])
+            event.categories.add(c)
+        return event
+
+    def update(self, instance, validated_data):
+        categories = validated_data.pop('categories', None)
+        if categories:
+            instance.categories.clear()
+            for category in categories:
+                c = Category.objects.get(category=category['category'])
+                instance.categories.add(c)
+
+        instance.status = validated_data.get("status", instance.status)
+        instance.name = validated_data.get("name", instance.name)
+        instance.description = validated_data.get("description", instance.description)
+        instance.venue = validated_data.get("venue", instance.venue)
+        instance.start_date = validated_data.get("start_date", instance.start_date)
+        instance.finish_date = validated_data.get("finish_date", instance.finish_date)
+        instance.start_hour = validated_data.get("start_hour", instance.start_hour)
+        instance.finish_hour = validated_data.get("finish_hour", instance.finish_hour)
+        instance.evs_link = validated_data.get("evs_link", instance.evs_link)
+        instance.event_website = validated_data.get("event_website", instance.event_website)
+        instance.tickets_website = validated_data.get("tickets_website", instance.tickets_website)
+        instance.save()
+        return instance
 
 
 class EventImageSerializer(serializers.ModelSerializer):

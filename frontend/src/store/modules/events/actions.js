@@ -1,11 +1,12 @@
 import { apiService } from "../../../common/api.service";
 
 export default {
-  searchEventsByCity(context, city) {
+  async searchEventsByCity(context, city) {
     let endpoint = `api/events/?venue=${city}`;
-    apiService(endpoint).then((response) => {
-      console.log(response.results);
-    });
+    const response = await apiService(endpoint);
+    context.commit("setSearchedCity", city);
+    context.commit("setEventsPageEvents", response.results);
+    context.commit("setNextEventsPageEvsLink", response.next);
   },
   async loadMostParticipatedEvents(context) {
     let endpoint = `api/most-participated/`;
@@ -41,7 +42,24 @@ export default {
       } else if (info.type === "expiring") {
         context.commit("setNextExpiringEventsLink", response.next);
         context.commit("updateExpiringEvents", response.results);
+      } else if (info.type === "evs") {
+        context.commit("setNextEventsPageEvsLink", response.next);
+        context.commit("updateEventsPageEvents", response.results);
       }
     }
+  },
+  async loadEventsInPageEvents(context, endpoint) {
+    const response = await apiService(endpoint);
+
+    context.commit("setNextEventsPageEvsLink", response.next);
+    context.commit("setEventsPageEvents", response.results);
+  },
+  async loadSelectedEvent(context, payload) {
+    let endpoint = `/api/events/${payload}/`;
+    const response = await apiService(endpoint);
+    context.commit("setDetailEvent", response);
+  },
+  resetSearchedCity(context) {
+    context.commit("events/setSearchedCity", null);
   },
 };

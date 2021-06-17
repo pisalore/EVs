@@ -1,5 +1,12 @@
 <template>
-  <div class="container">
+  <pulse-loader
+    v-if="isLoading"
+    :loading="isLoading"
+    color="#4BABFA"
+    size="20px"
+    class="spinner"
+  ></pulse-loader>
+  <div v-else class="container">
     <div class="text-center">
       <div>
         <p class="home-claim p-2 mb-5">
@@ -10,7 +17,7 @@
         <form @submit.prevent="searchEventsByCity">
           <div class="form-group mb-3">
             <input
-              v-model.trim="searchedCity"
+              v-model="searchedCity"
               v-on:focus="clearErrors()"
               type="text"
               class="form-control form-rounded mb-4"
@@ -27,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div v-if="!isMobile">
+  <div v-if="!isMobile && !isLoading">
     <events-slot
       background="azure"
       title="Most participated"
@@ -43,11 +50,12 @@
         :venue="ev.venue"
         :start_date="ev.start_date"
         :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
         :image="ev.event_image"
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
       >
       </event-card>
     </events-slot>
@@ -66,11 +74,12 @@
         :venue="ev.venue"
         :start_date="ev.start_date"
         :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
         :image="ev.event_image"
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
       >
       </event-card>
     </events-slot>
@@ -89,16 +98,17 @@
         :venue="ev.venue"
         :start_date="ev.start_date"
         :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
         :image="ev.event_image"
         :website="ev.event_website"
         :interested="ev.interested_count"
         :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
       >
       </event-card>
     </events-slot>
   </div>
-  <div v-else>
+  <div v-else-if="!isLoading && isMobile">
     <events-slot-mobile
       background="azure"
       title="Most participated"
@@ -119,11 +129,12 @@
           :venue="ev.venue"
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
-          :start_hour="ev.start_hour"
           :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+          :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>
@@ -148,11 +159,12 @@
           :venue="ev.venue"
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
-          :start_hour="ev.start_hour"
           :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+          :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>
@@ -177,30 +189,39 @@
           :venue="ev.venue"
           :start_date="ev.start_date"
           :end_date="ev.finish_date"
-          :start_hour="ev.start_hour"
           :is_mobile="true"
           :website="ev.event_website"
           :interested="ev.interested_count"
           :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+          :user_interested="ev.user_is_interested"
         >
         </event-card>
       </div>
     </events-slot-mobile>
   </div>
+  <scroll-to-top-arrow></scroll-to-top-arrow>
 </template>
 
 <script>
 import EventCard from "../components/events/EventCard";
 import EventsSlot from "../ui/EventsSlot";
 import EventsSlotMobile from "../ui/EventsSlotMobile";
+import ScrollToTopArrow from "../ui/ScrollToTopArrow";
 
 export default {
   name: "Home",
-  components: { EventsSlot, EventsSlotMobile, EventCard },
+  components: {
+    EventsSlot,
+    EventsSlotMobile,
+    EventCard,
+    ScrollToTopArrow,
+  },
   data() {
     return {
       searchedCity: "",
       searchFieldIsNotEmpty: true,
+      isLoading: false,
     };
   },
 
@@ -214,7 +235,9 @@ export default {
         return;
       }
       const city = this.searchedCity;
+      this.isLoading = true;
       await this.$store.dispatch("events/searchEventsByCity", city);
+      this.isLoading = false;
       await this.$router.push("/events");
     },
     clearErrors() {
@@ -222,12 +245,14 @@ export default {
     },
     async loadEvents() {
       try {
+        this.isLoading = true;
         await this.$store.dispatch("events/loadMostParticipatedEvents");
         await this.$store.dispatch("events/loadMostInterestedEvents");
         await this.$store.dispatch("events/loadExpiringEvents");
       } catch (error) {
         this.error = error.message || "Something went wrong!";
       }
+      this.isLoading = false;
     },
   },
   computed: {
@@ -250,8 +275,10 @@ export default {
       return this.$store.getters["events/getNextExpiringEventsLink"];
     },
     isMobile() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
+      return (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        ) || window.screen.width < 760
       );
     },
   },
@@ -272,7 +299,7 @@ export default {
 .form-control::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   position: absolute;
-  left: 2.68%;
+  left: 15px;
   right: 29.27%;
   top: 27.5%;
   bottom: 26.25%;

@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import generics, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -48,7 +50,7 @@ class ExpiringEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.filter(status='A').order_by('start_date')
+        return Event.objects.filter(status='A').filter(start_date__gte=datetime.datetime.now()).order_by('start_date')
 
 
 class MostParticipatedEventsListAPIView(generics.ListAPIView):
@@ -57,8 +59,9 @@ class MostParticipatedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.all().annotate(participants_count=Count('participants'))\
-            .filter(status='A')\
+        return Event.objects.all().annotate(participants_count=Count('participants')) \
+            .filter(status='A') \
+            .filter(start_date__gte=datetime.datetime.now()) \
             .order_by('-participants_count')
 
 
@@ -68,9 +71,11 @@ class MostInterestedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.all().annotate(interested_count=Count('interested'))\
-            .filter(status='A')\
+        return Event.objects.all().annotate(interested_count=Count('interested')) \
+            .filter(status='A') \
+            .filter(start_date__gte=datetime.datetime.now()) \
             .order_by('-interested_count')
+
 
 class EventInterestAPIView(APIView):
     serializer_class = EventSerializerAction

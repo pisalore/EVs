@@ -8,7 +8,7 @@ from users.models import EvUser
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 
 
@@ -72,24 +72,30 @@ class EventManagingTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_event_organizer(self):
+        self.client = APIClient()
         url = '/api/events/'
         test_event = {
             "name": "test event",
             "description": "test description",
             "status": "S",
             "venue": "Test Venue",
-            "start_date": "",
-            "finish_date": "",
-            "start_hour": "",
-            "finish_hour": "",
+            "start_date": "2021-06-15",
+            "finish_date": "2021-06-15",
+            "start_hour": "15:29:58",
+            "finish_hour": "15:29:58",
             "evs_link": "",
             "event_website": "",
             "tickets_website": "",
             "organizer": self.organizer.id,
-            "categories": [1, 2, 3, 4, 5]
+            "categories": [
+                {
+                    "category": "Music",
+                    "id": 1
+                },
+            ]
         }
         self.client.force_authenticate(user=self.organizer)
-        response = self.client.post(url, test_event)
+        response = self.client.post(url, test_event, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_retrieve_single_event(self):
@@ -106,9 +112,10 @@ class EventManagingTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json.loads(response.content)['id'], test_event.id)
         self.assertEqual(json.loads(response.content)['name'], test_event.name)
-        self.assertIn(test_event.categories.get(id=1).id, json.loads(response.content)['categories'])
+        self.assertEqual(test_event.categories.get(id=1).category, "Art & Culture")
 
     def test_event_update(self):
+        self.client = APIClient()
         self.client.force_authenticate(user=self.organizer)
         test_event = Event.objects.create(
             name="Test event 2",
@@ -119,21 +126,26 @@ class EventManagingTest(APITestCase):
         test_event.categories.add(Category.objects.get(id=1))
         update_event_data = {
             "name": "Test event renamed",
-            "description": "Fixed description",
-            "status": "A",
+            "description": "test description",
+            "status": "S",
             "venue": "Test Venue",
-            "start_date": "",
-            "finish_date": "",
-            "start_hour": "",
-            "finish_hour": "",
+            "start_date": "2021-06-15",
+            "finish_date": "2021-06-15",
+            "start_hour": "15:29:58",
+            "finish_hour": "15:29:58",
             "evs_link": "",
             "event_website": "",
             "tickets_website": "",
             "organizer": self.organizer.id,
-            "categories": [1]
+            "categories": [
+                {
+                    "category": "Music",
+                    "id": 1
+                },
+            ]
         }
         url = '/api/events/{}/'.format(test_event.id)
-        response = self.client.put(url, update_event_data)
+        response = self.client.put(url, update_event_data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json.loads(response.content)['name'], "Test event renamed")

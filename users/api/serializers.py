@@ -6,9 +6,20 @@ from users.models import EvUser
 
 
 class EvUserDisplaySerializer(serializers.ModelSerializer):
+    profile_image = AWSDocumentSerializer(read_only=True)
+    is_the_event_organizer = serializers.SerializerMethodField()
+
     class Meta:
         model = EvUser
-        fields = ["id", "username", "first_name", "last_name", "email", "organization_name", "is_organizer", "profile_image"]
+        fields = ["id", "username", "first_name", "last_name", "email", "organization_name", "is_organizer",
+                  "is_the_event_organizer","profile_image"]
+
+    def get_is_the_event_organizer(self, instance):
+        event_id = self.context.get("event_id")
+        if event_id:
+            return instance.events.all().filter(id=event_id).exists()
+        else:
+            return False
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

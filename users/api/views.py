@@ -15,7 +15,8 @@ class CurrentUserAPIView(APIView):
 
     def get(self, request):
         if not request.user.is_anonymous:
-            serializer = EvUserDisplaySerializer(request.user)
+            event_id = self.request.query_params.get('event_id', None)
+            serializer = EvUserDisplaySerializer(request.user, context={"event_id": event_id})
             return Response(serializer.data)
         else:
             return Response(status=204)

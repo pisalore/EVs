@@ -82,6 +82,7 @@
   line-height: 42px;
   text-align: center;
   color: #575757;
+  margin-top: 20px;
 }
 
 .wrapper {

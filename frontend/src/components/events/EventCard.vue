@@ -1,5 +1,5 @@
 <template>
-  <div class="card col-xl-3 mx-3" style="width: 18rem">
+  <div class="card col-xl-3 mx-3 my-2" style="width: 18rem">
     <div class="card-body" @click="eventDetail">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
@@ -31,16 +31,40 @@
         </a>
       </div>
       <div class="mt-2" v-else>
-        <div class="row d-flex justify-content-around mt-2">
+        <div class="row d-flex justify-content-around pt-4">
           <div>
             <span class="px-2" style="color: #e32822">
-              <i class="fa fa-heart" aria-hidden="true"></i
+              <i
+                v-if="!user_interested"
+                class="material-icons-outlined mr-1"
+                aria-hidden="true"
+                style="font-size: 30px"
+                >favorite_border</i
+              >
+              <i
+                v-else
+                class="material-icons mr-1"
+                aria-hidden="true"
+                style="font-size: 30px"
+                >favorite</i
               >{{ interested }} likes
             </span>
           </div>
           <div>
             <span class="px-2" style="color: #1f6dad">
-              <i class="fa fa-calendar" aria-hidden="true"></i
+              <i
+                v-if="!user_going"
+                class="material-icons mr-1"
+                aria-hidden="true"
+                style="font-size: 30px"
+                >calendar_today</i
+              >
+              <i
+                v-else
+                class="material-icons mr-1"
+                aria-hidden="true"
+                style="font-size: 30px"
+                >event_available</i
               >{{ participants }} going
             </span>
           </div>
@@ -60,12 +84,13 @@ export default {
     "venue",
     "start_date",
     "end_date",
-    "start_hour",
     "image",
     "is_mobile",
     "website",
     "interested",
     "participants",
+    "user_going",
+    "user_interested",
   ],
   data() {
     return {
@@ -89,13 +114,9 @@ export default {
         options
       );
       let endDate = this.end_date;
-      let startHour = this.start_hour;
       if (endDate) {
         endDate = new Date(this.end_date).toLocaleDateString("en", options);
         startDate += ` to ${endDate}`;
-      }
-      if (startHour) {
-        startDate += ` at ${startHour}`;
       }
       return startDate;
     },
@@ -176,6 +197,6 @@ export default {
 }
 
 .img-div {
-  padding-top: 30px;
+  margin-top: 30px;
 }
 </style>

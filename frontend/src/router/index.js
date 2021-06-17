@@ -6,6 +6,8 @@ import ContactUs from "../views/ContactUs";
 import FAQ from "../views/FAQ";
 import Events from "../views/Events";
 import EventDetail from "../views/EventDetail";
+import EditEvent from "../views/EditEvent";
+import NotFound from "../views/NotFound";
 
 const routes = [
   {
@@ -38,6 +40,16 @@ const routes = [
     component: EventDetail,
     props: true,
   },
+  {
+    path: "/event-edit/:id",
+    component: EditEvent,
+    props: true,
+  },
+  {
+    path: "/event-create/",
+    component: EditEvent,
+  },
+  { path: "/:notFound(.*)", component: NotFound },
 ];
 
 const router = createRouter({

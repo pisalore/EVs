@@ -32,4 +32,21 @@ export default {
       state.expiringEvents.push(ev);
     });
   },
+  setEventsPageEvents(state, payload) {
+    state.eventsPageEvs = payload;
+  },
+  updateEventsPageEvents(state, payload) {
+    payload.forEach(function (ev) {
+      state.eventsPageEvs.push(ev);
+    });
+  },
+  setNextEventsPageEvsLink(state, payload) {
+    state.nextEventsPageEvsLink = payload;
+  },
+  setSearchedCity(state, payload) {
+    state.searchedCity = payload;
+  },
+  setDetailEvent(state, payload) {
+    state.selectedDetailEvent = payload;
+  },
 };
