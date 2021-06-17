@@ -210,16 +210,23 @@
             v-if="eventStatus === 'Canceled'"
             class="col-xl-2 mt-3 d-flex justify-content-center"
           >
-            <button class="btn btn-danger">Delete Event</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="deleteEvent"
+            >
+              Delete Event
+            </button>
           </div>
         </div>
       </div>
+      <base-modal v-if="showModal"></base-modal>
     </div>
     <div class="d-flex justify-content-center">
       <button
         type="submit"
         class="btn btn-success btn-lg mt-4"
-        @click="deleteEvent"
+        @click="submitForm"
       >
         Update Event
       </button>
@@ -230,10 +237,11 @@
 <script>
 import { apiService } from "../../common/api.service";
 import BaseBadge from "../../ui/BaseBadge";
+import BaseModal from "../../ui/BaseModal";
 
 export default {
   name: "EventForm",
-  components: { BaseBadge },
+  components: { BaseBadge, BaseModal },
   props: ["event", "organizer"],
   emits: ["update-event", "delete-event"],
   data() {
@@ -251,6 +259,7 @@ export default {
       formError2: false,
       websiteError: false,
       ticketsError: false,
+      showModal: false,
       categories: [],
       selectedCategories: this.event ? this.event.categories : [],
       statuses: [
@@ -346,6 +355,7 @@ export default {
       return true;
     },
     validateForm() {
+      console.log("validate")
       if (!this.formEventName) {
         this.nameError = true;
         document

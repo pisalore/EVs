@@ -115,7 +115,7 @@ export default {
     },
     async updateEvent(formData) {
       try {
-        let endpoint = `/api/events/${this.id}/`;
+        let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
         const response = await apiService(endpoint, "PATCH", formData);
         this.snackbarMessage = "Event uploaded successfully.";
         this.snackBarColor = "#3DB834";
@@ -130,7 +130,8 @@ export default {
     },
     async deleteEvent() {
       try {
-        let endpoint = `/api/events/${this.id}/`;
+        console.log("delete")
+        let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
         const response = await apiService(endpoint, "DELETE");
         this.snackbarMessage = "Event deleted successfully.";
         this.snackBarColor = "#3DB834";

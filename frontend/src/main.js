@@ -9,6 +9,7 @@ import BaseBadge from "./ui/BaseBadge";
 import FilterEvents from "./components/events/FilterEvents";
 import ScrollToTopArrow from "./ui/ScrollToTopArrow";
 import BaseActionButton from "./ui/BaseActionButton";
+import BaseModal from "./ui/BaseModal";
 
 const app = createApp(App);
 
@@ -22,5 +23,6 @@ app.component("snackbar", Snackbar);
 app.component("base-badge", BaseBadge);
 app.component("scroll-arrow", ScrollToTopArrow);
 app.component("base-action-button", BaseActionButton);
+app.component("base-modal", BaseModal);
 
 app.mount("#app");
