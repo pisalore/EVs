@@ -210,7 +210,11 @@
             v-if="eventStatus === 'Canceled'"
             class="col-xl-2 mt-3 d-flex justify-content-center"
           >
-            <button type="button" class="btn btn-danger" @click="deleteEvent">
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="showDeleteModal"
+            >
               Delete Event
             </button>
           </div>
@@ -221,7 +225,7 @@
       <button
         type="button"
         class="btn btn-success btn-lg mt-4"
-        @click="showModal = true"
+        @click="showUpdateModal"
       >
         Update Event
       </button>
@@ -230,12 +234,12 @@
   <base-modal
     v-if="showModal"
     @cancel-modal="showModal = false"
-    @confirm-modal="submitForm"
-    :title="'Event update'"
-    :message="'Are you sure to update event? '"
-    :confirm="'Yes'"
-    :cancel="'Cancel'"
-    :action="'confirm'"
+    @confirm-modal="confirmModal"
+    :title="modalTitle"
+    :message="modalMessage"
+    :confirm="modalConfirm"
+    :cancel="modalCancel"
+    :action="modalAction"
   ></base-modal>
 </template>
 
@@ -251,6 +255,11 @@ export default {
   emits: ["update-event", "delete-event"],
   data() {
     return {
+      modalTitle: "",
+      modalMessage: "",
+      modalAction: "",
+      modalConfirm: "",
+      modalCancel: "",
       formEventName: this.event ? this.event.name : "",
       formEventDescription: this.event ? this.event.description : "",
       formEventVenue: this.event ? this.event.venue : "",
@@ -265,6 +274,8 @@ export default {
       websiteError: false,
       ticketsError: false,
       showModal: false,
+      isModalUpdate: false,
+      isModalDelete: false,
       categories: [],
       selectedCategories: this.event ? this.event.categories : [],
       statuses: [
@@ -297,6 +308,34 @@ export default {
     },
   },
   methods: {
+    confirmModal() {
+      if (this.isModalUpdate) {
+        this.isModalUpdate = false;
+        this.submitForm();
+      } else if (this.isModalDelete) {
+        this.isModalDelete = false;
+        this.deleteEvent();
+      }
+    },
+    showUpdateModal() {
+      this.isModalUpdate = true;
+      this.modalAction = "confirm";
+      this.modalTitle = "Event update";
+      this.modalMessage = "Are you sure to update your event?";
+      this.modalConfirm = "Confirm";
+      this.modalCancel = "Cancel";
+      this.showModal = true;
+    },
+    showDeleteModal() {
+      this.isModalDelete = true;
+      this.modalAction = "delete";
+      this.modalTitle = "Event delete";
+      this.modalMessage =
+        "Are you sure to delete your event? This operation is not reversible";
+      this.modalConfirm = "Confirm";
+      this.modalCancel = "Cancel";
+      this.showModal = true;
+    },
     changeStatus(status) {
       this.selectedStatus = status;
       this.eventStatus = this.computeEventStatus(status);

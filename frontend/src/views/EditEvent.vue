@@ -195,6 +195,7 @@ export default {
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         console.log(response);
+        await this.$router.replace("/");
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;

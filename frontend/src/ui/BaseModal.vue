@@ -7,7 +7,7 @@
             <slot name="header"> {{ title }} </slot>
           </div>
 
-          <div class="modal-body message">
+          <div class="modal-body message m-4">
             <slot name="body"> {{ message }} </slot>
           </div>
 
@@ -47,7 +47,11 @@
 export default {
   name: "BaseModal",
   props: ["action", "title", "message", "confirm", "cancel"],
+  created() {
+    console.log(this.title)
+  }
 };
+
 </script>
 
 <style scoped>
