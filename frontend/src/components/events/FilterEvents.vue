@@ -102,6 +102,7 @@ import BaseBadge from "../../ui/BaseBadge";
 export default {
   name: "FilterEvents",
   components: { BaseBadge },
+  emits: ["searching", "searched"],
   data() {
     return {
       searchIsValid: false,
@@ -150,6 +151,7 @@ export default {
       }
     },
     async searchEventsUsingFilters() {
+      this.$emit("searching");
       this.validateForm();
       console.log(this.searchIsValid);
       if (this.searchIsValid) {
@@ -178,6 +180,7 @@ export default {
           searchString
         );
       }
+      this.$emit("searched");
     },
     async clearAllFilters() {
       this.filterCity = "";

@@ -6,7 +6,14 @@
     :message="snackbarMessage"
     @close="snackbarFalse"
   ></snackbar>
-  <div class="container">
+  <pulse-loader
+    v-if="isLoading"
+    :loading="isLoading"
+    color="#4BABFA"
+    size="20px"
+    class="spinner"
+  ></pulse-loader>
+  <div v-else class="container">
     <div class="col-xl-12 row">
       <h1 class="title">{{ titlePage }}</h1>
     </div>
@@ -97,6 +104,7 @@ export default {
       snackbarMessage: "",
       snackBarColor: "",
       showSnackbar: false,
+      isLoading: false,
     };
   },
   computed: {
@@ -116,6 +124,7 @@ export default {
   },
   methods: {
     async onCoverUpload() {
+      this.isLoading = true;
       try {
         let endpoint = `/api/events/${this.id}/image/`;
         await uploadEventCover(
@@ -135,8 +144,10 @@ export default {
         this.snackBarColor = "#E32822";
         this.showSnackbar = true;
       }
+      this.isLoading = false;
     },
     async deleteCover() {
+      this.isLoading = true;
       try {
         let endpoint = `/api/events/${this.id}/image/`;
         await uploadEventCover(
@@ -156,23 +167,26 @@ export default {
         this.snackBarColor = "#E32822";
         this.showSnackbar = true;
       }
+      this.isLoading = false;
     },
     async updateEvent(formData) {
+      this.isLoading = true;
       try {
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
-        const response = await apiService(endpoint, "PATCH", formData);
+        await apiService(endpoint, "PATCH", formData);
         this.snackbarMessage = "Event uploaded successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
-        console.log(response);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
         this.snackBarColor = "#E32822";
         this.showSnackbar = true;
       }
+      this.isLoading = false;
     },
     async deleteEvent() {
+      this.isLoading = true;
       try {
         console.log("delete");
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
@@ -187,6 +201,7 @@ export default {
         this.snackBarColor = "#E32822";
         this.showSnackbar = true;
       }
+      this.isLoading = false;
     },
     selectFile() {
       this.selectedFiles = this.$refs.file.files;
@@ -200,18 +215,18 @@ export default {
       this.snackBarColor = "";
     },
     async loadEvent() {
+      this.isLoading = true;
       await this.$store.dispatch("events/loadSelectedEvent", this.id);
     },
     async loadUserInfo() {
       await this.$store.dispatch("user/loadUserInfo");
+      this.isLoading = false;
     },
   },
   async created() {
-    console.log("edit");
     await this.loadEvent();
     await this.loadUserInfo();
     this.titlePage = `Edit ${this.$store.getters["events/getDetailEvent"].name}`;
-    console.log("edit->", this.event);
   },
 };
 </script>

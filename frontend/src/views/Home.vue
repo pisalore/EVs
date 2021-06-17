@@ -1,5 +1,12 @@
 <template>
-  <div class="container">
+  <pulse-loader
+    v-if="isLoading"
+    :loading="isLoading"
+    color="#4BABFA"
+    size="20px"
+    class="spinner"
+  ></pulse-loader>
+  <div v-else class="container">
     <div class="text-center">
       <div>
         <p class="home-claim p-2 mb-5">
@@ -27,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div v-if="!isMobile">
+  <div v-if="!isMobile && !isLoading">
     <events-slot
       background="azure"
       title="Most participated"
@@ -101,7 +108,7 @@
       </event-card>
     </events-slot>
   </div>
-  <div v-else>
+  <div v-else-if="!isLoading && isMobile">
     <events-slot-mobile
       background="azure"
       title="Most participated"
@@ -204,11 +211,17 @@ import ScrollToTopArrow from "../ui/ScrollToTopArrow";
 
 export default {
   name: "Home",
-  components: { EventsSlot, EventsSlotMobile, EventCard, ScrollToTopArrow },
+  components: {
+    EventsSlot,
+    EventsSlotMobile,
+    EventCard,
+    ScrollToTopArrow,
+  },
   data() {
     return {
       searchedCity: "",
       searchFieldIsNotEmpty: true,
+      isLoading: false,
     };
   },
 
@@ -222,7 +235,9 @@ export default {
         return;
       }
       const city = this.searchedCity;
+      this.isLoading = true;
       await this.$store.dispatch("events/searchEventsByCity", city);
+      this.isLoading = false;
       await this.$router.push("/events");
     },
     clearErrors() {
@@ -230,12 +245,14 @@ export default {
     },
     async loadEvents() {
       try {
+        this.isLoading = true;
         await this.$store.dispatch("events/loadMostParticipatedEvents");
         await this.$store.dispatch("events/loadMostInterestedEvents");
         await this.$store.dispatch("events/loadExpiringEvents");
       } catch (error) {
         this.error = error.message || "Something went wrong!";
       }
+      this.isLoading = false;
     },
   },
   computed: {

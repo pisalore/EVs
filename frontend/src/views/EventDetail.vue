@@ -1,181 +1,191 @@
 <template>
-  <div v-if="selectedEvent" class="ml-3" style="overflow: hidden">
-    <div class="col-xl-12 container-fluid">
-      <div class="row" style="height: 40%">
-        <div class="col-xl-6 p-0 m-0">
-          <h1 class="event-title my-3">{{ selectedEvent.name }}</h1>
-          <h2 class="event-venue my-3">@{{ selectedEvent.venue }}</h2>
-          <h2 class="event-time my-3">{{ computeDate }}</h2>
-          <div class="row my-3 container">
-            <div class="mr-4">
-              <span class="px-2" style="color: #e32822">
-                <i
-                  class="material-icons mr-2"
-                  aria-hidden="true"
-                  style="font-size: 30px"
-                  >favorite</i
-                >{{ selectedEvent.interested_count }} likes
-              </span>
+  <pulse-loader
+    v-if="isLoading"
+    :loading="isLoading"
+    color="#4BABFA"
+    size="20px"
+    class="spinner"
+  ></pulse-loader>
+  <div v-else>
+    <div v-if="selectedEvent" class="ml-3" style="overflow: hidden">
+      <div class="col-xl-12 container-fluid">
+        <div class="row" style="height: 40%">
+          <div class="col-xl-6 p-0 m-0">
+            <h1 class="event-title my-3">{{ selectedEvent.name }}</h1>
+            <h2 class="event-venue my-3">@{{ selectedEvent.venue }}</h2>
+            <h2 class="event-time my-3">{{ computeDate }}</h2>
+            <div class="row my-3 container">
+              <div class="mr-4">
+                <span class="px-2" style="color: #e32822">
+                  <i
+                    class="material-icons mr-2"
+                    aria-hidden="true"
+                    style="font-size: 30px"
+                    >favorite</i
+                  >{{ selectedEvent.interested_count }} likes
+                </span>
+              </div>
+              <div>
+                <span class="px-2" style="color: #1f6dad">
+                  <i
+                    class="material-icons mr-2"
+                    aria-hidden="true"
+                    style="font-size: 30px"
+                    >event_available</i
+                  >{{ selectedEvent.participants_count }} going
+                </span>
+              </div>
             </div>
-            <div>
-              <span class="px-2" style="color: #1f6dad">
-                <i
-                  class="material-icons mr-2"
-                  aria-hidden="true"
-                  style="font-size: 30px"
-                  >event_available</i
-                >{{ selectedEvent.participants_count }} going
-              </span>
-            </div>
-          </div>
-          <div :class="{ 'text-center': isMobile }" class="categories-div">
-            <base-badge
-              v-for="category in selectedEvent.categories"
-              :key="category.id"
-              :category="category"
-              :categoryStyle="badgeStyle(category.category)"
-              :type="'badge'"
-            ></base-badge>
-          </div>
-        </div>
-        <div class="col-xl-6 p-0 m-0" style="width: 100%; display: block">
-          <img
-            v-if="selectedEvent.event_image"
-            :src="selectedEvent.event_image.document"
-            alt=""
-            :class="{
-              'mobile-img-height': isMobile,
-              'desktop-img-height': !isMobile,
-            }"
-          />
-          <img
-            v-else
-            src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/event-placeholder.png"
-            alt=""
-            :class="{
-              'mobile-img-height': isMobile,
-              'desktop-img-height': !isMobile,
-            }"
-          />
-        </div>
-        <div v-if="isMobile && loggedUser">
-          <div class="my-3 text-center">
-            <base-action-button
-              v-if="loggedUser.is_the_event_organizer"
-              :icon="'create'"
-              :label="'Edit'"
-              @click="editEvent"
-              class="my-1"
-            ></base-action-button>
-            <base-action-button
-              v-if="!loggedUser.is_the_event_organizer"
-              :icon="'event_available'"
-              :label="'Going'"
-              :user-going="userIsGoing"
-              @click="goingToggle"
-              class="mx-1 my-1"
-            ></base-action-button>
-            <base-action-button
-              v-if="
-                !loggedUser.user_is_going && !loggedUser.is_the_event_organizer
-              "
-              :icon="'favorite'"
-              :label="'Like'"
-              :user-interested="userIsInterested"
-              @click="likeToggle"
-              class="mx-1 my-1"
-            ></base-action-button>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xl-6 p-0">
-          <div class="mt-2 separator">
-            <h1 class="subtitle">Main information</h1>
-          </div>
-          <div class="main-info">
-            <div class="d-flex">
+            <div :class="{ 'text-center': isMobile }" class="categories-div">
               <base-badge
-                :content="'Organizer'"
-                :categoryStyle="badgeStyle()"
+                v-for="category in selectedEvent.categories"
+                :key="category.id"
+                :category="category"
+                :categoryStyle="badgeStyle(category.category)"
                 :type="'badge'"
               ></base-badge>
-              <div class="ml-auto mt-4 p-1 info">
-                {{ selectedEvent.organizer_username }}
-              </div>
-            </div>
-            <div class="d-flex">
-              <base-badge
-                :content="'Website'"
-                :categoryStyle="badgeStyle()"
-                :type="'badge'"
-              ></base-badge>
-              <div class="ml-auto mt-4 p-1 info">
-                <a :href="selectedEvent.event_website">{{
-                  selectedEvent.event_website
-                }}</a>
-              </div>
-            </div>
-            <div class="d-flex mb-3">
-              <base-badge
-                :content="'Tickets'"
-                :categoryStyle="badgeStyle()"
-                :type="'badge'"
-              ></base-badge>
-              <div class="ml-auto mt-4 p-1 info">
-                <a :href="selectedEvent.tickets_website">{{
-                  selectedEvent.tickets_website
-                }}</a>
-              </div>
             </div>
           </div>
-          <div class="ev-description mt-">
-            <div class="mt-4 pr-5">
-              <h1 class="subtitle">Event detail</h1>
-              <p class="description">{{ selectedEvent.description }}</p>
-              <div v-if="!isMobile && loggedUser">
-                <base-action-button
-                  v-if="loggedUser.is_the_event_organizer"
-                  :icon="'create'"
-                  :label="'Edit'"
-                  @click="editEvent"
-                  class="action-button edit-action-button"
-                ></base-action-button>
-                <base-action-button
-                  v-if="!loggedUser.is_the_event_organizer"
-                  :icon="'event_available'"
-                  :label="'Going'"
-                  :user-going="userIsGoing"
-                  @click="goingToggle"
-                  class="action-button going-action-button"
-                ></base-action-button>
-                <base-action-button
-                  v-if="
-                    !loggedUser.user_is_going &&
-                    !loggedUser.is_the_event_organizer
-                  "
-                  :icon="'favorite'"
-                  :label="'Like'"
-                  :user-interested="userIsInterested"
-                  @click="likeToggle"
-                  class="action-button like-action-button"
-                ></base-action-button>
-              </div>
+          <div class="col-xl-6 p-0 m-0" style="width: 100%; display: block">
+            <img
+              v-if="selectedEvent.event_image"
+              :src="selectedEvent.event_image.document"
+              alt=""
+              :class="{
+                'mobile-img-height': isMobile,
+                'desktop-img-height': !isMobile,
+              }"
+            />
+            <img
+              v-else
+              src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/event-placeholder.png"
+              alt=""
+              :class="{
+                'mobile-img-height': isMobile,
+                'desktop-img-height': !isMobile,
+              }"
+            />
+          </div>
+          <div v-if="isMobile && loggedUser">
+            <div class="my-3 text-center">
+              <base-action-button
+                v-if="loggedUser.is_the_event_organizer"
+                :icon="'create'"
+                :label="'Edit'"
+                @click="editEvent"
+                class="my-1"
+              ></base-action-button>
+              <base-action-button
+                v-if="!loggedUser.is_the_event_organizer"
+                :icon="'event_available'"
+                :label="'Going'"
+                :user-going="userIsGoing"
+                @click="goingToggle"
+                class="mx-1 my-1"
+              ></base-action-button>
+              <base-action-button
+                v-if="
+                  !loggedUser.user_is_going &&
+                  !loggedUser.is_the_event_organizer
+                "
+                :icon="'favorite'"
+                :label="'Like'"
+                :user-interested="userIsInterested"
+                @click="likeToggle"
+                class="mx-1 my-1"
+              ></base-action-button>
             </div>
           </div>
         </div>
-        <div class="col-xl-6 p-0 m-0">
-          <GoogleMap
-            v-if="coordinates"
-            :api-key="googleApiKey"
-            style="width: 100%; height: 500px"
-            :center="coordinates"
-            :zoom="15"
-          >
-            <Marker :options="{ position: coordinates }" />
-          </GoogleMap>
-          <div v-else class="p-4">
-            <h3>Event venue is not provided organizer.</h3>
+        <div class="row">
+          <div class="col-xl-6 p-0">
+            <div class="mt-2 separator">
+              <h1 class="subtitle">Main information</h1>
+            </div>
+            <div class="main-info">
+              <div class="d-flex">
+                <base-badge
+                  :content="'Organizer'"
+                  :categoryStyle="badgeStyle()"
+                  :type="'badge'"
+                ></base-badge>
+                <div class="ml-auto mt-4 p-1 info">
+                  {{ selectedEvent.organizer_username }}
+                </div>
+              </div>
+              <div class="d-flex">
+                <base-badge
+                  :content="'Website'"
+                  :categoryStyle="badgeStyle()"
+                  :type="'badge'"
+                ></base-badge>
+                <div class="ml-auto mt-4 p-1 info">
+                  <a :href="selectedEvent.event_website">{{
+                    selectedEvent.event_website
+                  }}</a>
+                </div>
+              </div>
+              <div class="d-flex mb-3">
+                <base-badge
+                  :content="'Tickets'"
+                  :categoryStyle="badgeStyle()"
+                  :type="'badge'"
+                ></base-badge>
+                <div class="ml-auto mt-4 p-1 info">
+                  <a :href="selectedEvent.tickets_website">{{
+                    selectedEvent.tickets_website
+                  }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="ev-description mt-">
+              <div class="mt-4 pr-5">
+                <h1 class="subtitle">Event detail</h1>
+                <p class="description">{{ selectedEvent.description }}</p>
+                <div v-if="!isMobile && loggedUser">
+                  <base-action-button
+                    v-if="loggedUser.is_the_event_organizer"
+                    :icon="'create'"
+                    :label="'Edit'"
+                    @click="editEvent"
+                    class="action-button edit-action-button"
+                  ></base-action-button>
+                  <base-action-button
+                    v-if="!loggedUser.is_the_event_organizer"
+                    :icon="'event_available'"
+                    :label="'Going'"
+                    :user-going="userIsGoing"
+                    @click="goingToggle"
+                    class="action-button going-action-button"
+                  ></base-action-button>
+                  <base-action-button
+                    v-if="
+                      !loggedUser.user_is_going &&
+                      !loggedUser.is_the_event_organizer
+                    "
+                    :icon="'favorite'"
+                    :label="'Like'"
+                    :user-interested="userIsInterested"
+                    @click="likeToggle"
+                    class="action-button like-action-button"
+                  ></base-action-button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 p-0 m-0">
+            <GoogleMap
+              v-if="coordinates"
+              :api-key="googleApiKey"
+              style="width: 100%; height: 500px"
+              :center="coordinates"
+              :zoom="15"
+            >
+              <Marker :options="{ position: coordinates }" />
+            </GoogleMap>
+            <div v-else class="p-4">
+              <h3>Event venue is not provided organizer.</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -204,6 +214,7 @@ export default {
     return {
       coordinates: null,
       eventVenue: null,
+      isLoading: false,
     };
   },
   computed: {
@@ -252,19 +263,22 @@ export default {
   },
   methods: {
     async loadSelectedEvent() {
+      this.isLoading = true;
       const googleGeocodingAPI =
         "https://maps.googleapis.com/maps/api/geocode/json?address=";
       await this.$store.dispatch("events/loadSelectedEvent", this.id);
       await this.$store.dispatch("user/loadUserInfo", `?event_id=${this.id}`);
-      this.eventVenue = this.selectedEvent.venue;
+      this.eventVenue = await this.selectedEvent.venue;
       const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
         this.googleApiKey
       }`;
       if (this.eventVenue) {
         const response = await fetch(endpoint);
         const data = await response.json();
-        this.coordinates = data.results[0].geometry.location;
+        this.coordinates = await data.results[0].geometry.location;
       }
+      this.isLoading = false;
+      console.log(this.isLoading);
     },
     badgeStyle(category) {
       if (category === "Food") {

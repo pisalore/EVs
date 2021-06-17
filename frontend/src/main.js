@@ -10,6 +10,8 @@ import FilterEvents from "./components/events/FilterEvents";
 import ScrollToTopArrow from "./ui/ScrollToTopArrow";
 import BaseActionButton from "./ui/BaseActionButton";
 import BaseModal from "./ui/BaseModal";
+import PulseLoader from "vue-spinner/src/PulseLoader";
+
 
 const app = createApp(App);
 
@@ -24,5 +26,6 @@ app.component("base-badge", BaseBadge);
 app.component("scroll-arrow", ScrollToTopArrow);
 app.component("base-action-button", BaseActionButton);
 app.component("base-modal", BaseModal);
+app.component("pulse-loader", PulseLoader);
 
 app.mount("#app");

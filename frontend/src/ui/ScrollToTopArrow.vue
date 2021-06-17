@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     scrollToTop() {
-      window.scrollTo(0, 0);
+      window.scrollTo({ behavior: "smooth", top: 0 });
     },
     showArrowToTop() {
       if (!this.isMobile) {

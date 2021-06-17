@@ -1,39 +1,51 @@
 <template>
-  <div class="input-group px-4">
-    <span>
-      <i class="fa fa-search"></i>
-    </span>
-    <input
-      type="search"
-      class="form-control rounded"
-      placeholder="Search by event name..."
-      aria-label="Search"
-      aria-describedby="search-addon"
-      v-model="searchedEventName"
-    />
-  </div>
-  <filter-events></filter-events>
-  <div>
-    <events-slot :next="nextShowedEventsInEventsLink" next-type="evs">
-      <event-card
-        v-for="ev in showedEvents"
-        :key="ev.id"
-        :name="ev.name"
-        :id="ev.id"
-        :organizer="ev.organizer_username"
-        :venue="ev.venue"
-        :start_date="ev.start_date"
-        :end_date="ev.finish_date"
-        :start_hour="ev.start_hour"
-        :image="ev.event_image"
-        :website="ev.event_website"
-        :interested="ev.interested_count"
-        :participants="ev.participants_count"
-        :is_mobile="isMobile"
-      >
-      </event-card>
-    </events-slot>
-    <scroll-to-top-arrow></scroll-to-top-arrow>
+  <pulse-loader
+    v-if="isLoading"
+    :loading="isLoading"
+    color="#4BABFA"
+    size="20px"
+    class="spinner"
+  ></pulse-loader>
+  <div v-else>
+    <div class="input-group px-4">
+      <span>
+        <i class="fa fa-search"></i>
+      </span>
+      <input
+        type="search"
+        class="form-control rounded"
+        placeholder="Search by event name..."
+        aria-label="Search"
+        aria-describedby="search-addon"
+        v-model="searchedEventName"
+      />
+    </div>
+    <filter-events
+      @searching="isLoading = true"
+      @searched="isLoading = false"
+    ></filter-events>
+    <div>
+      <events-slot :next="nextShowedEventsInEventsLink" next-type="evs">
+        <event-card
+          v-for="ev in showedEvents"
+          :key="ev.id"
+          :name="ev.name"
+          :id="ev.id"
+          :organizer="ev.organizer_username"
+          :venue="ev.venue"
+          :start_date="ev.start_date"
+          :end_date="ev.finish_date"
+          :start_hour="ev.start_hour"
+          :image="ev.event_image"
+          :website="ev.event_website"
+          :interested="ev.interested_count"
+          :participants="ev.participants_count"
+          :is_mobile="isMobile"
+        >
+        </event-card>
+      </events-slot>
+      <scroll-to-top-arrow></scroll-to-top-arrow>
+    </div>
   </div>
 </template>
 
@@ -45,10 +57,16 @@ import ScrollToTopArrow from "../ui/ScrollToTopArrow";
 
 export default {
   name: "Events",
-  components: { ScrollToTopArrow, EventCard, EventsSlot, FilterEvents },
+  components: {
+    ScrollToTopArrow,
+    EventCard,
+    EventsSlot,
+    FilterEvents,
+  },
   data() {
     return {
       searchedEventName: "",
+      isLoading: false,
     };
   },
   computed: {
@@ -79,10 +97,12 @@ export default {
   async created() {
     const state = this.$store.getters["events/getShowedEventsInEventsPage"];
     if (!state.length) {
+      this.isLoading = true;
       await this.$store.dispatch(
         "events/loadEventsInPageEvents",
         "api/events/"
       );
+      this.isLoading = false;
     }
   },
 };
