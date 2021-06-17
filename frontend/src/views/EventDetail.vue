@@ -166,6 +166,7 @@
         </div>
         <div class="col-xl-6 p-0 m-0">
           <GoogleMap
+            v-if="coordinates"
             :api-key="googleApiKey"
             style="width: 100%; height: 500px"
             :center="coordinates"
@@ -173,6 +174,9 @@
           >
             <Marker :options="{ position: coordinates }" />
           </GoogleMap>
+          <div v-else class="p-4">
+            <h3>Event venue is not provided organizer.</h3>
+          </div>
         </div>
       </div>
     </div>
@@ -256,9 +260,11 @@ export default {
       const endpoint = `${googleGeocodingAPI + this.eventVenue}&key=${
         this.googleApiKey
       }`;
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      this.coordinates = data.results[0].geometry.location;
+      if (this.eventVenue) {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        this.coordinates = data.results[0].geometry.location;
+      }
     },
     badgeStyle(category) {
       if (category === "Food") {
