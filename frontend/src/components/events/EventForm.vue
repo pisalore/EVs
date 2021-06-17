@@ -248,8 +248,10 @@ export default {
           label: "Canceled",
         },
       ],
-      eventStatus: this.computeEventStatus(this.event.status),
-      selectedStatus: this.event.status ? this.event.status : "S",
+      eventStatus: this.event
+        ? this.computeEventStatus(this.event.status)
+        : "Scheduled",
+      selectedStatus: this.event ? this.event.status : "S",
     };
   },
   computed: {
@@ -366,10 +368,11 @@ export default {
     },
   },
   async created() {
+    console.log("form");
     console.log(this.event);
     let endpoint = "/api/categories/";
     this.categories = await apiService(endpoint);
-    this.selectedCategories = this.event.categories;
+    this.selectedCategories = this.event ? this.event.categories : [];
   },
 };
 </script>

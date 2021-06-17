@@ -50,6 +50,7 @@
       <div class="row d-flex">
         <div class="col-xl-12">
           <event-form
+              v-if="event"
             :event="event"
             :organizer="organizer"
             @update-event="updateEvent"
@@ -112,7 +113,7 @@ export default {
       }
     },
     async updateEvent(formData) {
-      console.log(formData)
+      console.log(formData);
       try {
         let endpoint = `/api/events/${this.id}/`;
         const response = await apiService(endpoint, "PATCH", formData);
@@ -138,18 +139,19 @@ export default {
       this.snackbarMessage = "";
       this.snackBarColor = "";
     },
+    async loadEvent() {
+      await this.$store.dispatch("events/loadSelectedEvent", this.id);
+    },
+    async loadUserInfo() {
+      await this.$store.dispatch("user/loadUserInfo");
+    },
   },
   async created() {
-    await this.$store.dispatch("user/loadUserInfo");
-    const event = this.$store.getters["events/getDetailEvent"];
-    if (event) {
-      this.titlePage = `Edit ${event.name}`;
-    } else if (this.id) {
-      await this.$store.dispatch("events/loadSelectedEvent", this.id);
-      this.titlePage = `Edit ${this.$store.getters["events/getDetailEvent"].name}`;
-    } else {
-      this.titlePage = "Create new Event";
-    }
+    console.log("edit")
+    await this.loadEvent();
+    await this.loadUserInfo();
+    this.titlePage = `Edit ${this.$store.getters["events/getDetailEvent"].name}`;
+    console.log("edit->", this.event)
   },
 };
 </script>
