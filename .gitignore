@@ -336,7 +336,7 @@ fabric.properties
 # Vue
 frontend/node_modules
 /dist
-frontend/webpack-stats.json
+/frontend/webpack-stats.json
 
 
 # local env files

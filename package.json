@@ -9,5 +9,8 @@
   "cacheDirectories": [
     "node_modules",
     "frontend/node_modules"
-  ]
+  ],
+  "engines": {
+    "node": "14.17.0"
+  }
 }
