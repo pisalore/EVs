@@ -2,7 +2,7 @@
   <form @submit.prevent="submitForm">
     <div class="form-div">
       <div class="p-4">
-        <h1 class="title">1. Add ev’s main information.</h1>
+        <h1 class="title" id="form1">1. Add ev’s main information.</h1>
         <h2 class="subtitle">
           Provide an evocative name and information you think are useful for
           potential participants. For example: age range, restrictions, how to
@@ -19,6 +19,9 @@
             :class="{ invalid: nameError }"
             @focus="nameError = false"
           />
+          <p v-if="nameError" style="color: red">
+            Please, insert a valid name.
+          </p>
         </div>
         <div class="form-group">
           <label for="evDescription">Ev description</label>
@@ -32,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="form-div mt-3">
+    <div id="form2" class="form-div mt-3">
       <div class="p-4">
         <h1 class="title">2. Add ev’s venue and date.</h1>
         <h2 class="subtitle">
@@ -80,7 +83,11 @@
                 type="date"
                 id="endDate"
                 :class="{ invalid: formError2 }"
+                @focus="formError2 = false"
               />
+              <p v-if="formError2" style="color: red">
+                An event can not finish before start!
+              </p>
             </div>
             <div class="col-xl-4">
               <input
@@ -113,6 +120,10 @@
             :class="{ invalid: websiteError }"
             @focus="websiteError = false"
           />
+          <p v-if="websiteError" style="color: red">
+            Please insert a valid URL. It must contain also the used protocol
+            (http or https, for example: https://google.com).
+          </p>
         </div>
         <div class="form-group">
           <label for="evTickets">Tickets</label>
@@ -125,6 +136,10 @@
             :class="{ invalid: ticketsError }"
             @focus="ticketsError = false"
           />
+          <p v-if="ticketsError" style="color: red">
+            Please insert a valid URL. It must contain also the used protocol
+            (http or https, for example: https://google.com).
+          </p>
         </div>
         <div class="col-xl-12" :class="{ row: !isMobile }">
           <div class="dropdown">
@@ -201,7 +216,11 @@
       </div>
     </div>
     <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-success btn-lg mt-4">
+      <button
+        type="submit"
+        class="btn btn-success btn-lg mt-4"
+        @click="deleteEvent"
+      >
         Update Event
       </button>
     </div>
@@ -216,7 +235,7 @@ export default {
   name: "EventForm",
   components: { BaseBadge },
   props: ["event", "organizer"],
-  emits: ["update-event"],
+  emits: ["update-event", "delete-event"],
   data() {
     return {
       formEventName: this.event ? this.event.name : "",
@@ -329,10 +348,18 @@ export default {
     validateForm() {
       if (!this.formEventName) {
         this.nameError = true;
+        document
+          .getElementById("form1")
+          .scrollIntoView({ block: "start", behavior: "smooth" });
       }
       const fromDate = new Date(this.formEventStartDate);
       const toDate = new Date(this.formEventEndDate);
       this.formError2 = fromDate > toDate;
+      if (this.formError2) {
+        document
+          .getElementById("form2")
+          .scrollIntoView({ block: "start", behavior: "smooth" });
+      }
 
       if (this.formEventWebsite) {
         this.websiteError = !this.validURL(this.formEventWebsite);
@@ -365,6 +392,9 @@ export default {
         };
         this.$emit("update-event", formData);
       }
+    },
+    deleteEvent() {
+      this.$emit("delete-event");
     },
   },
   async created() {

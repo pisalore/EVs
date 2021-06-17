@@ -50,10 +50,11 @@
       <div class="row d-flex">
         <div class="col-xl-12">
           <event-form
-              v-if="event"
+            v-if="event"
             :event="event"
             :organizer="organizer"
             @update-event="updateEvent"
+            @delete-event="deleteEvent"
           ></event-form>
         </div>
       </div>
@@ -113,11 +114,25 @@ export default {
       }
     },
     async updateEvent(formData) {
-      console.log(formData);
       try {
         let endpoint = `/api/events/${this.id}/`;
         const response = await apiService(endpoint, "PATCH", formData);
         this.snackbarMessage = "Event uploaded successfully.";
+        this.snackBarColor = "#3DB834";
+        this.showSnackbar = true;
+        console.log(response);
+      } catch (error) {
+        this.isError = true;
+        this.snackbarMessage = error;
+        this.snackBarColor = "#E32822";
+        this.showSnackbar = true;
+      }
+    },
+    async deleteEvent() {
+      try {
+        let endpoint = `/api/events/${this.id}/`;
+        const response = await apiService(endpoint, "DELETE");
+        this.snackbarMessage = "Event deleted successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         console.log(response);
@@ -147,11 +162,11 @@ export default {
     },
   },
   async created() {
-    console.log("edit")
+    console.log("edit");
     await this.loadEvent();
     await this.loadUserInfo();
     this.titlePage = `Edit ${this.$store.getters["events/getDetailEvent"].name}`;
-    console.log("edit->", this.event)
+    console.log("edit->", this.event);
   },
 };
 </script>
