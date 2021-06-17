@@ -2,21 +2,39 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header"> default header </slot>
+        <div class="container modal-container">
+          <div class="modal-header title">
+            <slot name="header"> {{ title }} </slot>
           </div>
 
-          <div class="modal-body">
-            <slot name="body"> default body </slot>
+          <div class="modal-body message">
+            <slot name="body"> {{ message }} </slot>
           </div>
 
-          <div class="modal-footer">
+          <div class="col-xl-12">
             <slot name="footer">
-              default footer
-              <button class="modal-default-button" @click="$emit('close-modal')">
-                OK
-              </button>
+              <div class="d-flex justify-content-around">
+                <div class="col-xl-4">
+                  <button
+                    class="btn btn-outline-secondary col text-center"
+                    @click="$emit('cancel-modal')"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <div class="col-xl-4">
+                  <button
+                    class="btn col text-center"
+                    :class="{
+                      'btn-primary': action === 'confirm',
+                      'btn-danger': action === 'delete',
+                    }"
+                    @click="$emit('confirm-modal')"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
             </slot>
           </div>
         </div>
@@ -28,6 +46,7 @@
 <script>
 export default {
   name: "BaseModal",
+  props: ["action", "title", "message", "confirm", "cancel"],
 };
 </script>
 
@@ -50,7 +69,6 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -67,6 +85,23 @@ export default {
 
 .modal-body {
   margin: 20px 0;
+}
+
+.title {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 42px;
+  text-align: center;
+  color: #1f6dad;
+}
+
+.message {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 42px;
+  text-align: center;
 }
 
 .modal-default-button {

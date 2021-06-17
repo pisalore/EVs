@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <form>
     <div class="form-div">
       <div class="p-4">
         <h1 class="title" id="form1">1. Add ev’s main information.</h1>
@@ -210,28 +210,33 @@
             v-if="eventStatus === 'Canceled'"
             class="col-xl-2 mt-3 d-flex justify-content-center"
           >
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="deleteEvent"
-            >
+            <button type="button" class="btn btn-danger" @click="deleteEvent">
               Delete Event
             </button>
           </div>
         </div>
       </div>
-      <base-modal v-if="showModal"></base-modal>
     </div>
     <div class="d-flex justify-content-center">
       <button
-        type="submit"
+        type="button"
         class="btn btn-success btn-lg mt-4"
-        @click="submitForm"
+        @click="showModal = true"
       >
         Update Event
       </button>
     </div>
   </form>
+  <base-modal
+    v-if="showModal"
+    @cancel-modal="showModal = false"
+    @confirm-modal="submitForm"
+    :title="'Event update'"
+    :message="'Are you sure to update event? '"
+    :confirm="'Yes'"
+    :cancel="'Cancel'"
+    :action="'confirm'"
+  ></base-modal>
 </template>
 
 <script>
@@ -355,7 +360,7 @@ export default {
       return true;
     },
     validateForm() {
-      console.log("validate")
+      console.log("validate");
       if (!this.formEventName) {
         this.nameError = true;
         document
@@ -379,6 +384,7 @@ export default {
       }
     },
     submitForm() {
+      this.showModal = false;
       this.validateForm();
       if (
         !this.nameError &&

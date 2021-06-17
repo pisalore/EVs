@@ -14,8 +14,8 @@
     class="spinner"
   ></pulse-loader>
   <div v-else class="container">
-    <div class="col-xl-12 row">
-      <h1 class="title">{{ titlePage }}</h1>
+    <div v-if="event" class="col-xl-12 row">
+      <h1 class="title">Edit - {{ event.name }}</h1>
     </div>
     <div class="my-3">
       <img
@@ -97,7 +97,6 @@ export default {
   props: ["id"],
   data() {
     return {
-      titlePage: "",
       selectedFiles: undefined,
       currentFile: undefined,
       isError: false,
@@ -174,6 +173,7 @@ export default {
       try {
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
         await apiService(endpoint, "PATCH", formData);
+        await this.$store.dispatch("events/loadSelectedEvent", this.id);
         this.snackbarMessage = "Event uploaded successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
@@ -226,7 +226,6 @@ export default {
   async created() {
     await this.loadEvent();
     await this.loadUserInfo();
-    this.titlePage = `Edit ${this.$store.getters["events/getDetailEvent"].name}`;
   },
 };
 </script>
