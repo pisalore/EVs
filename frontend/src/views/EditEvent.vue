@@ -173,7 +173,7 @@ export default {
       try {
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
         await apiService(endpoint, "PATCH", formData);
-        await this.$store.dispatch("events/loadSelectedEvent", this.id);
+        await this.$store.dispatch("events/loadEventToBeModified", this.id);
         this.snackbarMessage = "Event uploaded successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;

@@ -91,6 +91,7 @@ export default {
     "participants",
     "user_going",
     "user_interested",
+    "published",
   ],
   data() {
     return {
@@ -99,9 +100,15 @@ export default {
   },
   methods: {
     eventDetail() {
-      this.$router.push({
-        path: `/events/${this.id}`,
-      });
+      if (this.published) {
+        this.$router.push({
+          path: `/events/${this.id}`,
+        });
+      } else {
+        this.$router.push({
+          path: `/event-edit/${this.id}`,
+        });
+      }
     },
     computeDate() {
       const options = {

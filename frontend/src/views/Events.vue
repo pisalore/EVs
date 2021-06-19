@@ -45,6 +45,7 @@
           :interested="ev.interested_count"
           :participants="ev.participants_count"
           :is_mobile="isMobile"
+          :published="true"
         >
         </event-card>
       </events-slot>

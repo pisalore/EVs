@@ -72,6 +72,7 @@
           :participants="ev.participants_count"
           :user_going="ev.user_is_going"
           :user_interested="ev.user_is_interested"
+          :published="true"
         >
         </event-card>
       </events-slot>
@@ -122,6 +123,7 @@
           :participants="ev.participants_count"
           :user_going="ev.user_is_going"
           :user_interested="ev.user_is_interested"
+          :published="true"
         >
         </event-card>
       </events-slot>
@@ -146,6 +148,7 @@
           :participants="ev.participants_count"
           :user_going="ev.user_is_going"
           :user_interested="ev.user_is_interested"
+          :published="false"
         >
         </event-card>
       </events-slot>
@@ -170,6 +173,7 @@
           :participants="ev.participants_count"
           :user_going="ev.user_is_going"
           :user_interested="ev.user_is_interested"
+          :published="false"
         >
         </event-card>
       </events-slot>
