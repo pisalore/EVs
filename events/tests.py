@@ -346,18 +346,24 @@ class FilterEventsTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(self.user.username, json.loads(response.content)['participants'])
 
-    def test_user_sees_only_its_events_in_personal_area(self):
+    def test_user_its_personal_interested_events(self):
         interesting_url = "/api/events/{}/interesting/".format(self.A1.id)
-        going_url = "/api/events/{}/going/".format(self.A2.id)
-        personal_area_url = '/api/events/user/personal-events/'
+        personal_area_interested_url = '/api/events/user/personal-interested-events/'
 
         self.client.force_authenticate(user=self.user)
         self.client.post(interesting_url, {"name": self.A1.name})
+
+        response = self.client.get(personal_area_interested_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content)["count"], 1)
+
+    def test_user_its_personal_going_events(self):
+        going_url = "/api/events/{}/going/".format(self.A2.id)
+        personal_area_going_url = '/api/events/user/personal-going-events/'
+
+        self.client.force_authenticate(user=self.user)
         self.client.post(going_url, {"name": self.A2.name})
 
-        response = self.client.get(personal_area_url)
+        response = self.client.get(personal_area_going_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(json.loads(response.content)), 2)
-
-
-
+        self.assertEqual(json.loads(response.content)["count"], 1)

@@ -50,7 +50,7 @@ class ExpiringEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.filter(status='A')\
+        return Event.objects.filter(status='A') \
             .filter(start_date__gte=datetime.datetime.now().date()).order_by('start_date')
 
 
@@ -149,16 +149,24 @@ class EventImageUpdateView(generics.RetrieveUpdateAPIView):
         return event_object
 
 
-class UserEventsPersonalAreaListView(generics.ListAPIView):
+class UserEventsPersonalAreaGoingListView(generics.ListAPIView):
+    pagination_class = EventSetPagination
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         username = self.request.user.username
-        user_events_interested_in = Event.objects.filter(interested__username=username)
-        user_events_going = Event.objects.filter(participants__username=username)
-        queryset = user_events_interested_in | user_events_going
-        return queryset.filter(status='A')
+        return Event.objects.order_by('start_date').filter(participants__username=username).filter(status='A')
+
+
+class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.request.user.username
+        return Event.objects.order_by('start_date').filter(interested__username=username).filter(status='A')
 
 
 class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
