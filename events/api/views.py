@@ -176,4 +176,5 @@ class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         organizer = self.request.user
-        return Event.objects.order_by('start_date').filter(organizer=organizer)
+        requested_status = self.request.query_params.get('status', 'A')
+        return Event.objects.order_by('start_date').filter(organizer=organizer, status=requested_status)

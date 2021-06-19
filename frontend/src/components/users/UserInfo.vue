@@ -50,7 +50,7 @@
       </div>
     </div>
     <hr />
-    <div class="my-5">
+    <div v-if="!user.is_organizer" class="my-5">
       <h1 class="title px-4">Your Personal Events</h1>
       <events-slot
         background="azure"
@@ -99,11 +99,14 @@
         >
         </event-card>
       </events-slot>
+    </div>
+    <div v-else class="my-5">
+      <h1 class="title px-4">Your Personal Events</h1>
       <events-slot
         background="azure"
-        title="Upcoming"
+        title="Available"
         :next="nextUserGoingEventsLink"
-        next-type="user-going"
+        next-type="organizer-available"
         ><event-card
           v-for="ev in userGoingEvents"
           :key="ev.id"
@@ -126,7 +129,31 @@
         background="azure"
         title="Interested in"
         :next="nextUserInterestedEventsLink"
-        next-type="user-interested"
+        next-type="organizer-scheduled"
+      >
+        <event-card
+          v-for="ev in userInterestedEvents"
+          :key="ev.id"
+          :id="ev.id"
+          :name="ev.name"
+          :organizer="ev.organizer_username"
+          :venue="ev.venue"
+          :start_date="ev.start_date"
+          :end_date="ev.finish_date"
+          :image="ev.event_image"
+          :website="ev.event_website"
+          :interested="ev.interested_count"
+          :participants="ev.participants_count"
+          :user_going="ev.user_is_going"
+          :user_interested="ev.user_is_interested"
+        >
+        </event-card>
+      </events-slot>
+      <events-slot
+        background="azure"
+        title="Interested in"
+        :next="nextUserInterestedEventsLink"
+        next-type="organizer-canceled"
       >
         <event-card
           v-for="ev in userInterestedEvents"
@@ -200,12 +227,15 @@ export default {
   methods: {
     async loadUserEvents() {
       this.isLoading = true;
-      await this.$store.dispatch("user/loadUserGoingEvents");
-      await this.$store.dispatch("user/loadUserInterestedEvents");
+      if (!this.user.is_organizer) {
+        await this.$store.dispatch("user/loadUserGoingEvents");
+        await this.$store.dispatch("user/loadUserInterestedEvents");
+      }
       this.isLoading = false;
     },
   },
   created() {
+    console.log(this.user)
     this.loadUserEvents();
   },
 };

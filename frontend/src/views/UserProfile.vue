@@ -1,10 +1,6 @@
 <template>
-  <div class="mt-4">
-    <user-info
-      v-if="userInfo"
-      :user="userInfo"
-    >
-    </user-info>
+  <div v-if="userInfo.id" class="mt-4">
+    <user-info :user="userInfo"> </user-info>
   </div>
 </template>
 
