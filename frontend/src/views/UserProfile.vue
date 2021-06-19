@@ -1,7 +1,7 @@
 <template>
-  <h1 class="title px-4">Your Profile</h1>
   <div class="container-fluid mt-4">
-    <div class="row">
+    <h1 class="title px-4">Your Profile</h1>
+    <div class="row mt-4">
       <user-info v-if="userInfo" :user="userInfo"> </user-info>
       <div class="col-xl-3 text-center my-2">
         <button class="btn btn-primary">Edit Profile</button>

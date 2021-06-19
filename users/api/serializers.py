@@ -12,7 +12,7 @@ class EvUserDisplaySerializer(serializers.ModelSerializer):
     class Meta:
         model = EvUser
         fields = ["id", "username", "first_name", "last_name", "email", "organization_name", "is_organizer",
-                  "is_the_event_organizer", "profile_image", "city"]
+                  "is_the_event_organizer", "profile_image", "city", "date_joined"]
 
     def get_is_the_event_organizer(self, instance):
         event_id = self.context.get("event_id")
