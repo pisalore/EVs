@@ -105,10 +105,10 @@
       <events-slot
         background="azure"
         title="Available"
-        :next="nextUserGoingEventsLink"
+        :next="nextOrganizerAvailableEventsLink"
         next-type="organizer-available"
         ><event-card
-          v-for="ev in userGoingEvents"
+          v-for="ev in organizerAvailableEvents"
           :key="ev.id"
           :id="ev.id"
           :name="ev.name"
@@ -127,12 +127,12 @@
       </events-slot>
       <events-slot
         background="azure"
-        title="Interested in"
-        :next="nextUserInterestedEventsLink"
+        title="Scheduled"
+        :next="nextOrganizerScheduledEventsLink"
         next-type="organizer-scheduled"
       >
         <event-card
-          v-for="ev in userInterestedEvents"
+          v-for="ev in organizerScheduledEvents"
           :key="ev.id"
           :id="ev.id"
           :name="ev.name"
@@ -151,12 +151,12 @@
       </events-slot>
       <events-slot
         background="azure"
-        title="Interested in"
-        :next="nextUserInterestedEventsLink"
+        title="Canceled"
+        :next="nextOrganizerCanceledEventsLink"
         next-type="organizer-canceled"
       >
         <event-card
-          v-for="ev in userInterestedEvents"
+          v-for="ev in organizerCanceledEvents"
           :key="ev.id"
           :id="ev.id"
           :name="ev.name"
@@ -204,6 +204,30 @@ export default {
     nextUserInterestedEventsLink() {
       return this.$store.getters["user/getUserInterestedEventsNextLink"];
     },
+    organizerAvailableEvents() {
+      return this.$store.getters["organizer/getOrganizerAvailableEvents"];
+    },
+    organizerScheduledEvents() {
+      return this.$store.getters["organizer/getOrganizerScheduledEvents"];
+    },
+    organizerCanceledEvents() {
+      return this.$store.getters["organizer/getOrganizerCanceledEvents"];
+    },
+    nextOrganizerAvailableEventsLink() {
+      return this.$store.getters[
+        "organizer/getOrganizerAvailableEventsNextLink"
+      ];
+    },
+    nextOrganizerScheduledEventsLink() {
+      return this.$store.getters[
+        "organizer/getOrganizerScheduledEventsNextLink"
+      ];
+    },
+    nextOrganizerCanceledEventsLink() {
+      return this.$store.getters[
+        "organizer/getOrganizerCanceledEventsNextLink"
+      ];
+    },
     headerFirstInfo() {
       return this.user.is_organizer
         ? this.user.organization_name
@@ -230,12 +254,16 @@ export default {
       if (!this.user.is_organizer) {
         await this.$store.dispatch("user/loadUserGoingEvents");
         await this.$store.dispatch("user/loadUserInterestedEvents");
+      } else {
+        console.log("organizer")
+        await this.$store.dispatch("organizer/loadOrganizerAvailableEvents");
+        await this.$store.dispatch("organizer/loadOrganizerScheduledEvents");
+        await this.$store.dispatch("organizer/loadOrganizerCanceledEvents");
       }
       this.isLoading = false;
     },
   },
   created() {
-    console.log(this.user)
     this.loadUserEvents();
   },
 };

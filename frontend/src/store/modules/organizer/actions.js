@@ -4,17 +4,19 @@ export default {
   async loadOrganizerAvailableEvents(context) {
     let endpoint = "/api/events/organizer/managed-events/?status=A";
     const response = await apiService(endpoint);
+    console.log(response)
     context.commit("setOrganizerAvailableEvents", response.results);
     context.commit("setOrganizerAvailableEventsNextLink", response.next);
   },
   async loadOrganizerScheduledEvents(context) {
-    let endpoint = "/api/events/user/personal-interested-events/?status=S";
+    let endpoint = "/api/events/organizer/managed-events/?status=S";
     const response = await apiService(endpoint);
+
     context.commit("setOrganizerScheduledEvents", response.results);
     context.commit("setOrganizerScheduledEventsNextLink", response.next);
   },
   async loadOrganizerCanceledEvents(context) {
-    let endpoint = "/api/events/user/personal-interested-events/?status=C";
+    let endpoint = "/api/events/organizer/managed-events/?status=C";
     const response = await apiService(endpoint);
     context.commit("setOrganizerCanceledEvents", response.results);
     context.commit("setOrganizerCanceledEventsNextLink", response.next);

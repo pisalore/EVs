@@ -45,6 +45,16 @@ export default {
   methods: {
     async loadNextEvents() {
       if (
+        this.nextType === "organizer-available" ||
+        this.nextType === "organizer-scheduled" ||
+        this.nextType === "organizer-canceled"
+      ) {
+        await this.$store.dispatch("organizer/loadNextEvents", {
+          endpoint: this.next,
+          type: this.nextType,
+        });
+      }
+      if (
         this.nextType === "user-interested" ||
         this.nextType === "user-going"
       ) {

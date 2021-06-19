@@ -3,19 +3,20 @@ export default {
     state.organizerAvailableEvents = payload;
   },
   setOrganizerAvailableEventsNextLink(state, payload) {
-    state.organizerNextAvailableEvents = payload;
+    console.log(payload)
+    state.organizerNextAvailableEventsLink = payload;
   },
   setOrganizerScheduledEvents(state, payload) {
     state.organizerScheduledEvents = payload;
   },
   setOrganizerScheduledEventsNextLink(state, payload) {
-    state.organizerNextScheduledEvents = payload;
+    state.organizerNextScheduledEventsLink = payload;
   },
   setOrganizerCanceledEvents(state, payload) {
     state.organizerCanceledEvents = payload;
   },
   setOrganizerCanceledEventsNextLink(state, payload) {
-    state.organizerNextCanceledEvents = payload;
+    state.organizerNextCanceledEventsLink = payload;
   },
   updateOrganizerAvailableEvents(state, payload) {
     payload.forEach(function (ev) {
