@@ -16,7 +16,6 @@ export default {
     const response = await apiService(endpoint);
     context.commit("setUserGoingEvents", response.results);
     context.commit("setUserGoingEventsNextLink", response.next);
-    console.log(response)
   },
   async loadUserInterestedEvents(context) {
     let endpoint = "/api/events/user/personal-interested-events/";

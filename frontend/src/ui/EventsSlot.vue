@@ -8,11 +8,13 @@
         <slot></slot>
       </div>
     </div>
-    <div
-      class="d-flex justify-content-end px-4 mt-2 discover"
-      @click="loadNextEvents"
-    >
-      <p>Discover more...</p>
+    <div class="d-flex justify-content-end px-4 mt-2 discover">
+      <div v-if="next" @click="loadNextEvents">
+        <p>Discover more...</p>
+      </div>
+      <div v-else class="my-4">
+        <span>All events are showed for this category.</span>
+      </div>
     </div>
   </div>
 </template>
@@ -42,17 +44,20 @@ export default {
   },
   methods: {
     async loadNextEvents() {
-      if (this.nextType === "userGoingEvents") {
-        await this.store.dispatch("user/loadNextEvents", {
+      if (
+        this.nextType === "user-interested" ||
+        this.nextType === "user-going"
+      ) {
+        await this.$store.dispatch("user/loadNextEvents", {
+          endpoint: this.next,
+          type: this.nextType,
+        });
+      } else {
+        await this.$store.dispatch("events/loadNextEvents", {
           endpoint: this.next,
           type: this.nextType,
         });
       }
-      console.log(this.next, this.nextType);
-      await this.$store.dispatch("events/loadNextEvents", {
-        endpoint: this.next,
-        type: this.nextType,
-      });
     },
   },
 };

@@ -1,6 +1,7 @@
 <template>
   <scroll-to-top-arrow></scroll-to-top-arrow>
-  <div class="row mt-4">
+  <h1 class="title px-4">Your Profile</h1>
+  <div class="row my-5">
     <div class="col-xl-2">
       <img
         v-if="!user.profile_image"
@@ -35,56 +36,60 @@
       </div>
     </div>
     <div class="col-xl-3 text-center my-2">
-      <button class="btn btn-primary">Edit Profile</button>
+      <button class="btn btn-lg btn-primary">Edit Profile</button>
     </div>
   </div>
-  <events-slot
-    background="azure"
-    title="Upcoming"
-    :next="nextUserGoingEventsLink"
-    next-type="user-participated"
-  ><event-card
-      v-for="ev in userGoingEvents"
-      :key="ev.id"
-      :id="ev.id"
-      :name="ev.name"
-      :organizer="ev.organizer_username"
-      :venue="ev.venue"
-      :start_date="ev.start_date"
-      :end_date="ev.finish_date"
-      :image="ev.event_image"
-      :website="ev.event_website"
-      :interested="ev.interested_count"
-      :participants="ev.participants_count"
-      :user_going="ev.user_is_going"
-      :user_interested="ev.user_is_interested"
+  <hr />
+  <div class="my-5">
+    <h1 class="title px-4">Your Personal Events</h1>
+    <events-slot
+      background="azure"
+      title="Upcoming"
+      :next="nextUserGoingEventsLink"
+      next-type="user-going"
+      ><event-card
+        v-for="ev in userGoingEvents"
+        :key="ev.id"
+        :id="ev.id"
+        :name="ev.name"
+        :organizer="ev.organizer_username"
+        :venue="ev.venue"
+        :start_date="ev.start_date"
+        :end_date="ev.finish_date"
+        :image="ev.event_image"
+        :website="ev.event_website"
+        :interested="ev.interested_count"
+        :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
+      >
+      </event-card>
+    </events-slot>
+    <events-slot
+      background="azure"
+      title="Interested in"
+      :next="nextUserInterestedEventsLink"
+      next-type="user-interested"
     >
-    </event-card>
-  </events-slot>
-  <events-slot
-    background="azure"
-    title="Interested in"
-    :next="nextUserInterestedEventsLink"
-    next-type="user-interested"
-  >
-    <event-card
-      v-for="ev in userInterestedEvents"
-      :key="ev.id"
-      :id="ev.id"
-      :name="ev.name"
-      :organizer="ev.organizer_username"
-      :venue="ev.venue"
-      :start_date="ev.start_date"
-      :end_date="ev.finish_date"
-      :image="ev.event_image"
-      :website="ev.event_website"
-      :interested="ev.interested_count"
-      :participants="ev.participants_count"
-      :user_going="ev.user_is_going"
-      :user_interested="ev.user_is_interested"
-    >
-    </event-card>
-  </events-slot>
+      <event-card
+        v-for="ev in userInterestedEvents"
+        :key="ev.id"
+        :id="ev.id"
+        :name="ev.name"
+        :organizer="ev.organizer_username"
+        :venue="ev.venue"
+        :start_date="ev.start_date"
+        :end_date="ev.finish_date"
+        :image="ev.event_image"
+        :website="ev.event_website"
+        :interested="ev.interested_count"
+        :participants="ev.participants_count"
+        :user_going="ev.user_is_going"
+        :user_interested="ev.user_is_interested"
+      >
+      </event-card>
+    </events-slot>
+  </div>
 </template>
 
 <script>
@@ -125,7 +130,7 @@ export default {
   },
   methods: {
     async loadUserEvents() {
-      console.log("load ")
+      console.log("load ");
       await this.$store.dispatch("user/loadUserGoingEvents");
       await this.$store.dispatch("user/loadUserInterestedEvents");
     },
@@ -160,5 +165,15 @@ img {
   font-weight: 200;
   font-size: 36px;
   line-height: 42px;
+}
+.first-block {
+  border-bottom: 1px solid #bdbdbd;
+}
+.title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 56px;
+  color: #1f6dad;
 }
 </style>
