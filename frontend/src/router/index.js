@@ -5,6 +5,7 @@ import About from "../views/About";
 import ContactUs from "../views/ContactUs";
 import FAQ from "../views/FAQ";
 import Events from "../views/Events";
+import UserProfile from "../views/UserProfile";
 import EventDetail from "../views/EventDetail";
 import EditEvent from "../views/EditEvent";
 import NotFound from "../views/NotFound";
@@ -34,6 +35,11 @@ const routes = [
     path: "/events",
     name: "Events",
     component: Events,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: UserProfile,
   },
   {
     path: "/events/:id",
