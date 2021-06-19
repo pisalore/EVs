@@ -8,13 +8,13 @@
       <div class="img-div">
         <img
           v-if="image && !is_mobile"
-          class="card-img"
+          class="card-img-top"
           :src="image.document"
           alt="event-image"
         />
         <img
           v-else-if="!image && !is_mobile"
-          class="card-img"
+          class="card-img-top"
           src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/event-placeholder.png"
           alt=""
         />
@@ -177,12 +177,8 @@ export default {
   color: #575757;
 }
 
-.card-img {
+.card-img-top {
   border-radius: 20px;
-  border: none;
-  width: 100%;
-  height: 7vw;
-  object-fit: cover;
 }
 
 .simple-card-button {

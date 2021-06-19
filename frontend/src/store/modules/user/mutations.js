@@ -3,7 +3,6 @@ export default {
     state.userInfo = payload;
   },
   setUserGoingEvents(state, payload) {
-    console.log(payload)
     state.userGoingEvents = payload;
   },
   setUserInterestedEvents(state, payload) {
