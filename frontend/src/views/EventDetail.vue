@@ -151,7 +151,10 @@
                     class="action-button edit-action-button"
                   ></base-action-button>
                   <base-action-button
-                    v-if="!loggedUser.is_the_event_organizer"
+                    v-if="
+                      !loggedUser.is_the_event_organizer &&
+                      !loggedUser.is_organizer
+                    "
                     :icon="'event_available'"
                     :label="'Going'"
                     :user-going="userIsGoing"
@@ -161,7 +164,8 @@
                   <base-action-button
                     v-if="
                       !loggedUser.user_is_going &&
-                      !loggedUser.is_the_event_organizer
+                      !loggedUser.is_the_event_organizer &&
+                      !loggedUser.is_organizer
                     "
                     :icon="'favorite'"
                     :label="'Like'"
