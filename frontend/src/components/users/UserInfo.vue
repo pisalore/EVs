@@ -1,42 +1,115 @@
 <template>
-  <div class="col-xl-2">
-    <img
-      v-if="!user.profile_image"
-      src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/no-image-profile.jpg"
-      alt="Avatar"
-    />
-    <img v-else :src="user.profile_image.document" alt="Avatar" />
-    <p class="text-center mt-2 username">@{{ user.username }}</p>
-  </div>
-  <div class="col-xl-7">
-    <div class="user-main-info">
-      <div class="container">
-        <div class="row p-3">
-          <div class="col-1 material-icons-outlined icon">info</div>
-          <div class="col-11">{{ headerFirstInfo }}</div>
-        </div>
-        <div class="row p-3">
-          <div class="col-1 material-icons-outlined icon">alternate_email</div>
-          <div class="col-11">{{ user.email }}</div>
-        </div>
-        <div class="row p-3">
-          <div class="col-1 material-icons-outlined icon">location_city</div>
-          <div class="col-11">{{ user.city }}</div>
-        </div>
-        <div class="row p-3">
-          <div class="col-1 material-icons-outlined icon">done_outline</div>
-          <div class="col-11">Join EVs on {{ joinedDate }}</div>
+  <scroll-to-top-arrow></scroll-to-top-arrow>
+  <div class="row mt-4">
+    <div class="col-xl-2">
+      <img
+        v-if="!user.profile_image"
+        src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/no-image-profile.jpg"
+        alt="Avatar"
+      />
+      <img v-else :src="user.profile_image.document" alt="Avatar" />
+      <p class="text-center mt-2 username">@{{ user.username }}</p>
+    </div>
+    <div class="col-xl-7">
+      <div class="user-main-info">
+        <div class="container">
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">info</div>
+            <div class="col-11">{{ headerFirstInfo }}</div>
+          </div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">
+              alternate_email
+            </div>
+            <div class="col-11">{{ user.email }}</div>
+          </div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">location_city</div>
+            <div class="col-11">{{ user.city }}</div>
+          </div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">done_outline</div>
+            <div class="col-11">Join EVs on {{ joinedDate }}</div>
+          </div>
         </div>
       </div>
     </div>
+    <div class="col-xl-3 text-center my-2">
+      <button class="btn btn-primary">Edit Profile</button>
+    </div>
   </div>
+  <events-slot
+    background="azure"
+    title="Upcoming"
+    :next="nextUserGoingEventsLink"
+    next-type="user-participated"
+  ><event-card
+      v-for="ev in userGoingEvents"
+      :key="ev.id"
+      :id="ev.id"
+      :name="ev.name"
+      :organizer="ev.organizer_username"
+      :venue="ev.venue"
+      :start_date="ev.start_date"
+      :end_date="ev.finish_date"
+      :image="ev.event_image"
+      :website="ev.event_website"
+      :interested="ev.interested_count"
+      :participants="ev.participants_count"
+      :user_going="ev.user_is_going"
+      :user_interested="ev.user_is_interested"
+    >
+    </event-card>
+  </events-slot>
+  <events-slot
+    background="azure"
+    title="Interested in"
+    :next="nextUserInterestedEventsLink"
+    next-type="user-interested"
+  >
+    <event-card
+      v-for="ev in userInterestedEvents"
+      :key="ev.id"
+      :id="ev.id"
+      :name="ev.name"
+      :organizer="ev.organizer_username"
+      :venue="ev.venue"
+      :start_date="ev.start_date"
+      :end_date="ev.finish_date"
+      :image="ev.event_image"
+      :website="ev.event_website"
+      :interested="ev.interested_count"
+      :participants="ev.participants_count"
+      :user_going="ev.user_is_going"
+      :user_interested="ev.user_is_interested"
+    >
+    </event-card>
+  </events-slot>
 </template>
 
 <script>
+import ScrollToTopArrow from "../../ui/ScrollToTopArrow";
+import EventsSlot from "../../ui/EventsSlot";
+import EventCard from "../events/EventCard";
 export default {
   name: "UserInfo",
+  components: { EventsSlot, EventCard, ScrollToTopArrow },
   props: ["user"],
   computed: {
+    userGoingEvents() {
+      console.log(this.$store.getters["user/getUserGoingEvents"]);
+      return this.$store.getters["user/getUserGoingEvents"];
+    },
+    userInterestedEvents() {
+      console.log(this.$store.getters["user/getUserGoingEvents"]);
+      return this.$store.getters["user/getUserInterestedEvents"];
+    },
+    nextUserGoingEventsLink() {
+      return this.$store.getters["user/getUserGoingEventsNextLink"];
+    },
+    nextUserInterestedEventsLink() {
+      return this.$store.getters["user/getUserInterestedEventsNextLink"];
+    },
     headerFirstInfo() {
       return this.user.is_organizer
         ? this.user.organization_name
@@ -49,6 +122,16 @@ export default {
       let year = joinedDate.getUTCFullYear();
       return `${day}/${month}/${year}`;
     },
+  },
+  methods: {
+    async loadUserEvents() {
+      console.log("load ")
+      await this.$store.dispatch("user/loadUserGoingEvents");
+      await this.$store.dispatch("user/loadUserInterestedEvents");
+    },
+  },
+  created() {
+    this.loadUserEvents();
   },
 };
 </script>

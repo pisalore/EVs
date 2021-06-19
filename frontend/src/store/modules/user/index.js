@@ -7,6 +7,10 @@ export default {
   state() {
     return {
       userInfo: {},
+      userGoingEvents: {},
+      userNextGoingEventsLink: null,
+      userInterestedEvents: {},
+      userNextInterestedEventsLink: null,
     };
   },
   actions,

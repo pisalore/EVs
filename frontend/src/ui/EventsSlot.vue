@@ -42,6 +42,12 @@ export default {
   },
   methods: {
     async loadNextEvents() {
+      if (this.nextType === "userGoingEvents") {
+        await this.store.dispatch("user/loadNextEvents", {
+          endpoint: this.next,
+          type: this.nextType,
+        });
+      }
       console.log(this.next, this.nextType);
       await this.$store.dispatch("events/loadNextEvents", {
         endpoint: this.next,

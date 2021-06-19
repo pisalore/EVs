@@ -1,12 +1,7 @@
 <template>
   <div class="container-fluid mt-4">
     <h1 class="title px-4">Your Profile</h1>
-    <div class="row mt-4">
       <user-info v-if="userInfo" :user="userInfo"> </user-info>
-      <div class="col-xl-3 text-center my-2">
-        <button class="btn btn-primary">Edit Profile</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -17,7 +12,6 @@ export default {
   components: { UserInfo },
   computed: {
     userInfo() {
-      console.log(this.$store.getters["user/getUserInfo"]);
       return this.$store.getters["user/getUserInfo"];
     },
   },
@@ -39,8 +33,5 @@ export default {
   font-size: 48px;
   line-height: 56px;
   color: #1f6dad;
-}
-.container-fluid {
-  width: 90%;
 }
 </style>
