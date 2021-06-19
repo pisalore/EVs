@@ -30,4 +30,7 @@ export default {
   getDetailEvent(state) {
     return state.selectedDetailEvent;
   },
+  getManagedEvent(state) {
+    return state.managedEvent;
+  },
 };

@@ -111,7 +111,7 @@ export default {
       return this.$store.getters["user/getUserInfo"];
     },
     event() {
-      return this.$store.getters["events/getDetailEvent"];
+      return this.$store.getters["events/getManagedEvent"];
     },
     isMobile() {
       return (
@@ -217,7 +217,7 @@ export default {
     },
     async loadEvent() {
       this.isLoading = true;
-      await this.$store.dispatch("events/loadSelectedEvent", this.id);
+      await this.$store.dispatch("events/loadEventToBeModified", this.id);
     },
     async loadUserInfo() {
       await this.$store.dispatch("user/loadUserInfo");

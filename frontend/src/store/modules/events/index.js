@@ -16,6 +16,7 @@ export default {
       nextExpiringEventsLink: null,
       searchedCity: null,
       selectedDetailEvent: null,
+      managedEvent: null,
     };
   },
   actions,

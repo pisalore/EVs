@@ -59,6 +59,11 @@ export default {
     const response = await apiService(endpoint);
     context.commit("setDetailEvent", response);
   },
+  async loadEventToBeModified(context, payload) {
+    let endpoint = `/api/events/organizer/managed-events/${payload}/`;
+    const response = await apiService(endpoint);
+    context.commit("setManagedEvent", response);
+  },
   resetSearchedCity(context) {
     context.commit("events/setSearchedCity", null);
   },
