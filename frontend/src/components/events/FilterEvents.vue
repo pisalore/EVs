@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="p-2">
     <form @submit.prevent="searchEventsUsingFilters">
       <div class="container-fluid">
         <div class="row">
@@ -73,7 +73,7 @@
               @close-chip="removeCategory"
             ></base-badge>
           </div>
-          <div class="mt-5 col-xl-12 d-flex justify-content-center">
+          <div class="mt-2 col-xl-12 d-flex justify-content-center">
             <div class="py-2">
               <button type="submit" class="btn btn-lg btn-success mx-2">
                 Search

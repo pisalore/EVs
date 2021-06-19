@@ -25,7 +25,11 @@
       @searched="isLoading = false"
     ></filter-events>
     <div>
-      <events-slot :next="nextShowedEventsInEventsLink" next-type="evs">
+      <events-slot
+        :next="nextShowedEventsInEventsLink"
+        next-type="evs"
+        :title="'Searched Events'"
+      >
         <event-card
           v-for="ev in showedEvents"
           :key="ev.id"

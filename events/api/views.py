@@ -50,7 +50,8 @@ class ExpiringEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.filter(status='A').filter(start_date__gte=datetime.datetime.now()).order_by('start_date')
+        return Event.objects.filter(status='A')\
+            .filter(start_date__gte=datetime.datetime.now().date()).order_by('start_date')
 
 
 class MostParticipatedEventsListAPIView(generics.ListAPIView):
