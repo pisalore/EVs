@@ -1,10 +1,11 @@
 <template>
+  <h1 class="title px-4">Your Profile</h1>
   <div class="container-fluid mt-4">
-    <h1 class="title px-4">Your Profile</h1>
-    <div class="row p-5">
-      <user-info v-if="userInfo" :is-organizer="userInfo.is_organizer">
-      </user-info>
-      <div class="col-xl-2">edit</div>
+    <div class="row">
+      <user-info v-if="userInfo" :user="userInfo"> </user-info>
+      <div class="col-xl-3 text-center my-2">
+        <button class="btn btn-primary">Edit Profile</button>
+      </div>
     </div>
   </div>
 </template>
@@ -38,5 +39,8 @@ export default {
   font-size: 48px;
   line-height: 56px;
   color: #1f6dad;
+}
+.container-fluid {
+  width: 90%;
 }
 </style>
