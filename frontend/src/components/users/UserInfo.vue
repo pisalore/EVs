@@ -5,21 +5,26 @@
       src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/no-image-profile.jpg"
       alt="Avatar"
     />
+    <img
+      v-else
+      :src="user.profile_image.document"
+      alt="Avatar"
+    />
   </div>
   <div class="col-xl-7">
-    <div class="user-main-info my-3">
+    <div class="user-main-info my-4">
       <div class="single-info">
-        <div class="row p-4">
+        <div class="row p-3">
           <div class="col-1 material-icons-outlined icon">info</div
           >
           <div class="col-11">{{ user.first_name }} {{ user.last_name }}</div>
         </div>
-        <div class="row p-4">
+        <div class="row p-3">
           <div class="col-1 material-icons-outlined icon">alternate_email</div
           >
           <div class="col-11">{{ user.email }}</div>
         </div>
-        <div class="row p-4">
+        <div class="row p-3">
           <div class="col-1 material-icons-outlined icon">location_city</div
           >
           <div class="col-11">{{ user.city }}</div>
