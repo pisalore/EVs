@@ -28,21 +28,36 @@
     <h1 class="title">Delete your account</h1>
     <p>This action is not reversible. You will lost all your saved EVs.</p>
     <div class="d-flex justify-content-center">
-      <button type="button" class="btn btn-lg btn-danger" @click="deleteUser">
+      <button
+        type="button"
+        class="btn btn-lg btn-danger"
+        @click="showDeleteModal"
+      >
         Delete Account
       </button>
     </div>
   </div>
+  <base-modal
+    v-if="showModal"
+    @cancel-modal="showModal = false"
+    @confirm-modal="deleteUser"
+    :title="modalTitle"
+    :message="modalMessage"
+    :confirm="modalConfirm"
+    :cancel="modalCancel"
+    :action="modalAction"
+  ></base-modal>
 </template>
 
 <script>
 import UserEditForm from "./UserEditForm";
 import Snackbar from "../../ui/Snackbar";
+import BaseModal from "../../ui/BaseModal";
 import { putForm } from "../../common/form_request_service";
 import { apiService } from "../../common/api.service";
 export default {
   name: "ProfileOverviewEdit",
-  components: { UserEditForm, Snackbar },
+  components: { UserEditForm, Snackbar, BaseModal },
   props: ["user"],
   data() {
     return {
@@ -51,6 +66,12 @@ export default {
       snackBarColor: "",
       showSnackbar: false,
       isLoading: false,
+      showModal: false,
+      modalTitle: "",
+      modalMessage: "",
+      modalAction: "",
+      modalConfirm: "",
+      modalCancel: "",
     };
   },
   methods: {
@@ -71,7 +92,17 @@ export default {
       }
       this.isLoading = false;
     },
+    showDeleteModal() {
+      this.showModal = true;
+      this.modalAction = "delete";
+      this.modalTitle = "User Delete";
+      this.modalMessage =
+        "Do you really want to delete your Ev account? This operation is not reversible.";
+      this.modalConfirm = "Confirm";
+      this.modalCancel = "Cancel";
+    },
     async deleteUser() {
+      this.showModal = false;
       this.isLoading = true;
       try {
         let endpoint = `/api/user/${this.user.username}/`;
