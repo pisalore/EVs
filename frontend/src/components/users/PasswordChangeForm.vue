@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="mt-5">
     <form @submit.prevent="changePassword">
       <div class="form-group">
         <label for="current">Old password</label>
