@@ -1,9 +1,10 @@
 <template>
   <div class="container mt-5">
-    <form @submit.prevent="updatePassword">
+    <form @submit.prevent="changePassword">
       <div class="form-group">
         <label for="current">Old password</label>
         <input
+          v-model="oldPassword"
           type="password"
           class="form-control"
           id="current"
@@ -14,6 +15,7 @@
       <div class="form-group">
         <label for="new1">New password</label>
         <input
+          v-model="newPassword"
           type="password"
           class="form-control"
           id="new1"
@@ -24,6 +26,7 @@
       <div class="form-group">
         <label for="new2">Retype new password</label>
         <input
+          v-model="retypedPassword"
           type="password"
           class="form-control"
           id="new2"
@@ -43,6 +46,23 @@
 <script>
 export default {
   name: "PasswordChangeForm",
+  emits: ["update-password"],
+  data() {
+    return {
+      oldPassword: null,
+      newPassword: null,
+      retypedPassword: null,
+    };
+  },
+  methods: {
+    changePassword() {
+      let formData = new FormData();
+      formData.append("old_password", this.oldPassword);
+      formData.append("password", this.newPassword);
+      formData.append("password_confirm", this.retypedPassword);
+      this.$emit("update-password", formData);
+    },
+  },
 };
 </script>
 

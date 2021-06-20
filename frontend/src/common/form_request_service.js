@@ -1,12 +1,9 @@
 import { CSRF_TOKEN } from "./csrf_token";
 import { getJSON } from "./api.service";
 
-function putForm(endpoint, formData) {
-  for (var pair of formData.entries()) {
-    console.log(pair[0] + ", " + pair[1]);
-  }
+function submitForm(endpoint, method, formData) {
   const config = {
-    method: "PUT",
+    method: method,
     body: formData,
     headers: {
       "X-CSRFToken": CSRF_TOKEN,
@@ -15,4 +12,4 @@ function putForm(endpoint, formData) {
   return fetch(endpoint, config).then(getJSON);
 }
 
-export { putForm };
+export { submitForm };

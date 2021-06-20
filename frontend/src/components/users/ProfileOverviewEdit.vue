@@ -53,7 +53,7 @@
 import UserEditForm from "./UserEditForm";
 import Snackbar from "../../ui/Snackbar";
 import BaseModal from "../../ui/BaseModal";
-import { putForm } from "../../common/form_request_service";
+import { submitForm } from "../../common/form_request_service";
 import { apiService } from "../../common/api.service";
 export default {
   name: "ProfileOverviewEdit",
@@ -79,7 +79,7 @@ export default {
       this.isLoading = true;
       try {
         let endpoint = `/api/user/${this.user.username}/`;
-        await putForm(endpoint, formData);
+        await submitForm(endpoint, "PUT", formData);
         await this.$store.dispatch("user/loadUserInfo");
         this.snackbarMessage = "User updated successfully.";
         this.snackBarColor = "#3DB834";
