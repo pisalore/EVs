@@ -17,4 +17,20 @@ function uploadEventCover(endpoint, file, eventId, organizerId) {
   return fetch(endpoint, config).then(getJSON);
 }
 
-export { uploadEventCover };
+function uploadProfileImage(endpoint, file, userId) {
+  let formData = new FormData();
+  formData.append("profile_image.document", file);
+  formData.append("profile_image.event", null);
+  formData.append("profile_image.loaded_by", userId);
+
+  const config = {
+    method: "PUT",
+    body: formData,
+    headers: {
+      "X-CSRFToken": CSRF_TOKEN,
+    },
+  };
+  return fetch(endpoint, config).then(getJSON);
+}
+
+export { uploadEventCover, uploadProfileImage };

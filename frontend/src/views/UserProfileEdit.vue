@@ -1,4 +1,18 @@
 <template>
+  <snackbar
+    v-if="showSnackbar"
+    :is_error="isError"
+    :color="snackBarColor"
+    :message="snackbarMessage"
+    @close="snackbarFalse"
+  ></snackbar>
+  <pulse-loader
+    v-if="isLoading"
+    :loading="isLoading"
+    color="#4BABFA"
+    size="20px"
+    class="spinner"
+  ></pulse-loader>
   <div class="container-fluid p-5">
     <div class="row">
       <div class="col-xl-3">
@@ -16,6 +30,32 @@
             alt="Avatar"
           />
           <p class="text-center mt-2 username">@{{ userInfo.username }}</p>
+          <div class="row mt-1 d-flex justify-content-center">
+            <input
+              type="file"
+              style="
+                cursor: pointer;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+              "
+              ref="file"
+              @change="selectFile"
+            />
+            <div class="mt-1">
+              {{ currentFile ? currentFile.name : "Change your profile image" }}
+            </div>
+            <i
+              class="material-icons-outlined ml-1"
+              style="font-size: 30px; color: #4babfa"
+              >add_a_photo</i
+            >
+          </div>
         </div>
         <div
           class="nav flex-column nav-pills"
@@ -74,17 +114,71 @@
 <script>
 import ProfileOverviewEdit from "../components/users/ProfileOverviewEdit";
 import PasswordChange from "../components/users/PasswordChange";
+import Snackbar from "../ui/Snackbar";
+import { uploadProfileImage } from "../common/upload_service";
 export default {
   name: "UserProfileEdit",
   components: {
     ProfileOverviewEdit,
     PasswordChange,
+    Snackbar,
+  },
+  data() {
+    return {
+      selectedFiles: null,
+      currentFile: null,
+      isError: false,
+      snackbarMessage: "",
+      snackBarColor: "",
+      showSnackbar: false,
+      isLoading: false,
+    };
   },
   computed: {
     userInfo() {
       console.log(this.$store.getters["user/getUserInfo"]);
       return this.$store.getters["user/getUserInfo"];
     },
+  },
+  methods: {
+    selectFile() {
+      this.selectedFiles = this.$refs.file.files;
+      this.currentFile = this.selectedFiles.item(0);
+      this.onProfileImageUpload();
+    },
+    async onProfileImageUpload() {
+      this.isLoading = true;
+      try {
+        let endpoint = `/api/profile-image/`;
+        await uploadProfileImage(endpoint, this.currentFile, this.userInfo.id);
+        await this.$store.dispatch(
+          "user/loadUserInfo",
+          `${this.userInfo.username}/`
+        );
+        this.snackbarMessage = "Image uploaded successfully.";
+        this.snackBarColor = "#3DB834";
+        this.showSnackbar = true;
+        this.currentFile = null;
+      } catch (error) {
+        this.isError = true;
+        this.snackbarMessage = error;
+        this.snackBarColor = "#E32822";
+        this.showSnackbar = true;
+      }
+      this.isLoading = false;
+    },
+    snackbarFalse() {
+      this.showSnackbar = false;
+      this.isError = false;
+      this.snackbarMessage = "";
+      this.snackBarColor = "";
+    },
+    async loadUserInfo() {
+      await this.$store.dispatch("user/loadUserInfo");
+    },
+  },
+  created() {
+    this.loadUserInfo();
   },
 };
 </script>
