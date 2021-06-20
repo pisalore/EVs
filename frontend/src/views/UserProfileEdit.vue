@@ -1,7 +1,22 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid p-5">
     <div class="row">
       <div class="col-xl-3">
+        <div class="py-5">
+          <img
+            v-if="!userInfo.profile_image"
+            src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/no-image-profile.jpg"
+            alt="Avatar"
+            class="mx-auto d-block"
+          />
+          <img
+            v-else
+            class="mx-auto d-block"
+            :src="userInfo.profile_image.document"
+            alt="Avatar"
+          />
+          <p class="text-center mt-2 username">@{{ userInfo.username }}</p>
+        </div>
         <div
           class="nav flex-column nav-pills"
           id="v-pills-tab"
@@ -16,7 +31,8 @@
             role="tab"
             aria-controls="v-pills-home"
             aria-selected="true"
-            >Profile Overview</a
+            ><span class="material-icons-outlined icon"> person </span>Profile
+            Overview</a
           >
           <a
             class="nav-link"
@@ -26,7 +42,9 @@
             role="tab"
             aria-controls="v-pills-profile"
             aria-selected="false"
-            >Change Password</a
+          >
+            <span class="material-icons-outlined icon"> lock </span>Change
+            Password</a
           >
         </div>
       </div>
@@ -62,15 +80,28 @@ export default {
     ProfileOverviewEdit,
     PasswordChange,
   },
-  data() {
-    return {
-      userInfo: null,
-    };
-  },
-  created() {
-    this.userInfo = this.$store.getters["user/getUserInfo"];
+  computed: {
+    userInfo() {
+      console.log(this.$store.getters["user/getUserInfo"]);
+      return this.$store.getters["user/getUserInfo"];
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.icon {
+  padding: 20px;
+  font-size: 30px;
+}
+img {
+  border-radius: 50%;
+  max-width: 50%;
+}
+.username {
+  font-style: normal;
+  font-weight: 200;
+  font-size: 36px;
+  line-height: 42px;
+}
+</style>
