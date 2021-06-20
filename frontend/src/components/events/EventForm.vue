@@ -347,7 +347,6 @@ export default {
       if (!existing.length) {
         this.selectedCategories.push(category);
       }
-      console.log(existing);
     },
     removeCategory(category) {
       const index = this.selectedCategories.indexOf(category);
@@ -390,7 +389,6 @@ export default {
       return "Scheduled";
     },
     validURL(url) {
-      console.log(url);
       try {
         new URL(url);
       } catch (e) {
@@ -399,7 +397,6 @@ export default {
       return true;
     },
     validateForm() {
-      console.log("validate");
       if (!this.formEventName) {
         this.nameError = true;
         document
@@ -453,8 +450,6 @@ export default {
     },
   },
   async created() {
-    console.log("form");
-    console.log(this.event);
     let endpoint = "/api/categories/";
     this.categories = await apiService(endpoint);
     this.selectedCategories = this.event ? this.event.categories : [];

@@ -47,9 +47,6 @@
 export default {
   name: "BaseModal",
   props: ["action", "title", "message", "confirm", "cancel"],
-  created() {
-    console.log(this.title);
-  },
 };
 </script>
 

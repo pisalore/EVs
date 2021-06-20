@@ -61,7 +61,6 @@ export default {
         await this.$router.replace("/");
         location.reload();
       } catch (error) {
-        console.log(error);
         this.isError = true;
         this.passwordErrors = error;
       }

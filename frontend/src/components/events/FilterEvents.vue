@@ -117,10 +117,8 @@ export default {
     addCategory(category) {
       if (this.searchCategories.indexOf(category) === -1)
         this.searchCategories.push(category);
-      console.log(this.searchCategories);
     },
     removeCategory(category) {
-      console.log(category);
       const index = this.searchCategories.indexOf(category);
       this.searchCategories.splice(index, 1);
     },
@@ -153,7 +151,6 @@ export default {
     async searchEventsUsingFilters() {
       this.$emit("searching");
       this.validateForm();
-      console.log(this.searchIsValid);
       if (this.searchIsValid) {
         let searchString = "api/events/?";
         if (this.filterCity) {
@@ -174,7 +171,6 @@ export default {
         if (searchString.charAt(-1) === "&") {
           searchString.slice(0, -1);
         }
-        console.log(searchString);
         await this.$store.dispatch(
           "events/loadEventsInPageEvents",
           searchString

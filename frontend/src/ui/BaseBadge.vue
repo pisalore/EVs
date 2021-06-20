@@ -25,7 +25,6 @@ export default {
   props: ["category", "categoryStyle", "type", "content"],
   methods: {
     close() {
-      console.log(this.category);
       this.$emit("close-chip", this.category);
     },
   },

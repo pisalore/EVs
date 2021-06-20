@@ -282,7 +282,6 @@ export default {
         this.coordinates = await data.results[0].geometry.location;
       }
       this.isLoading = false;
-      console.log(this.isLoading);
     },
     badgeStyle(category) {
       if (category === "Food") {

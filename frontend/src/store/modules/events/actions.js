@@ -32,7 +32,6 @@ export default {
   async loadNextEvents(context, info) {
     if (info.endpoint) {
       const response = await apiService(info.endpoint);
-      console.log(" res: ", response);
       if (info.type === "participated") {
         context.commit("setNextMostParticipatedEventsLink", response.next);
         context.commit("updateMostParticipatedEvents", response.results);
