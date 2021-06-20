@@ -55,11 +55,10 @@ export default {
         await submitForm(endpoint, "POST", formData);
         await this.$store.dispatch("user/loadUserInfo");
         this.snackbarMessage =
-          "Password updated successfully. Please, login for a new session.";
+          "Password updated successfully. You will be redirect for login again.";
         this.snackBarColor = "#3DB834";
-        this.showSnackbar = true;
         await this.$router.replace("/");
-        location.reload();
+        await location.reload();
       } catch (error) {
         this.isError = true;
         this.passwordErrors = error;
