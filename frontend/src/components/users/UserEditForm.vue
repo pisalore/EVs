@@ -3,7 +3,7 @@
     <div class="form-group">
       <label for="username">Username</label>
       <input
-        v-model="username"
+        v-model.trim="username"
         type="text"
         class="form-control"
         id="username"
@@ -72,7 +72,7 @@
     <div class="form-group">
       <label for="email">Email</label>
       <input
-        v-model="email"
+        v-model.trim="email"
         type="email"
         class="form-control"
         id="email"
@@ -92,6 +92,7 @@
 export default {
   name: "UserEditForm",
   props: ["user"],
+  emits: ["update-user"],
   data() {
     return {
       username: this.user.username,
@@ -105,15 +106,15 @@ export default {
   },
   methods: {
     updateUser() {
-      const formData = {
-        first_name: this.firstName,
-        last_name: this.lastName,
-        organization_name: null,
-        city: this.city,
-        birthday: this.birthday,
-        username: this.username,
-        email: this.email,
-      };
+      let formData = new FormData();
+      formData.append("first_name", this.firstName);
+      formData.append("last_name", this.lastName);
+      formData.append("organization_name", this.organizationName);
+      formData.append("city", this.city);
+      formData.append("birthday", this.birthday);
+      formData.append("username", this.username);
+      formData.append("email", this.email);
+
       this.$emit("update-user", formData);
     },
   },
