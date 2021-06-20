@@ -7,7 +7,7 @@
         type="text"
         class="form-control"
         id="username"
-        placeholder="Email"
+        placeholder="Username"
         required
       />
     </div>

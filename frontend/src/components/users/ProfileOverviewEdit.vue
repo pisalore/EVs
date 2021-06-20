@@ -23,7 +23,7 @@
       @update-user="updateUser"
     ></user-edit-form>
   </div>
-  <div class="mt-4 col-xl-12">
+  <div class="col-xl-12">
     <hr />
     <h1 class="title">Delete your account</h1>
     <p>This action is not reversible. You will lost all your saved EVs.</p>
