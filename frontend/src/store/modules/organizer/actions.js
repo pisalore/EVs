@@ -4,7 +4,6 @@ export default {
   async loadOrganizerAvailableEvents(context) {
     let endpoint = "/api/events/organizer/managed-events/?status=A";
     const response = await apiService(endpoint);
-    console.log(response)
     context.commit("setOrganizerAvailableEvents", response.results);
     context.commit("setOrganizerAvailableEventsNextLink", response.next);
   },

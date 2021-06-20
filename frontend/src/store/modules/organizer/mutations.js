@@ -3,7 +3,6 @@ export default {
     state.organizerAvailableEvents = payload;
   },
   setOrganizerAvailableEventsNextLink(state, payload) {
-    console.log(payload)
     state.organizerNextAvailableEventsLink = payload;
   },
   setOrganizerScheduledEvents(state, payload) {

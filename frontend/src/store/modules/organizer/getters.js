@@ -9,7 +9,6 @@ export default {
     return state.organizerCanceledEvents;
   },
   getOrganizerAvailableEventsNextLink(state) {
-    console.log(state.organizerNextAvailableEventsLink)
     return state.organizerNextAvailableEventsLink;
   },
   getOrganizerScheduledEventsNextLink(state) {
