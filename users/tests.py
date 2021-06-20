@@ -94,7 +94,8 @@ class RetrieveUserInfoTest(APITestCase):
              'is_the_event_organizer': False,
              "profile_image": None,
              "city": "Test city",
-             "date_joined": self.user.date_joined.strftime('%Y-%m-%dT%H:%M:%S.%fZ')})
+             "date_joined": self.user.date_joined.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+             "birthday": None})
 
     def test_retrieve_organizer_main_info(self):
         self.client.force_authenticate(user=self.organizer)
@@ -113,7 +114,8 @@ class RetrieveUserInfoTest(APITestCase):
              'is_the_event_organizer': False,
              "profile_image": None,
              "city": "Test city",
-             "date_joined": self.organizer.date_joined.strftime('%Y-%m-%dT%H:%M:%S.%fZ')})
+             "date_joined": self.organizer.date_joined.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+             "birthday": None})
 
 
 class UploadFileTest(APITestCase):

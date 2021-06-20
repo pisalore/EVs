@@ -1,13 +1,20 @@
 <template>
-  <form>
+  <form v-if="user.id">
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="Name" />
+        <input
+          v-model="firstName"
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Name"
+        />
       </div>
       <div class="form-group col-md-6">
         <label for="surname">Surname</label>
         <input
+          v-model="lastName"
           type="text"
           class="form-control"
           id="surname"
@@ -41,6 +48,12 @@
 export default {
   name: "UserEditForm",
   props: ["user"],
+  data() {
+    return {
+      firstName: this.user.first_name,
+      lastName: this.user.last_name,
+    };
+  },
 };
 </script>
 

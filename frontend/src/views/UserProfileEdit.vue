@@ -90,7 +90,10 @@
           role="tabpanel"
           aria-labelledby="v-pills-home-tab"
         >
-          <profile-overview-edit></profile-overview-edit>
+          <profile-overview-edit
+            v-if="userInfo.id"
+            :user="userInfo"
+          ></profile-overview-edit>
         </div>
         <div
           class="tab-pane fade"

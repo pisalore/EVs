@@ -3,7 +3,7 @@
     <h1 class="title">Edit your account info</h1>
     Your city will make us able to suggest events near you.
     <hr />
-    <user-edit-form></user-edit-form>
+    <user-edit-form v-if="user.id" :user="user"></user-edit-form>
   </div>
   <div class="mt-5 col-xl-12">
     <hr />
@@ -22,6 +22,8 @@ import UserEditForm from "./UserEditForm";
 export default {
   name: "ProfileOverviewEdit",
   components: { UserEditForm },
+  props: ["user"],
+
 };
 </script>
 
