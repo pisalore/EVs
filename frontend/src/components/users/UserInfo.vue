@@ -46,7 +46,9 @@
         </div>
       </div>
       <div class="col-xl-3 text-center my-2">
-        <button class="btn btn-lg btn-primary">Edit Profile</button>
+        <button class="btn btn-lg btn-primary" @click="toEditProfile">
+          Edit Profile
+        </button>
       </div>
     </div>
     <hr />
@@ -259,12 +261,14 @@ export default {
         await this.$store.dispatch("user/loadUserGoingEvents");
         await this.$store.dispatch("user/loadUserInterestedEvents");
       } else {
-        console.log("organizer")
         await this.$store.dispatch("organizer/loadOrganizerAvailableEvents");
         await this.$store.dispatch("organizer/loadOrganizerScheduledEvents");
         await this.$store.dispatch("organizer/loadOrganizerCanceledEvents");
       }
       this.isLoading = false;
+    },
+    toEditProfile() {
+      this.$router.push("/edit-profile");
     },
   },
   created() {

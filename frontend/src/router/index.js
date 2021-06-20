@@ -6,6 +6,7 @@ import ContactUs from "../views/ContactUs";
 import FAQ from "../views/FAQ";
 import Events from "../views/Events";
 import UserProfile from "../views/UserProfile";
+import UserProfileEdit from "../views/UserProfileEdit";
 import EventDetail from "../views/EventDetail";
 import EditEvent from "../views/EditEvent";
 import NotFound from "../views/NotFound";
@@ -40,6 +41,11 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: UserProfile,
+  },
+  {
+    path: "/edit-profile",
+    name: "ProfileEdit",
+    component: UserProfileEdit,
   },
   {
     path: "/events/:id",
