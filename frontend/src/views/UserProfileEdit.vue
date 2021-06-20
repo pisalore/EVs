@@ -30,26 +30,20 @@
             alt="Avatar"
           />
           <p class="text-center mt-2 username">@{{ userInfo.username }}</p>
-          <div class="row mt-1 d-flex justify-content-center">
+          <div
+            class="row mt-1 d-flex justify-content-center"
+            style="cursor: pointer"
+          >
+            <label id="getFileLabel" for="getFile" style="cursor: pointer">{{
+              currentFile ? currentFile.name : "Change your profile image"
+            }}</label>
             <input
+              class="input-profile-image"
               type="file"
-              style="
-                cursor: pointer;
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                width: 100%;
-                height: 100%;
-              "
+              id="getFile"
               ref="file"
               @change="selectFile"
             />
-            <div class="mt-1">
-              {{ currentFile ? currentFile.name : "Change your profile image" }}
-            </div>
             <i
               class="material-icons-outlined ml-1"
               style="font-size: 30px; color: #4babfa"
@@ -197,5 +191,9 @@ img {
   font-weight: 200;
   font-size: 36px;
   line-height: 42px;
+}
+.input-profile-image {
+  cursor: pointer;
+  display: none;
 }
 </style>
