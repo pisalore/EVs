@@ -28,7 +28,7 @@
     <h1 class="title">Delete your account</h1>
     <p>This action is not reversible. You will lost all your saved EVs.</p>
     <div class="d-flex justify-content-center">
-      <button type="button" class="btn btn-lg btn-danger">
+      <button type="button" class="btn btn-lg btn-danger" @click="deleteUser">
         Delete Account
       </button>
     </div>
@@ -39,6 +39,7 @@
 import UserEditForm from "./UserEditForm";
 import Snackbar from "../../ui/Snackbar";
 import { putForm } from "../../common/form_request_service";
+import { apiService } from "../../common/api.service";
 export default {
   name: "ProfileOverviewEdit",
   components: { UserEditForm, Snackbar },
@@ -62,6 +63,21 @@ export default {
         this.snackbarMessage = "User updated successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
+      } catch (error) {
+        this.isError = true;
+        this.snackbarMessage = error;
+        this.snackBarColor = "#E32822";
+        this.showSnackbar = true;
+      }
+      this.isLoading = false;
+    },
+    async deleteUser() {
+      this.isLoading = true;
+      try {
+        let endpoint = `/api/user/${this.user.username}/`;
+        await apiService(endpoint, "DELETE");
+        await this.$router.replace("/");
+        await location.reload();
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
