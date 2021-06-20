@@ -188,14 +188,14 @@ export default {
     async deleteEvent() {
       this.isLoading = true;
       try {
-        console.log("delete");
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
-        const response = await apiService(endpoint, "DELETE");
+        await apiService(endpoint, "DELETE");
         this.snackbarMessage = "Event deleted successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
-        console.log(response);
-        await this.$router.replace("/");
+        setTimeout(() => {
+          this.$router.replace("/profile");
+        }, 3000);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
