@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 col-xl-12">
+  <div class="col-xl-12">
     <h1 class="title">Edit your account info</h1>
     Your city will make us able to suggest events near you.
     <hr />
