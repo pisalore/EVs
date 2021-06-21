@@ -56,7 +56,8 @@ export default {
       }
       if (
         this.nextType === "user-interested" ||
-        this.nextType === "user-going"
+        this.nextType === "user-going" ||
+        this.nextType === "user-expired"
       ) {
         await this.$store.dispatch("user/loadNextEvents", {
           endpoint: this.next,

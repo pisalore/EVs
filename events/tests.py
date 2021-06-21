@@ -1,3 +1,4 @@
+import datetime
 import json
 from PIL import Image
 from io import BytesIO
@@ -270,19 +271,19 @@ class FilterEventsTest(APITestCase):
         cls.A1 = Event.objects.create(organizer=cls.organizer,
                                       name="TestEvent1A",
                                       status="A",
-                                      start_date="2021-01-01",
+                                      start_date=datetime.date.today().__str__(),
                                       venue="TestVenue")
 
         cls.A2 = Event.objects.create(organizer=cls.organizer2,
                                       name="TestEvent2A",
                                       status="A",
-                                      start_date="2021-01-01",
+                                      start_date=datetime.date.today().__str__(),
                                       venue="TestVenue")
 
         cls.A3 = Event.objects.create(organizer=cls.organizer2,
                                       name="TestEvent3A",
                                       status="A",
-                                      start_date="2022-01-01",
+                                      start_date=datetime.date.today().__str__(),
                                       venue="TestVenue")
 
         cls.S = Event.objects.create(organizer=cls.organizer,
@@ -319,10 +320,12 @@ class FilterEventsTest(APITestCase):
         self.assertEqual(json.loads(response.content)["count"], 3)
 
     def test_filter_by_date_range(self):
-        url = '/api/events/?start_date=2021-01-01&end_date=2021-02-01'
+        start_date = datetime.date.today().__str__()
+        end_date = (datetime.date.today() + datetime.timedelta(days=1)).__str__()
+        url = f'/api/events/?start_date={start_date}&end_date={end_date}'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(json.loads(response.content)["count"], 2)
+        self.assertEqual(json.loads(response.content)["count"], 3)
 
     def test_filter_by_categories(self):
         url = '/api/events/?categories=9'

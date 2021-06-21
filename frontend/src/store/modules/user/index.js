@@ -11,6 +11,8 @@ export default {
       userNextGoingEventsLink: null,
       userInterestedEvents: {},
       userNextInterestedEventsLink: null,
+      userExpiredEvents: {},
+      userNextExpiredEventsLink: null,
     };
   },
   actions,

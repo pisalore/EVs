@@ -8,11 +8,17 @@ export default {
   setUserInterestedEvents(state, payload) {
     state.userInterestedEvents = payload;
   },
+  setUserExpiredEvents(state, payload) {
+    state.userExpiredEvents = payload;
+  },
   setUserGoingEventsNextLink(state, payload) {
     state.userNextGoingEventsLink = payload;
   },
   setUserInterestedEventsNextLink(state, payload) {
     state.userNextInterestedEventsLink = payload;
+  },
+  setUserExpiredEventsNextLink(state, payload) {
+    state.userNextExpiredEventsLink = payload;
   },
   updateUserGoingEvents(state, payload) {
     payload.forEach(function (ev) {
@@ -22,6 +28,11 @@ export default {
   updateUserInterestedEvents(state, payload) {
     payload.forEach(function (ev) {
       state.userInterestedEvents.push(ev);
+    });
+  },
+  updateUserExpiredEvents(state, payload) {
+    payload.forEach(function (ev) {
+      state.userExpiredEvents.push(ev);
     });
   },
 };

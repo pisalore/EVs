@@ -156,7 +156,8 @@ class UserEventsPersonalAreaGoingListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects.order_by('start_date').filter(participants__username=username).filter(status='A')
+        return Event.objects.order_by('start_date')\
+            .filter(participants__username=username, start_date__gte=datetime.datetime.now()).filter(status='A')
 
 
 class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
@@ -166,7 +167,21 @@ class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects.order_by('start_date').filter(interested__username=username).filter(status='A')
+        return Event.objects.order_by('start_date')\
+            .filter(interested__username=username,  start_date__gte=datetime.datetime.now()).filter(status='A')
+
+
+class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.request.user.username
+        return Event.objects\
+            .filter(participants__username=username)\
+            .filter(status='A', start_date__lt=datetime.datetime.now())\
+            .order_by('start_date')
 
 
 class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):

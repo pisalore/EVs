@@ -5,8 +5,11 @@
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">@{{ venue }}</h5>
       <h5 class="card-date">{{ computeDate() }}</h5>
-      <h3 v-if="expired" class="expired">EXPIRED</h3>
-      <div class="img-div">
+      <h3 v-if="expired && status === 'A'" class="expired">EXPIRED</h3>
+      <h3 v-if="expired && status === 'S'" class="scheduled">
+        SCHEDULED - Note the past date
+      </h3>
+      <div v-if="!expired" class="img-div">
         <img
           v-if="image && !is_mobile"
           class="card-img-top"
@@ -20,18 +23,7 @@
           alt=""
         />
       </div>
-      <div v-if="website && !isUser" class="text-center pt-5">
-        <a :href="website">
-          <button
-            type="button"
-            class="btn simple-card-button"
-            onclick="event.stopPropagation()"
-          >
-            Go to website
-          </button>
-        </a>
-      </div>
-      <div class="mt-2" v-else>
+      <div class="mt-2" v-if="!expired">
         <div class="row d-flex justify-content-around pt-4">
           <div>
             <span class="px-2" style="color: #e32822">
@@ -92,6 +84,7 @@ export default {
     "participants",
     "user_going",
     "user_interested",
+    "status",
     "published",
   ],
   data() {
@@ -175,6 +168,13 @@ export default {
   font-size: 24px;
   line-height: 24px;
   color: #e32822;
+}
+
+.scheduled {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  color: #ffbb33;
 }
 
 .card-organizer {
