@@ -56,6 +56,11 @@
     <hr />
     <div v-if="!user.is_organizer" class="my-5">
       <h1 class="title px-4">Your Personal Events</h1>
+      <p class="px-4 subtitle">
+        Click on an event card to see event details. Here you can discover your
+        upcoming events, the ones you are interested in and the ones you
+        enjoyed.
+      </p>
       <events-slot
         background="azure"
         title="Upcoming"
@@ -135,8 +140,14 @@
       </events-slot>
     </div>
     <div v-else class="my-5">
-      <div class="col-xl-10">
+      <div class="col-xl-12">
         <h1 class="title px-4">Your Managed Events</h1>
+      </div>
+      <div class="col-xl-12">
+        <p class="px-4 subtitle">
+          Click on an event card to modify the event. They are categorized by
+          their availability.
+        </p>
       </div>
       <div class="col-xl-3 px-5 mt-4">
         <button class="btn btn-lg btn-primary" @click="createEvent">
@@ -164,7 +175,7 @@
           :user_going="ev.user_is_going"
           :user_interested="ev.user_is_interested"
           :status="ev.status"
-          :published="true"
+          :published="false"
         >
         </event-card>
       </events-slot>
@@ -359,5 +370,12 @@ img {
   font-size: 48px;
   line-height: 56px;
   color: #1f6dad;
+}
+.subtitle {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 28px;
+  color: #000000;
 }
 </style>

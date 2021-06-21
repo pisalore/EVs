@@ -87,6 +87,7 @@ export default {
     "status",
     "published",
   ],
+
   data() {
     return {
       userInfo: null,
@@ -130,8 +131,8 @@ export default {
       return !!this.userInfo;
     },
     expired() {
-      let today = new Date().setHours(0,0,0,0);
-      let eventDate = new Date(this.start_date).setHours(0,0,0,0);
+      let today = new Date().setHours(0, 0, 0, 0);
+      let eventDate = new Date(this.start_date).setHours(0, 0, 0, 0);
       return eventDate < today;
     },
   },

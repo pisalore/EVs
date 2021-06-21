@@ -105,6 +105,7 @@ class EventManagingTest(APITestCase):
             description="Fixed description",
             status="A",
             organizer=self.organizer,
+            start_date=datetime.date.today().__str__()
         )
         test_event.categories.add(Category.objects.get(id=1))
         url = '/api/events/{}/'.format(test_event.id)
@@ -123,6 +124,7 @@ class EventManagingTest(APITestCase):
             description="Fixed description",
             status="A",
             organizer=self.organizer,
+            start_date=datetime.date.today().__str__(),
         )
         test_event.categories.add(Category.objects.get(id=1))
         update_event_data = {
@@ -130,8 +132,8 @@ class EventManagingTest(APITestCase):
             "description": "test description",
             "status": "S",
             "venue": "Test Venue",
-            "start_date": "2021-06-15",
-            "finish_date": "2021-06-15",
+            "start_date": (datetime.date.today() + datetime.timedelta(days=1)).__str__(),
+            "finish_date": (datetime.date.today() + datetime.timedelta(days=2)).__str__(),
             "start_hour": "15:29:58",
             "finish_hour": "15:29:58",
             "evs_link": "",
@@ -159,6 +161,7 @@ class EventManagingTest(APITestCase):
             description="Fixed description",
             status="A",
             organizer=self.organizer,
+            start_date=datetime.date.today().__str__()
         )
         url = '/api/events/{}/'.format(test_event.id)
         test_event.categories.add(Category.objects.get(id=1))

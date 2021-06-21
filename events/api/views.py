@@ -32,7 +32,7 @@ class EventViewSet(viewsets.ModelViewSet):
     # Ordering by date using passed query params and search in date range
     def get_queryset(self):
         queryset = Event.objects.all()
-        start_date = self.request.query_params.get('start_date', None)
+        start_date = self.request.query_params.get('start_date', datetime.date.today().__str__())
         end_date = self.request.query_params.get('end_date', None)
         ordering = self.request.query_params.get('ordering', 'start_date')
         if start_date and end_date:

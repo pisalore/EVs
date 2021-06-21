@@ -133,7 +133,7 @@ export default {
     ProfileOverviewEdit,
     PasswordChange,
     Snackbar,
-    BaseModal
+    BaseModal,
   },
   data() {
     return {
@@ -220,6 +220,7 @@ export default {
       await this.$store.dispatch("user/loadUserInfo");
     },
   },
+
   created() {
     this.loadUserInfo();
   },
