@@ -52,10 +52,15 @@
             v-model="formEventVenue"
             type="text"
             class="form-control"
+            :class="{ invalid: formError20 }"
             id="evVenue"
             placeholder="Event venue..."
             required
+            @focus="formError20 = false"
           />
+          <p v-if="formError20" style="color: red">
+            Add an event venue before publication!
+          </p>
         </div>
         <div class="col-xl-12">
           <div class="row my-2">
@@ -311,6 +316,7 @@ export default {
       formEventEndTime: this.event ? this.event.finish_hour : null,
       nameError: false,
       formError2: false,
+      formError20: false,
       formError21: false,
       formError22: false,
       websiteError: false,
@@ -446,6 +452,12 @@ export default {
           .getElementById("form1")
           .scrollIntoView({ block: "start", behavior: "smooth" });
       }
+      if (!this.formEventVenue) {
+        this.formError20 = true;
+        document
+          .getElementById("form2")
+          .scrollIntoView({ block: "start", behavior: "smooth" });
+      }
       if (this.showFinishDateOption) {
         const fromDate = new Date(this.formEventStartDate);
         const toDate = new Date(this.formEventEndDate);
@@ -484,6 +496,7 @@ export default {
       if (
         !this.nameError &&
         !this.formError2 &&
+        !this.formError20 &&
         !this.formError21 &&
         !this.formError22 &&
         !this.websiteError &&
