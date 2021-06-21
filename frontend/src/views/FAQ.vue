@@ -27,7 +27,7 @@
       <h4>2. How does EVs work?</h4>
       <div>
         <p class="pt-4">
-          EVs has for macro areas: an
+          EVs has four macro areas: an
           <router-link to="/home">Homepage</router-link>
           , where are listed all the most interesting, the most participated and
           the expiring events; an
@@ -48,8 +48,9 @@
             Heroku Security statement</a
           >
           to know more. Profile images are stored on AWS S3, which is secure and
-          safe. safe. All data shared by users are not used for profiling
-          activities.
+          safe. All data shared by users are not used for profiling activities.
+          Nobody can access your data, and once you delete your account, all
+          information are destroyed.
         </p>
       </div>
     </div>
