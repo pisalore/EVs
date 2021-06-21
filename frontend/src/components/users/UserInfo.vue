@@ -46,9 +46,11 @@
         </div>
       </div>
       <div class="col-xl-3 text-center my-2">
-        <button class="btn btn-lg btn-primary" @click="toEditProfile">
-          Edit Profile
-        </button>
+        <div>
+          <button class="btn btn-lg btn-primary" @click="toEditProfile">
+            Edit Profile
+          </button>
+        </div>
       </div>
     </div>
     <hr />
@@ -104,7 +106,12 @@
       </events-slot>
     </div>
     <div v-else class="my-5">
-      <h1 class="title px-4">Your Personal Events</h1>
+      <div class="col-xl-10">
+        <h1 class="title px-4">Your Personal Events</h1>
+      </div>
+      <div class="col-xl-3 px-5 mt-4">
+        <button class="btn btn-lg btn-primary">Create Ev</button>
+      </div>
       <events-slot
         background="azure"
         title="Available"
