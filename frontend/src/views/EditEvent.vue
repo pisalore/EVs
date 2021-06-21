@@ -175,7 +175,7 @@ export default {
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
         await apiService(endpoint, "PATCH", formData);
         await this.$store.dispatch("events/loadEventToBeModified", this.id);
-        this.snackbarMessage = "Event uploaded successfully.";
+        this.snackbarMessage = "Event updated successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
       } catch (error) {
@@ -195,8 +195,8 @@ export default {
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         setTimeout(() => {
-          this.$router.replace("/profile");
-        }, 3000);
+          this.$router.push("/profile");
+        }, 1000);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;

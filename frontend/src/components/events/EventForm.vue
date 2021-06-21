@@ -67,8 +67,14 @@
                 type="date"
                 id="startDate"
                 :class="{ invalid: formError2 }"
-                @focus="formError2 = false"
+                @focus="
+                  formError2 = false;
+                  formError21 = false;
+                "
               />
+              <p v-if="formError21" style="color: red">
+                Add an event start date before publication!
+              </p>
             </div>
             <div class="col-xl-4">
               <input
@@ -76,11 +82,29 @@
                 class="form-control"
                 type="time"
                 id="startTime"
-                @focus="formError2 = false"
+                @focus="
+                  formError2 = false;
+                  formError22 = false;
+                "
               />
+              <p v-if="formError22" style="color: red">
+                Add an event start time before publication!
+              </p>
             </div>
           </div>
-          <div class="row my-2">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="defaultCheck1"
+              @change="showFinishDateOption = !showFinishDateOption"
+            />
+            <label class="form-check-label" for="defaultCheck1">
+              Provide finish date and time
+            </label>
+          </div>
+          <div v-if="showFinishDateOption" class="row my-2">
             <div class="col-xl-4 mt-2"><span>Finish date and hour</span></div>
             <div class="col-xl-4">
               <input
@@ -280,21 +304,20 @@ export default {
       formEventVenue: this.event ? this.event.venue : "",
       formEventWebsite: this.event ? this.event.event_website : "",
       formEventTickets: this.event ? this.event.tickets_website : "",
-      formEventStartDate: this.event
-        ? this.event.start_date
-        : new Date().toISOString().slice(0, 10),
-      formEventEndDate: this.event
-        ? this.event.finish_date
-        : new Date().toISOString().slice(0, 10),
+      formEventStartDate: this.event ? this.event.start_date : null,
+      formEventEndDate: this.event ? this.event.finish_date : null,
       formEventStartTime: this.event ? this.event.start_hour : null,
       formEventEndTime: this.event ? this.event.finish_hour : null,
       nameError: false,
       formError2: false,
+      formError21: false,
+      formError22: false,
       websiteError: false,
       ticketsError: false,
       showModal: false,
       isModalUpdate: false,
       isModalDelete: false,
+      showFinishDateOption: false,
       categories: [],
       selectedCategories: this.event ? this.event.categories : [],
       statuses: [
@@ -422,13 +445,15 @@ export default {
           .getElementById("form1")
           .scrollIntoView({ block: "start", behavior: "smooth" });
       }
-      const fromDate = new Date(this.formEventStartDate);
-      const toDate = new Date(this.formEventEndDate);
-      this.formError2 = fromDate > toDate;
-      if (this.formError2) {
-        document
-          .getElementById("form2")
-          .scrollIntoView({ block: "start", behavior: "smooth" });
+      if (this.showFinishDateOption) {
+        const fromDate = new Date(this.formEventStartDate);
+        const toDate = new Date(this.formEventEndDate);
+        this.formError2 = fromDate > toDate;
+        if (this.formError2) {
+          document
+            .getElementById("form2")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+        }
       }
 
       if (this.formEventWebsite) {
@@ -437,6 +462,17 @@ export default {
       if (this.formEventTickets) {
         this.ticketsError = !this.validURL(this.formEventTickets);
       }
+      if (this.selectedStatus === "A") {
+        if (!this.formEventStartDate) {
+          this.formError21 = true;
+        }
+        if (!this.formEventStartTime) {
+          this.formError22 = true;
+        }
+        document
+          .getElementById("form2")
+          .scrollIntoView({ block: "start", behavior: "smooth" });
+      }
     },
     submitForm() {
       this.showModal = false;
@@ -444,6 +480,8 @@ export default {
       if (
         !this.nameError &&
         !this.formError2 &&
+        !this.formError21 &&
+        !this.formError22 &&
         !this.websiteError &&
         !this.ticketsError
       ) {

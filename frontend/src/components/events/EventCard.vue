@@ -111,6 +111,9 @@ export default {
       }
     },
     computeDate() {
+      if (!this.start_date) {
+        return "";
+      }
       const options = {
         month: "long",
         day: "numeric",

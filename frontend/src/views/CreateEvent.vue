@@ -65,10 +65,14 @@ export default {
       this.isLoading = true;
       try {
         let endpoint = "/api/events/organizer/managed-events/";
-        await apiService(endpoint, "POST", formData);
+        let response = await apiService(endpoint, "POST", formData);
+        console.log(response);
         this.snackbarMessage = "Event created successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
+        setTimeout(() => {
+          this.$router.push(`/event-edit/${response.id}`);
+        }, 2000);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;

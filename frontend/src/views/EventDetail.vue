@@ -239,6 +239,9 @@ export default {
       );
     },
     computeDate() {
+      if (!this.selectedEvent.start_date) {
+        return "";
+      }
       const options = {
         month: "long",
         day: "numeric",
