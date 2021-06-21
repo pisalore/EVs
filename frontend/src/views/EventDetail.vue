@@ -163,7 +163,7 @@
                   ></base-action-button>
                   <base-action-button
                     v-if="
-                      !loggedUser.user_is_going &&
+                      !selectedEvent.user_is_going &&
                       !loggedUser.is_the_event_organizer &&
                       !loggedUser.is_organizer
                     "
