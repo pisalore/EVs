@@ -466,13 +466,16 @@ export default {
       if (this.selectedStatus === "A") {
         if (!this.formEventStartDate) {
           this.formError21 = true;
+          document
+            .getElementById("form2")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
         }
         if (!this.formEventStartTime) {
           this.formError22 = true;
+          document
+            .getElementById("form2")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
         }
-        document
-          .getElementById("form2")
-          .scrollIntoView({ block: "start", behavior: "smooth" });
       }
     },
     submitForm() {

@@ -8,40 +8,53 @@
           </div>
           <div class="col-xl-3 my-3">
             <div class="input-group-lg">
+              <label for="venue">Event venue:</label>
               <input
                 type="text"
                 v-model="filterCity"
                 class="form-control"
-                id="inlineFormInputGroup"
+                id="venue"
                 placeholder="Enter a city..."
               />
             </div>
           </div>
           <div class="col-xl-3 my-3">
             <div class="input-group-lg">
+              <label for="fromdate">From date...</label>
               <input
                 class="form-control"
+                :class="{ invalid: !searchIsValid }"
+                @focus="searchIsValid = true"
                 placeholder="From date..."
-                type="text"
+                type="date"
                 v-model="fromDate"
-                onfocus="(this.type='date')"
+                id="fromdate"
               />
             </div>
             <div class="input-group-lg my-3">
+              <label for="todate">...to date</label>
               <input
                 class="form-control"
+                :class="{ invalid: !searchIsValid }"
+                @focus="searchIsValid = true"
                 placeholder="...to date"
-                type="text"
+                type="date"
                 v-model="toDate"
-                onfocus="(this.type='date')"
+                id="todate"
               />
+              <p v-if="!searchIsValid" style="color: red">
+                Start date must be before end date!
+              </p>
             </div>
           </div>
-          <div class="dropdown col-xl-3 my-3">
+
+          <div class="dropdown col-xl-3 mt-3">
+            <label for="selectcategories">Events ategories...</label>
             <button
               type="button"
               class="btn btn-lg btn-outline-primary dropdown-toggle"
               data-toggle="dropdown"
+              id="selectcategories"
             >
               Select some event category...
             </button>
@@ -105,7 +118,7 @@ export default {
   emits: ["searching", "searched"],
   data() {
     return {
-      searchIsValid: false,
+      searchIsValid: true,
       categories: [],
       searchCategories: [],
       filterCity: "",
@@ -176,7 +189,10 @@ export default {
           searchString
         );
       }
-      this.$emit("searched");
+      await this.$emit("searched");
+      document
+        .getElementById("results")
+        .scrollIntoView({ block: "end", behavior: "smooth" });
     },
     async clearAllFilters() {
       this.filterCity = "";
@@ -206,5 +222,9 @@ export default {
 
 .dropdown-menu a {
   cursor: pointer;
+}
+
+.invalid {
+  border: 1px solid red;
 }
 </style>
