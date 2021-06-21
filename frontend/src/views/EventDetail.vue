@@ -250,15 +250,24 @@ export default {
       let startDate = new Date(
         this.selectedEvent.start_date
       ).toLocaleDateString("en", options);
-      let endDate = this.selectedEvent.end_date;
-      if (endDate) {
-        endDate = new Date(this.end_date).toLocaleDateString("en", options);
-        startDate += ` to ${endDate}`;
-      }
       let startHour = this.selectedEvent.start_hour;
       if (startHour) {
         startDate += `, at ${startHour}`;
       }
+      let endDate = this.selectedEvent.finish_date;
+      console.log(endDate);
+      if (endDate) {
+        endDate = new Date(this.selectedEvent.finish_date).toLocaleDateString(
+          "en",
+          options
+        );
+        startDate += ` to ${endDate}`;
+        let endHour = this.selectedEvent.finish_hour;
+        if (endHour) {
+          startDate += ` at ${endHour}`;
+        }
+      }
+
       return startDate;
     },
     userIsGoing() {
