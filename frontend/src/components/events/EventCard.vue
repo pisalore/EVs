@@ -130,8 +130,9 @@ export default {
       return !!this.userInfo;
     },
     expired() {
-      let today = new Date();
-      let eventDate = new Date(this.start_date);
+      let today = new Date().toLocaleDateString();
+      let eventDate = new Date(this.start_date).toLocaleDateString();
+      console.log(eventDate)
       return eventDate < today;
     },
   },
