@@ -8,6 +8,10 @@
           potential participants. For example: age range, restrictions, how to
           get ev location, services...
         </h2>
+        <p v-if="isCreate">
+          You will be able to load a cover image once the event has been
+          created.
+        </p>
         <div class="form-group">
           <label for="evName">Event name</label>
           <input
@@ -276,8 +280,12 @@ export default {
       formEventVenue: this.event ? this.event.venue : "",
       formEventWebsite: this.event ? this.event.event_website : "",
       formEventTickets: this.event ? this.event.tickets_website : "",
-      formEventStartDate: this.event ? this.event.start_date : null,
-      formEventEndDate: this.event ? this.event.finish_date : null,
+      formEventStartDate: this.event
+        ? this.event.start_date
+        : new Date().toISOString().slice(0, 10),
+      formEventEndDate: this.event
+        ? this.event.finish_date
+        : new Date().toISOString().slice(0, 10),
       formEventStartTime: this.event ? this.event.start_hour : null,
       formEventEndTime: this.event ? this.event.finish_hour : null,
       nameError: false,
