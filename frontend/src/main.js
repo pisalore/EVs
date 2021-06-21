@@ -12,7 +12,6 @@ import BaseActionButton from "./ui/BaseActionButton";
 import BaseModal from "./ui/BaseModal";
 import PulseLoader from "vue-spinner/src/PulseLoader";
 
-
 const app = createApp(App);
 
 app.use(router);

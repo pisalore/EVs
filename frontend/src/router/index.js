@@ -9,7 +9,7 @@ import UserProfile from "../views/UserProfile";
 import UserProfileEdit from "../views/UserProfileEdit";
 import EventDetail from "../views/EventDetail";
 import CreateEvent from "../views/CreateEvent";
-import EditEvent from "../views/EditEvent";
+import EditEvent from "../views/EventEdit";
 import NotFound from "../views/NotFound";
 
 const routes = [
