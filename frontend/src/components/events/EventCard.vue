@@ -5,6 +5,7 @@
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">@{{ venue }}</h5>
       <h5 class="card-date">{{ computeDate() }}</h5>
+      <h3 v-if="expired" class="expired">EXPIRED</h3>
       <div class="img-div">
         <img
           v-if="image && !is_mobile"
@@ -135,6 +136,11 @@ export default {
     isUser() {
       return !!this.userInfo;
     },
+    expired() {
+      let today = new Date();
+      let eventDate = new Date(this.start_date);
+      return eventDate < today;
+    },
   },
   created() {
     this.userInfo = this.$store.getters["user/getUserInfo"];
@@ -162,6 +168,13 @@ export default {
   font-size: 28px;
   line-height: 28px;
   color: #1f6dad;
+}
+
+.expired {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  color: #e32822;
 }
 
 .card-organizer {
