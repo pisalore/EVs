@@ -204,7 +204,10 @@ export default {
 }
 img {
   border-radius: 50%;
+  height:auto;
   max-width: 50%;
+  min-height: 200px;
+  min-width: 200px;
 }
 .username {
   font-style: normal;
