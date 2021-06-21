@@ -180,7 +180,8 @@ class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
         username = self.request.user.username
         return Event.objects\
             .filter(participants__username=username)\
-            .filter(status='A', start_date__lt=datetime.datetime.now())\
+            .filter(start_date__lt=datetime.datetime.now())\
+            .filter(status='A')\
             .order_by('start_date')
 
 

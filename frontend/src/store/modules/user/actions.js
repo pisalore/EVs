@@ -40,7 +40,7 @@ export default {
         context.commit("updateUserInterestedEvents", response.results);
       } else if (info.type === "user-expired") {
         context.commit("setUserExpiredEventsNextLink", response.next);
-        context.commit("updateUserInterestedEvents", response.results);
+        context.commit("updateUserExpiredEvents", response.results);
       }
     }
   },
