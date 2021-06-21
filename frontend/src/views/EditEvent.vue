@@ -76,6 +76,7 @@
             v-if="event"
             :event="event"
             :organizer="organizer"
+            :is-create="false"
             @update-event="updateEvent"
             @delete-event="deleteEvent"
           ></event-form>

@@ -10,6 +10,7 @@ async function getJSON(response) {
     let stringErrors = "";
     for (var key in errors) {
       stringErrors += errors[key] + " ";
+      console.log(stringErrors);
     }
     throw new Error(stringErrors);
   });

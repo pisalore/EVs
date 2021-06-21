@@ -16,6 +16,7 @@
             class="form-control"
             id="evName"
             placeholder="Event name..."
+            required
             :class="{ invalid: nameError }"
             @focus="nameError = false"
           />
@@ -49,6 +50,7 @@
             class="form-control"
             id="evVenue"
             placeholder="Event venue..."
+            required
           />
         </div>
         <div class="col-xl-12">
@@ -223,11 +225,20 @@
     </div>
     <div class="d-flex justify-content-center">
       <button
+        v-if="event"
         type="button"
         class="btn btn-success btn-lg mt-4"
         @click="showUpdateModal"
       >
         Update Event
+      </button>
+      <button
+        v-else
+        type="button"
+        class="btn btn-success btn-lg mt-4"
+        @click="submitForm"
+      >
+        Create Event
       </button>
     </div>
   </form>
@@ -251,8 +262,8 @@ import BaseModal from "../../ui/BaseModal";
 export default {
   name: "EventForm",
   components: { BaseBadge, BaseModal },
-  props: ["event", "organizer"],
-  emits: ["update-event", "delete-event"],
+  props: ["event", "organizer", "isCreate"],
+  emits: ["update-event", "delete-event", "create-event"],
   data() {
     return {
       modalTitle: "",
@@ -265,10 +276,10 @@ export default {
       formEventVenue: this.event ? this.event.venue : "",
       formEventWebsite: this.event ? this.event.event_website : "",
       formEventTickets: this.event ? this.event.tickets_website : "",
-      formEventStartDate: this.event ? this.event.start_date : "",
-      formEventEndDate: this.event ? this.event.finish_date : "",
-      formEventStartTime: this.event ? this.event.start_hour : "",
-      formEventEndTime: this.event ? this.event.finish_hour : "",
+      formEventStartDate: this.event ? this.event.start_date : null,
+      formEventEndDate: this.event ? this.event.finish_date : null,
+      formEventStartTime: this.event ? this.event.start_hour : null,
+      formEventEndTime: this.event ? this.event.finish_hour : null,
       nameError: false,
       formError2: false,
       websiteError: false,
@@ -442,7 +453,11 @@ export default {
           organizer: this.organizer.id,
           categories: this.selectedCategories,
         };
-        this.$emit("update-event", formData);
+        if (this.isCreate) {
+          this.$emit("create-event", formData);
+        } else {
+          this.$emit("update-event", formData);
+        }
       }
     },
     deleteEvent() {

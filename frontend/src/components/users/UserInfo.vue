@@ -110,7 +110,9 @@
         <h1 class="title px-4">Your Personal Events</h1>
       </div>
       <div class="col-xl-3 px-5 mt-4">
-        <button class="btn btn-lg btn-primary">Create Ev</button>
+        <button class="btn btn-lg btn-primary" @click="createEvent">
+          Create Ev
+        </button>
       </div>
       <events-slot
         background="azure"
@@ -262,6 +264,9 @@ export default {
     },
   },
   methods: {
+    createEvent() {
+      this.$router.replace("/event-create");
+    },
     async loadUserEvents() {
       this.isLoading = true;
       if (!this.user.is_organizer) {

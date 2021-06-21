@@ -8,6 +8,7 @@ import Events from "../views/Events";
 import UserProfile from "../views/UserProfile";
 import UserProfileEdit from "../views/UserProfileEdit";
 import EventDetail from "../views/EventDetail";
+import CreateEvent from "../views/CreateEvent";
 import EditEvent from "../views/EditEvent";
 import NotFound from "../views/NotFound";
 
@@ -53,13 +54,13 @@ const routes = [
     props: true,
   },
   {
+    path: "/event-create",
+    component: CreateEvent,
+  },
+  {
     path: "/event-edit/:id",
     component: EditEvent,
     props: true,
-  },
-  {
-    path: "/event-create/",
-    component: EditEvent,
   },
   { path: "/:notFound(.*)", component: NotFound },
 ];
