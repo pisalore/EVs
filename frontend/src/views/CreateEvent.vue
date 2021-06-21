@@ -1,4 +1,11 @@
 <template>
+  <snackbar
+    v-if="showSnackbar"
+    :is_error="isError"
+    :color="snackBarColor"
+    :message="snackbarMessage"
+    @close="snackbarFalse"
+  ></snackbar>
   <pulse-loader
     v-if="isLoading"
     :loading="isLoading"
@@ -32,12 +39,17 @@
 <script>
 import EventForm from "../components/events/EventForm";
 import { apiService } from "../common/api.service";
+import Snackbar from "../ui/Snackbar";
 export default {
   name: "CreateEvent",
-  components: { EventForm },
+  components: { EventForm, Snackbar },
   data() {
     return {
       isLoading: false,
+      isError: false,
+      snackbarMessage: "",
+      snackBarColor: "",
+      showSnackbar: false,
     };
   },
   computed: {
@@ -64,6 +76,12 @@ export default {
         this.showSnackbar = true;
       }
       this.isLoading = false;
+    },
+    snackbarFalse() {
+      this.showSnackbar = false;
+      this.isError = false;
+      this.snackbarMessage = "";
+      this.snackBarColor = "";
     },
   },
   created() {
