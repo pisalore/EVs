@@ -107,7 +107,7 @@
     </div>
     <div v-else class="my-5">
       <div class="col-xl-10">
-        <h1 class="title px-4">Your Personal Events</h1>
+        <h1 class="title px-4">Your Managed Events</h1>
       </div>
       <div class="col-xl-3 px-5 mt-4">
         <button class="btn btn-lg btn-primary" @click="createEvent">
@@ -265,7 +265,7 @@ export default {
   },
   methods: {
     createEvent() {
-      this.$router.replace("/event-create");
+      this.$router.push("/event-create");
     },
     async loadUserEvents() {
       this.isLoading = true;

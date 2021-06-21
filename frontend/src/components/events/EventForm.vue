@@ -97,6 +97,7 @@
               class="form-check-input"
               type="checkbox"
               value=""
+              :checked="showFinishDateOption"
               id="defaultCheck1"
               @change="showFinishDateOption = !showFinishDateOption"
             />
@@ -317,7 +318,7 @@ export default {
       showModal: false,
       isModalUpdate: false,
       isModalDelete: false,
-      showFinishDateOption: false,
+      showFinishDateOption: this.event ? this.event.finish_date != null : false,
       categories: [],
       selectedCategories: this.event ? this.event.categories : [],
       statuses: [
@@ -448,7 +449,7 @@ export default {
       if (this.showFinishDateOption) {
         const fromDate = new Date(this.formEventStartDate);
         const toDate = new Date(this.formEventEndDate);
-        this.formError2 = fromDate > toDate;
+        this.formError2 = fromDate >= toDate;
         if (this.formError2) {
           document
             .getElementById("form2")
@@ -485,6 +486,18 @@ export default {
         !this.websiteError &&
         !this.ticketsError
       ) {
+        this.formEventStartDate =
+          this.formEventStartDate === "" ? null : this.formEventStartDate;
+        this.formEventEndDate =
+          this.formEventEndDate === "" ? null : this.formEventEndDate;
+        this.formEventStartTime =
+          this.formEventStartTime === "" ? null : this.formEventStartTime;
+        this.formEventEndTime =
+          this.formEventEndTime === "" ? null : this.formEventEndTime;
+        if (!this.showFinishDateOption) {
+          this.formEventEndDate = null;
+          this.formEventEndTime = null;
+        }
         let formData = {
           name: this.formEventName,
           description: this.formEventDescription,
