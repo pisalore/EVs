@@ -5,8 +5,11 @@ import About from "../views/About";
 import ContactUs from "../views/ContactUs";
 import FAQ from "../views/FAQ";
 import Events from "../views/Events";
+import UserProfile from "../views/UserProfile";
+import UserProfileEdit from "../views/UserProfileEdit";
 import EventDetail from "../views/EventDetail";
-import EditEvent from "../views/EditEvent";
+import CreateEvent from "../views/CreateEvent";
+import EditEvent from "../views/EventEdit";
 import NotFound from "../views/NotFound";
 
 const routes = [
@@ -36,18 +39,28 @@ const routes = [
     component: Events,
   },
   {
+    path: "/profile",
+    name: "Profile",
+    component: UserProfile,
+  },
+  {
+    path: "/edit-profile",
+    name: "ProfileEdit",
+    component: UserProfileEdit,
+  },
+  {
     path: "/events/:id",
     component: EventDetail,
     props: true,
   },
   {
+    path: "/event-create",
+    component: CreateEvent,
+  },
+  {
     path: "/event-edit/:id",
     component: EditEvent,
     props: true,
-  },
-  {
-    path: "/event-create/",
-    component: EditEvent,
   },
   { path: "/:notFound(.*)", component: NotFound },
 ];

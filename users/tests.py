@@ -67,13 +67,15 @@ class RetrieveUserInfoTest(APITestCase):
                                                password='test_password123',
                                                email="test@mail.it",
                                                is_organizer=False,
-                                               profile_image=None)
+                                               profile_image=None,
+                                               city="Test city")
         self.organizer = EvUser.objects.create_user(username="test_org",
                                                     organization_name="org",
                                                     password='test_password123',
                                                     email="test_org@mail.it",
                                                     is_organizer=True,
-                                                    profile_image=None)
+                                                    profile_image=None,
+                                                    city="Test city")
 
     def test_retrieve_user_main_info(self):
         self.client.force_authenticate(user=self.user)
@@ -90,7 +92,10 @@ class RetrieveUserInfoTest(APITestCase):
              "organization_name": "",
              "is_organizer": False,
              'is_the_event_organizer': False,
-             "profile_image": None})
+             "profile_image": None,
+             "city": "Test city",
+             "date_joined": self.user.date_joined.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+             "birthday": None})
 
     def test_retrieve_organizer_main_info(self):
         self.client.force_authenticate(user=self.organizer)
@@ -107,7 +112,10 @@ class RetrieveUserInfoTest(APITestCase):
              "organization_name": "org",
              "is_organizer": True,
              'is_the_event_organizer': False,
-             "profile_image": None, })
+             "profile_image": None,
+             "city": "Test city",
+             "date_joined": self.organizer.date_joined.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+             "birthday": None})
 
 
 class UploadFileTest(APITestCase):

@@ -8,6 +8,10 @@
           potential participants. For example: age range, restrictions, how to
           get ev location, services...
         </h2>
+        <p v-if="isCreate">
+          You will be able to load a cover image once the event has been
+          created.
+        </p>
         <div class="form-group">
           <label for="evName">Event name</label>
           <input
@@ -16,6 +20,7 @@
             class="form-control"
             id="evName"
             placeholder="Event name..."
+            required
             :class="{ invalid: nameError }"
             @focus="nameError = false"
           />
@@ -47,9 +52,15 @@
             v-model="formEventVenue"
             type="text"
             class="form-control"
+            :class="{ invalid: formError20 }"
             id="evVenue"
             placeholder="Event venue..."
+            required
+            @focus="formError20 = false"
           />
+          <p v-if="formError20" style="color: red">
+            Add an event venue before publication!
+          </p>
         </div>
         <div class="col-xl-12">
           <div class="row my-2">
@@ -61,8 +72,14 @@
                 type="date"
                 id="startDate"
                 :class="{ invalid: formError2 }"
-                @focus="formError2 = false"
+                @focus="
+                  formError2 = false;
+                  formError21 = false;
+                "
               />
+              <p v-if="formError21" style="color: red">
+                Add an event start date before publication!
+              </p>
             </div>
             <div class="col-xl-4">
               <input
@@ -70,11 +87,30 @@
                 class="form-control"
                 type="time"
                 id="startTime"
-                @focus="formError2 = false"
+                @focus="
+                  formError2 = false;
+                  formError22 = false;
+                "
               />
+              <p v-if="formError22" style="color: red">
+                Add an event start time before publication!
+              </p>
             </div>
           </div>
-          <div class="row my-2">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              :checked="showFinishDateOption"
+              id="defaultCheck1"
+              @change="showFinishDateOption = !showFinishDateOption"
+            />
+            <label class="form-check-label" for="defaultCheck1">
+              Provide finish date and time
+            </label>
+          </div>
+          <div v-if="showFinishDateOption" class="row my-2">
             <div class="col-xl-4 mt-2"><span>Finish date and hour</span></div>
             <div class="col-xl-4">
               <input
@@ -223,11 +259,20 @@
     </div>
     <div class="d-flex justify-content-center">
       <button
+        v-if="event"
         type="button"
         class="btn btn-success btn-lg mt-4"
         @click="showUpdateModal"
       >
         Update Event
+      </button>
+      <button
+        v-else
+        type="button"
+        class="btn btn-success btn-lg mt-4"
+        @click="submitForm"
+      >
+        Create Event
       </button>
     </div>
   </form>
@@ -251,8 +296,8 @@ import BaseModal from "../../ui/BaseModal";
 export default {
   name: "EventForm",
   components: { BaseBadge, BaseModal },
-  props: ["event", "organizer"],
-  emits: ["update-event", "delete-event"],
+  props: ["event", "organizer", "isCreate"],
+  emits: ["update-event", "delete-event", "create-event"],
   data() {
     return {
       modalTitle: "",
@@ -265,17 +310,21 @@ export default {
       formEventVenue: this.event ? this.event.venue : "",
       formEventWebsite: this.event ? this.event.event_website : "",
       formEventTickets: this.event ? this.event.tickets_website : "",
-      formEventStartDate: this.event ? this.event.start_date : "",
-      formEventEndDate: this.event ? this.event.finish_date : "",
-      formEventStartTime: this.event ? this.event.start_hour : "",
-      formEventEndTime: this.event ? this.event.finish_hour : "",
+      formEventStartDate: this.event ? this.event.start_date : null,
+      formEventEndDate: this.event ? this.event.finish_date : null,
+      formEventStartTime: this.event ? this.event.start_hour : null,
+      formEventEndTime: this.event ? this.event.finish_hour : null,
       nameError: false,
       formError2: false,
+      formError20: false,
+      formError21: false,
+      formError22: false,
       websiteError: false,
       ticketsError: false,
       showModal: false,
       isModalUpdate: false,
       isModalDelete: false,
+      showFinishDateOption: this.event ? this.event.finish_date != null : false,
       categories: [],
       selectedCategories: this.event ? this.event.categories : [],
       statuses: [
@@ -347,7 +396,6 @@ export default {
       if (!existing.length) {
         this.selectedCategories.push(category);
       }
-      console.log(existing);
     },
     removeCategory(category) {
       const index = this.selectedCategories.indexOf(category);
@@ -390,7 +438,6 @@ export default {
       return "Scheduled";
     },
     validURL(url) {
-      console.log(url);
       try {
         new URL(url);
       } catch (e) {
@@ -399,20 +446,27 @@ export default {
       return true;
     },
     validateForm() {
-      console.log("validate");
       if (!this.formEventName) {
         this.nameError = true;
         document
           .getElementById("form1")
           .scrollIntoView({ block: "start", behavior: "smooth" });
       }
-      const fromDate = new Date(this.formEventStartDate);
-      const toDate = new Date(this.formEventEndDate);
-      this.formError2 = fromDate > toDate;
-      if (this.formError2) {
+      if (!this.formEventVenue) {
+        this.formError20 = true;
         document
           .getElementById("form2")
           .scrollIntoView({ block: "start", behavior: "smooth" });
+      }
+      if (this.showFinishDateOption) {
+        const fromDate = new Date(this.formEventStartDate);
+        const toDate = new Date(this.formEventEndDate);
+        this.formError2 = fromDate >= toDate;
+        if (this.formError2) {
+          document
+            .getElementById("form2")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+        }
       }
 
       if (this.formEventWebsite) {
@@ -421,6 +475,20 @@ export default {
       if (this.formEventTickets) {
         this.ticketsError = !this.validURL(this.formEventTickets);
       }
+      if (this.selectedStatus === "A") {
+        if (!this.formEventStartDate) {
+          this.formError21 = true;
+          document
+            .getElementById("form2")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+        if (!this.formEventStartTime) {
+          this.formError22 = true;
+          document
+            .getElementById("form2")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+      }
     },
     submitForm() {
       this.showModal = false;
@@ -428,9 +496,24 @@ export default {
       if (
         !this.nameError &&
         !this.formError2 &&
+        !this.formError20 &&
+        !this.formError21 &&
+        !this.formError22 &&
         !this.websiteError &&
         !this.ticketsError
       ) {
+        this.formEventStartDate =
+          this.formEventStartDate === "" ? null : this.formEventStartDate;
+        this.formEventEndDate =
+          this.formEventEndDate === "" ? null : this.formEventEndDate;
+        this.formEventStartTime =
+          this.formEventStartTime === "" ? null : this.formEventStartTime;
+        this.formEventEndTime =
+          this.formEventEndTime === "" ? null : this.formEventEndTime;
+        if (!this.showFinishDateOption) {
+          this.formEventEndDate = null;
+          this.formEventEndTime = null;
+        }
         let formData = {
           name: this.formEventName,
           description: this.formEventDescription,
@@ -445,7 +528,11 @@ export default {
           organizer: this.organizer.id,
           categories: this.selectedCategories,
         };
-        this.$emit("update-event", formData);
+        if (this.isCreate) {
+          this.$emit("create-event", formData);
+        } else {
+          this.$emit("update-event", formData);
+        }
       }
     },
     deleteEvent() {
@@ -453,8 +540,6 @@ export default {
     },
   },
   async created() {
-    console.log("form");
-    console.log(this.event);
     let endpoint = "/api/categories/";
     this.categories = await apiService(endpoint);
     this.selectedCategories = this.event ? this.event.categories : [];

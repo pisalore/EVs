@@ -15,7 +15,14 @@
   ></pulse-loader>
   <div v-else class="container">
     <div v-if="event" class="col-xl-12 row">
-      <h1 class="title">Edit - {{ event.name }}</h1>
+      <div v-if="event.status === 'A'" class="title">
+        Edit -
+        <a :href="`/events/${event.id}`">{{ event.name }}</a>
+      </div>
+      <div v-else class="title">
+        Edit -
+        {{ event.name }}
+      </div>
     </div>
     <div class="my-3">
       <img
@@ -30,10 +37,10 @@
       />
     </div>
     <div class="row">
-      <div class="col-xl-7 medium-text my-1">
+      <div class="col-xl-8 medium-text my-1">
         Organizer - {{ organizer.first_name }} {{ organizer.last_name }}
       </div>
-      <div class="ml-3 col-xl-3">
+      <div class="col-xl-3 ml-3">
         <div class="row mt-1">
           <input
             type="file"
@@ -76,6 +83,7 @@
             v-if="event"
             :event="event"
             :organizer="organizer"
+            :is-create="false"
             @update-event="updateEvent"
             @delete-event="deleteEvent"
           ></event-form>
@@ -111,7 +119,7 @@ export default {
       return this.$store.getters["user/getUserInfo"];
     },
     event() {
-      return this.$store.getters["events/getDetailEvent"];
+      return this.$store.getters["events/getManagedEvent"];
     },
     isMobile() {
       return (
@@ -132,11 +140,11 @@ export default {
           this.id,
           this.organizer.id
         );
-        await this.$store.dispatch("events/loadSelectedEvent", this.id);
         this.snackbarMessage = "Image uploaded successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         this.currentFile = undefined;
+        await this.$store.dispatch("events/loadEventToBeModified", this.id);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
@@ -155,7 +163,7 @@ export default {
           this.id,
           this.organizer.id
         );
-        await this.$store.dispatch("events/loadSelectedEvent", this.id);
+        await this.$store.dispatch("events/loadEventToBeModified", this.id);
         this.snackbarMessage = "Image removed successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
@@ -173,8 +181,8 @@ export default {
       try {
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
         await apiService(endpoint, "PATCH", formData);
-        await this.$store.dispatch("events/loadSelectedEvent", this.id);
-        this.snackbarMessage = "Event uploaded successfully.";
+        await this.$store.dispatch("events/loadEventToBeModified", this.id);
+        this.snackbarMessage = "Event updated successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
       } catch (error) {
@@ -188,14 +196,14 @@ export default {
     async deleteEvent() {
       this.isLoading = true;
       try {
-        console.log("delete");
         let endpoint = `/api/events/organizer/managed-events/${this.id}/`;
-        const response = await apiService(endpoint, "DELETE");
+        await apiService(endpoint, "DELETE");
         this.snackbarMessage = "Event deleted successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
-        console.log(response);
-        await this.$router.replace("/");
+        setTimeout(() => {
+          this.$router.push("/profile");
+        }, 1000);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
@@ -217,7 +225,7 @@ export default {
     },
     async loadEvent() {
       this.isLoading = true;
-      await this.$store.dispatch("events/loadSelectedEvent", this.id);
+      await this.$store.dispatch("events/loadEventToBeModified", this.id);
     },
     async loadUserInfo() {
       await this.$store.dispatch("user/loadUserInfo");

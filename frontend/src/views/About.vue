@@ -14,17 +14,17 @@
       <h4>Story</h4>
       <div>
         <p class="pt-4">
-          This project was thinked and developed by Lorenzo Pisaneschi, during a
+          This project was thought and developed by Lorenzo Pisaneschi, during a
           really hard summer exam sessions. EVs was born essentially for two
-          main main reasons: the first is obviosly the academic one; the second,
-          is the is the is the is the is the is the is the is the personal one:
-          fact, I really desired of develop form A to Z, from design, to code
-          and and deploy, my very first own own application. Evs is developed
-          Django, a really Python framework, and Vue.js, a really powerful
-          javascript framework. Although some parts could seem to simple or
-          useless ( I hope not), I worked really hard for this project: from
-          surveys with Google Forms, to User story mapping with Miro, to design
-          using Figma, and then to to to code and deploy with Heroku. June 2021
+          main reasons: the first is obviously the academic one; the second, is
+          the is the is a personal one: in fact, I really desired to develop my
+          own application from A to Z, from design to code and and deploy. Evs
+          is developed Django, a really Python framework, and Vue.js, a really
+          powerful javascript framework. Although some parts could seem to
+          simple or useless (I hope not), I worked really hard for this project:
+          from surveys with Google Forms, to User story mapping with Miro, to
+          design using Figma, and then to to to code and deploy with Heroku.
+          June 2021
         </p>
       </div>
     </div>
@@ -33,8 +33,8 @@
       <div>
         <p class="pt-4">
           The idea behind this project is simple: build an app which helps
-          people to fine events in the respective cities and also aboard. we
-          often find ourselves dealing with problems when we are dealing with
+          people to fine events in the respective cities and also aboard. We
+          often find ourselves dealing with problems when we are looking for
           events: are the events which we find effective? Is their organizer
           recommendable? Are the information about the event we are interested
           in trustable? And so on. <br />
@@ -49,10 +49,10 @@
         <p class="pt-4">
           "Simple is better than complex." This is stated inside the "Zen of
           Python" (19-Aug-2004, (Tim Peters). For this reason, I clearly chosen
-          Python for my backend, Django in particular. It isn incredible
-          framework, which makes thins really simple. Alongside with Django I
+          Python for my backend, Django in particular. It is an incredible
+          framework, which makes things really simple. Alongside with Django I
           also used Django Rest Framework (I developed my APIs in 3 weeks) and
-          S3, for data storing. <br />
+          AWS S3, for data storing. <br />
           On the frontend part, Vue proved to be a really handy tool, easily
           easily integrated with Django. Finally for deployment: Heroku. A
           godsend!

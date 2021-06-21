@@ -2,7 +2,8 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from events.api.views import CategoryListAPI, EventImageUpdateView, EventViewSet, ExpiringEventsListAPIView, \
     EventGoingAPIView, EventInterestAPIView, OrganizerEventsPersonalAreaViewSet, MostParticipatedEventsListAPIView, \
-    MostInterestedEventsListAPIView, UserEventsPersonalAreaListView
+    MostInterestedEventsListAPIView, UserEventsPersonalAreaGoingListView, UserEventsPersonalAreaInterestedListView,\
+    UserEventsPersonalAreaExpiredListView
 
 router = DefaultRouter()
 router.register(r"events", EventViewSet)
@@ -14,7 +15,9 @@ urlpatterns = [
     path("events/<int:pk>/image/", EventImageUpdateView.as_view(), name="event-image"),
     path("events/<int:pk>/interesting/", EventInterestAPIView.as_view(), name="event-interest"),
     path("events/<int:pk>/going/", EventGoingAPIView.as_view(), name="event-interest"),
-    path("events/user/personal-events/", UserEventsPersonalAreaListView.as_view(), name='personal-events'),
+    path("events/user/personal-going-events/", UserEventsPersonalAreaGoingListView.as_view(), name='personal-going'),
+    path("events/user/personal-interested-events/", UserEventsPersonalAreaInterestedListView.as_view(), name='personal-interested'),
+    path("events/user/personal-expired-events/", UserEventsPersonalAreaExpiredListView.as_view(), name='personal-expired'),
     path("expiring/", ExpiringEventsListAPIView.as_view(), name='expiring-events'),
     path("most-participated/", MostParticipatedEventsListAPIView.as_view(), name='most-participated-events'),
     path("most-interested/", MostInterestedEventsListAPIView.as_view(), name='most-interested-events')

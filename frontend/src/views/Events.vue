@@ -7,25 +7,29 @@
     class="spinner"
   ></pulse-loader>
   <div v-else>
-    <div class="input-group px-4">
-      <span>
-        <i class="fa fa-search"></i>
-      </span>
-      <input
-        type="search"
-        class="form-control rounded"
-        placeholder="Search by event name..."
-        aria-label="Search"
-        aria-describedby="search-addon"
-        v-model="searchedEventName"
-      />
-    </div>
+    <!--    <div class="input-group px-4">-->
+    <!--      <span>-->
+    <!--        <i class="fa fa-search"></i>-->
+    <!--      </span>-->
+    <!--      <input-->
+    <!--        type="search"-->
+    <!--        class="form-control rounded"-->
+    <!--        placeholder="Search by event name..."-->
+    <!--        aria-label="Search"-->
+    <!--        aria-describedby="search-addon"-->
+    <!--        v-model="searchedEventName"-->
+    <!--      />-->
+    <!--    </div>-->
     <filter-events
       @searching="isLoading = true"
-      @searched="isLoading = false"
+      @searched="afterSearch"
     ></filter-events>
-    <div>
-      <events-slot :next="nextShowedEventsInEventsLink" next-type="evs">
+    <div id="results">
+      <events-slot
+        :next="nextShowedEventsInEventsLink"
+        next-type="evs"
+        :title="'Searched Events'"
+      >
         <event-card
           v-for="ev in showedEvents"
           :key="ev.id"
@@ -41,6 +45,7 @@
           :interested="ev.interested_count"
           :participants="ev.participants_count"
           :is_mobile="isMobile"
+          :published="true"
         >
         </event-card>
       </events-slot>
@@ -68,6 +73,11 @@ export default {
       searchedEventName: "",
       isLoading: false,
     };
+  },
+  methods: {
+    afterSearch() {
+      this.isLoading = false;
+    },
   },
   computed: {
     showedEvents() {

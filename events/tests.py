@@ -1,3 +1,4 @@
+import datetime
 import json
 from PIL import Image
 from io import BytesIO
@@ -104,6 +105,7 @@ class EventManagingTest(APITestCase):
             description="Fixed description",
             status="A",
             organizer=self.organizer,
+            start_date=datetime.date.today().__str__()
         )
         test_event.categories.add(Category.objects.get(id=1))
         url = '/api/events/{}/'.format(test_event.id)
@@ -122,6 +124,7 @@ class EventManagingTest(APITestCase):
             description="Fixed description",
             status="A",
             organizer=self.organizer,
+            start_date=datetime.date.today().__str__(),
         )
         test_event.categories.add(Category.objects.get(id=1))
         update_event_data = {
@@ -129,8 +132,8 @@ class EventManagingTest(APITestCase):
             "description": "test description",
             "status": "S",
             "venue": "Test Venue",
-            "start_date": "2021-06-15",
-            "finish_date": "2021-06-15",
+            "start_date": (datetime.date.today() + datetime.timedelta(days=1)).__str__(),
+            "finish_date": (datetime.date.today() + datetime.timedelta(days=2)).__str__(),
             "start_hour": "15:29:58",
             "finish_hour": "15:29:58",
             "evs_link": "",
@@ -158,6 +161,7 @@ class EventManagingTest(APITestCase):
             description="Fixed description",
             status="A",
             organizer=self.organizer,
+            start_date=datetime.date.today().__str__()
         )
         url = '/api/events/{}/'.format(test_event.id)
         test_event.categories.add(Category.objects.get(id=1))
@@ -270,19 +274,19 @@ class FilterEventsTest(APITestCase):
         cls.A1 = Event.objects.create(organizer=cls.organizer,
                                       name="TestEvent1A",
                                       status="A",
-                                      start_date="2021-01-01",
+                                      start_date=datetime.date.today().__str__(),
                                       venue="TestVenue")
 
         cls.A2 = Event.objects.create(organizer=cls.organizer2,
                                       name="TestEvent2A",
                                       status="A",
-                                      start_date="2021-01-01",
+                                      start_date=datetime.date.today().__str__(),
                                       venue="TestVenue")
 
         cls.A3 = Event.objects.create(organizer=cls.organizer2,
                                       name="TestEvent3A",
                                       status="A",
-                                      start_date="2022-01-01",
+                                      start_date=datetime.date.today().__str__(),
                                       venue="TestVenue")
 
         cls.S = Event.objects.create(organizer=cls.organizer,
@@ -319,10 +323,12 @@ class FilterEventsTest(APITestCase):
         self.assertEqual(json.loads(response.content)["count"], 3)
 
     def test_filter_by_date_range(self):
-        url = '/api/events/?start_date=2021-01-01&end_date=2021-02-01'
+        start_date = datetime.date.today().__str__()
+        end_date = (datetime.date.today() + datetime.timedelta(days=1)).__str__()
+        url = f'/api/events/?start_date={start_date}&end_date={end_date}'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(json.loads(response.content)["count"], 2)
+        self.assertEqual(json.loads(response.content)["count"], 3)
 
     def test_filter_by_categories(self):
         url = '/api/events/?categories=9'
@@ -346,18 +352,24 @@ class FilterEventsTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(self.user.username, json.loads(response.content)['participants'])
 
-    def test_user_sees_only_its_events_in_personal_area(self):
+    def test_user_its_personal_interested_events(self):
         interesting_url = "/api/events/{}/interesting/".format(self.A1.id)
-        going_url = "/api/events/{}/going/".format(self.A2.id)
-        personal_area_url = '/api/events/user/personal-events/'
+        personal_area_interested_url = '/api/events/user/personal-interested-events/'
 
         self.client.force_authenticate(user=self.user)
         self.client.post(interesting_url, {"name": self.A1.name})
+
+        response = self.client.get(personal_area_interested_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content)["count"], 1)
+
+    def test_user_its_personal_going_events(self):
+        going_url = "/api/events/{}/going/".format(self.A2.id)
+        personal_area_going_url = '/api/events/user/personal-going-events/'
+
+        self.client.force_authenticate(user=self.user)
         self.client.post(going_url, {"name": self.A2.name})
 
-        response = self.client.get(personal_area_url)
+        response = self.client.get(personal_area_going_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(json.loads(response.content)), 2)
-
-
-
+        self.assertEqual(json.loads(response.content)["count"], 1)

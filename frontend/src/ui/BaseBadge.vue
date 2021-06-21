@@ -1,6 +1,6 @@
 <template>
   <div class="chip mx-2 my-2" :class="categoryStyle">
-    <div class="row justify-content-around">
+    <div class="row justify-content-around p-1">
       <div v-if="category">
         {{ category.category }}
       </div>
@@ -25,7 +25,6 @@ export default {
   props: ["category", "categoryStyle", "type", "content"],
   methods: {
     close() {
-      console.log(this.category);
       this.$emit("close-chip", this.category);
     },
   },

@@ -32,7 +32,6 @@ export default {
   async loadNextEvents(context, info) {
     if (info.endpoint) {
       const response = await apiService(info.endpoint);
-      console.log(" res: ", response);
       if (info.type === "participated") {
         context.commit("setNextMostParticipatedEventsLink", response.next);
         context.commit("updateMostParticipatedEvents", response.results);
@@ -58,6 +57,11 @@ export default {
     let endpoint = `/api/events/${payload}/`;
     const response = await apiService(endpoint);
     context.commit("setDetailEvent", response);
+  },
+  async loadEventToBeModified(context, payload) {
+    let endpoint = `/api/events/organizer/managed-events/${payload}/`;
+    const response = await apiService(endpoint);
+    context.commit("setManagedEvent", response);
   },
   resetSearchedCity(context) {
     context.commit("events/setSearchedCity", null);

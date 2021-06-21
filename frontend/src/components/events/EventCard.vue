@@ -5,32 +5,25 @@
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">@{{ venue }}</h5>
       <h5 class="card-date">{{ computeDate() }}</h5>
-      <div class="img-div">
+      <h3 v-if="expired && status === 'A'" class="expired">EXPIRED</h3>
+      <h3 v-if="expired && status === 'S'" class="scheduled">
+        SCHEDULED - Note the past date
+      </h3>
+      <div v-if="!expired" class="img-div">
         <img
           v-if="image && !is_mobile"
-          class="card-img"
+          class="card-img-top"
           :src="image.document"
           alt="event-image"
         />
         <img
           v-else-if="!image && !is_mobile"
-          class="card-img"
+          class="card-img-top"
           src="https://evs-hci.s3.us-west-1.amazonaws.com/media/assets/event-placeholder.png"
           alt=""
         />
       </div>
-      <div v-if="website && !isUser" class="text-center pt-5">
-        <a :href="website">
-          <button
-            type="button"
-            class="btn simple-card-button"
-            onclick="event.stopPropagation()"
-          >
-            Go to website
-          </button>
-        </a>
-      </div>
-      <div class="mt-2" v-else>
+      <div class="mt-2" v-if="!expired">
         <div class="row d-flex justify-content-around pt-4">
           <div>
             <span class="px-2" style="color: #e32822">
@@ -91,7 +84,10 @@ export default {
     "participants",
     "user_going",
     "user_interested",
+    "status",
+    "published",
   ],
+
   data() {
     return {
       userInfo: null,
@@ -99,11 +95,20 @@ export default {
   },
   methods: {
     eventDetail() {
-      this.$router.push({
-        path: `/events/${this.id}`,
-      });
+      if (this.published) {
+        this.$router.push({
+          path: `/events/${this.id}`,
+        });
+      } else {
+        this.$router.push({
+          path: `/event-edit/${this.id}`,
+        });
+      }
     },
     computeDate() {
+      if (!this.start_date) {
+        return "";
+      }
       const options = {
         month: "long",
         day: "numeric",
@@ -124,6 +129,11 @@ export default {
   computed: {
     isUser() {
       return !!this.userInfo;
+    },
+    expired() {
+      let today = new Date().setHours(0, 0, 0, 0);
+      let eventDate = new Date(this.start_date).setHours(0, 0, 0, 0);
+      return eventDate < today;
     },
   },
   created() {
@@ -154,6 +164,20 @@ export default {
   color: #1f6dad;
 }
 
+.expired {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  color: #e32822;
+}
+
+.scheduled {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  color: #ffbb33;
+}
+
 .card-organizer {
   font-style: normal;
   font-weight: normal;
@@ -177,12 +201,8 @@ export default {
   color: #575757;
 }
 
-.card-img {
+.card-img-top {
   border-radius: 20px;
-  border: none;
-  width: 100%;
-  height: 7vw;
-  object-fit: cover;
 }
 
 .simple-card-button {

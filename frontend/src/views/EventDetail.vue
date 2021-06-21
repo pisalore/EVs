@@ -151,7 +151,10 @@
                     class="action-button edit-action-button"
                   ></base-action-button>
                   <base-action-button
-                    v-if="!loggedUser.is_the_event_organizer"
+                    v-if="
+                      !loggedUser.is_the_event_organizer &&
+                      !loggedUser.is_organizer
+                    "
                     :icon="'event_available'"
                     :label="'Going'"
                     :user-going="userIsGoing"
@@ -160,8 +163,9 @@
                   ></base-action-button>
                   <base-action-button
                     v-if="
-                      !loggedUser.user_is_going &&
-                      !loggedUser.is_the_event_organizer
+                      !selectedEvent.user_is_going &&
+                      !loggedUser.is_the_event_organizer &&
+                      !loggedUser.is_organizer
                     "
                     :icon="'favorite'"
                     :label="'Like'"
@@ -235,6 +239,9 @@ export default {
       );
     },
     computeDate() {
+      if (!this.selectedEvent.start_date) {
+        return "";
+      }
       const options = {
         month: "long",
         day: "numeric",
@@ -243,15 +250,24 @@ export default {
       let startDate = new Date(
         this.selectedEvent.start_date
       ).toLocaleDateString("en", options);
-      let endDate = this.selectedEvent.end_date;
-      if (endDate) {
-        endDate = new Date(this.end_date).toLocaleDateString("en", options);
-        startDate += ` to ${endDate}`;
-      }
       let startHour = this.selectedEvent.start_hour;
       if (startHour) {
         startDate += `, at ${startHour}`;
       }
+      let endDate = this.selectedEvent.finish_date;
+      console.log(endDate);
+      if (endDate) {
+        endDate = new Date(this.selectedEvent.finish_date).toLocaleDateString(
+          "en",
+          options
+        );
+        startDate += ` to ${endDate}`;
+        let endHour = this.selectedEvent.finish_hour;
+        if (endHour) {
+          startDate += ` at ${endHour}`;
+        }
+      }
+
       return startDate;
     },
     userIsGoing() {
@@ -278,7 +294,6 @@ export default {
         this.coordinates = await data.results[0].geometry.location;
       }
       this.isLoading = false;
-      console.log(this.isLoading);
     },
     badgeStyle(category) {
       if (category === "Food") {

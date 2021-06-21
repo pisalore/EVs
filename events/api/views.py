@@ -32,7 +32,7 @@ class EventViewSet(viewsets.ModelViewSet):
     # Ordering by date using passed query params and search in date range
     def get_queryset(self):
         queryset = Event.objects.all()
-        start_date = self.request.query_params.get('start_date', None)
+        start_date = self.request.query_params.get('start_date', datetime.date.today().__str__())
         end_date = self.request.query_params.get('end_date', None)
         ordering = self.request.query_params.get('ordering', 'start_date')
         if start_date and end_date:
@@ -50,7 +50,8 @@ class ExpiringEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.filter(status='A').filter(start_date__gte=datetime.datetime.now()).order_by('start_date')
+        return Event.objects.filter(status='A') \
+            .filter(start_date__gte=datetime.datetime.now().date()).order_by('start_date')
 
 
 class MostParticipatedEventsListAPIView(generics.ListAPIView):
@@ -148,16 +149,40 @@ class EventImageUpdateView(generics.RetrieveUpdateAPIView):
         return event_object
 
 
-class UserEventsPersonalAreaListView(generics.ListAPIView):
+class UserEventsPersonalAreaGoingListView(generics.ListAPIView):
+    pagination_class = EventSetPagination
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         username = self.request.user.username
-        user_events_interested_in = Event.objects.filter(interested__username=username)
-        user_events_going = Event.objects.filter(participants__username=username)
-        queryset = user_events_interested_in | user_events_going
-        return queryset.filter(status='A')
+        return Event.objects.order_by('start_date')\
+            .filter(participants__username=username, start_date__gte=datetime.datetime.now()).filter(status='A')
+
+
+class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.request.user.username
+        return Event.objects.order_by('start_date')\
+            .filter(interested__username=username,  start_date__gte=datetime.datetime.now()).filter(status='A')
+
+
+class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
+    pagination_class = EventSetPagination
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.request.user.username
+        return Event.objects\
+            .filter(participants__username=username)\
+            .filter(start_date__lt=datetime.datetime.now())\
+            .filter(status='A')\
+            .order_by('start_date')
 
 
 class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
@@ -167,4 +192,8 @@ class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         organizer = self.request.user
-        return Event.objects.order_by('start_date').filter(organizer=organizer)
+        requested_status = self.request.query_params.get('status', None)
+        if requested_status:
+            return Event.objects.order_by('start_date').filter(organizer=organizer, status=requested_status)
+        else:
+            return Event.objects.order_by('start_date').filter(organizer=organizer)

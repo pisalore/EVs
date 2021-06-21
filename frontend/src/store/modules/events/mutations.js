@@ -49,4 +49,7 @@ export default {
   setDetailEvent(state, payload) {
     state.selectedDetailEvent = payload;
   },
+  setManagedEvent(state, payload) {
+    state.managedEvent = payload;
+  },
 };
