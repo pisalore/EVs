@@ -14,10 +14,10 @@
     class="spinner"
   ></pulse-loader>
   <div v-else class="container">
-    <div class="col-xl-12 row">
+    <div class="col-xl-12">
       <h1 class="title">Create new Event</h1>
     </div>
-    <div class="row">
+    <div>
       <div class="col-xl-7 medium-text my-1">
         Organizer - {{ organizer.first_name }} {{ organizer.last_name }}
       </div>

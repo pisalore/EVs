@@ -15,7 +15,14 @@
   ></pulse-loader>
   <div v-else class="container">
     <div v-if="event" class="col-xl-12 row">
-      <h1 class="title">Edit - {{ event.name }}</h1>
+      <div v-if="event.status === 'A'" class="title">
+        Edit -
+        <a :href="`/events/${event.id}`">{{ event.name }}</a>
+      </div>
+      <div v-else class="title">
+        Edit -
+        {{ event.name }}
+      </div>
     </div>
     <div class="my-3">
       <img
@@ -30,10 +37,10 @@
       />
     </div>
     <div class="row">
-      <div class="col-xl-7 medium-text my-1">
+      <div class="col-xl-9 medium-text my-1">
         Organizer - {{ organizer.first_name }} {{ organizer.last_name }}
       </div>
-      <div class="ml-3 col-xl-3">
+      <div class="col-xl-3">
         <div class="row mt-1">
           <input
             type="file"
