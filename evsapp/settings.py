@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'aws',
     'users',
     'events',
-    'notifications'
+    'notifications',
 
     'crispy_forms',
     'storages',
