@@ -48,7 +48,7 @@
             >
           </div>
           <div v-if="userInfo.profile_image" class="text-center">
-            <button class="btn btn-danger" @click="deleteProfileImage">
+            <button class="btn btn-danger" @click="showDeleteImageProfileModal">
               Delete your profile image
             </button>
           </div>
@@ -108,19 +108,32 @@
       </div>
     </div>
   </div>
+  <base-modal
+    v-if="showModal"
+    @cancel-modal="showModal = false"
+    @confirm-modal="deleteProfileImage"
+    :title="modalTitle"
+    :message="modalMessage"
+    :confirm="modalConfirm"
+    :cancel="modalCancel"
+    :action="modalAction"
+  ></base-modal>
 </template>
 
 <script>
 import ProfileOverviewEdit from "../components/users/ProfileOverviewEdit";
 import PasswordChange from "../components/users/PasswordChange";
 import Snackbar from "../ui/Snackbar";
+import BaseModal from "../ui/BaseModal";
 import { uploadProfileImage } from "../common/upload_service";
+
 export default {
   name: "UserProfileEdit",
   components: {
     ProfileOverviewEdit,
     PasswordChange,
     Snackbar,
+    BaseModal
   },
   data() {
     return {
@@ -131,6 +144,12 @@ export default {
       snackBarColor: "",
       showSnackbar: false,
       isLoading: false,
+      showModal: false,
+      modalTitle: "",
+      modalMessage: "",
+      modalAction: "",
+      modalConfirm: "",
+      modalCancel: "",
     };
   },
   computed: {
@@ -163,7 +182,17 @@ export default {
       }
       this.isLoading = false;
     },
+    showDeleteImageProfileModal() {
+      this.showModal = true;
+      this.modalAction = "delete";
+      this.modalTitle = "User Delete";
+      this.modalMessage =
+        "Do you really want to delete your profile image? It will be lost.";
+      this.modalConfirm = "Confirm";
+      this.modalCancel = "Cancel";
+    },
     async deleteProfileImage() {
+      this.showModal = false;
       this.isLoading = true;
       try {
         let endpoint = `/api/profile-image/`;
@@ -204,7 +233,7 @@ export default {
 }
 img {
   border-radius: 50%;
-  height:auto;
+  height: auto;
   max-width: 50%;
   min-height: 200px;
   min-width: 200px;
