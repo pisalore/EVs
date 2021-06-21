@@ -13,7 +13,7 @@
     size="20px"
     class="spinner"
   ></pulse-loader>
-  <div class="container-fluid p-5">
+  <div v-else class="container-fluid p-5">
     <div class="row">
       <div class="col-xl-3">
         <div class="py-5">
@@ -30,10 +30,7 @@
             alt="Avatar"
           />
           <p class="text-center mt-2 username">@{{ userInfo.username }}</p>
-          <div
-            class="row mt-1 d-flex justify-content-center"
-            style="cursor: pointer"
-          >
+          <div class="row mt-1 d-flex justify-content-center">
             <label id="getFileLabel" for="getFile" style="cursor: pointer">{{
               currentFile ? currentFile.name : "Change your profile image"
             }}</label>
@@ -49,6 +46,11 @@
               style="font-size: 30px; color: #4babfa"
               >add_a_photo</i
             >
+          </div>
+          <div v-if="userInfo.profile_image" class="text-center">
+            <button class="btn btn-danger" @click="deleteProfileImage">
+              Delete your profile image
+            </button>
           </div>
         </div>
         <div
@@ -148,14 +150,29 @@ export default {
       try {
         let endpoint = `/api/profile-image/`;
         await uploadProfileImage(endpoint, this.currentFile, this.userInfo.id);
-        await this.$store.dispatch(
-          "user/loadUserInfo",
-          `${this.userInfo.username}/`
-        );
+        await this.loadUserInfo();
         this.snackbarMessage = "Image uploaded successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         this.currentFile = null;
+      } catch (error) {
+        this.isError = true;
+        this.snackbarMessage = error;
+        this.snackBarColor = "#E32822";
+        this.showSnackbar = true;
+      }
+      this.isLoading = false;
+    },
+    async deleteProfileImage() {
+      this.isLoading = true;
+      try {
+        let endpoint = `/api/profile-image/`;
+        await uploadProfileImage(endpoint, new File([], ""), this.userInfo.id);
+        await this.loadUserInfo();
+        this.snackbarMessage = "Image removed successfully.";
+        this.snackBarColor = "#3DB834";
+        this.showSnackbar = true;
+        this.currentFile = undefined;
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
@@ -196,7 +213,6 @@ img {
   line-height: 42px;
 }
 .input-profile-image {
-  cursor: pointer;
   display: none;
 }
 </style>
