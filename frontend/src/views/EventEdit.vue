@@ -37,10 +37,10 @@
       />
     </div>
     <div class="row">
-      <div class="col-xl-9 medium-text my-1">
+      <div class="col-xl-8 medium-text my-1">
         Organizer - {{ organizer.first_name }} {{ organizer.last_name }}
       </div>
-      <div class="col-xl-3">
+      <div class="col-xl-3 ml-3">
         <div class="row mt-1">
           <input
             type="file"
@@ -140,11 +140,11 @@ export default {
           this.id,
           this.organizer.id
         );
-        await this.$store.dispatch("events/loadSelectedEvent", this.id);
         this.snackbarMessage = "Image uploaded successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
         this.currentFile = undefined;
+        await this.$store.dispatch("events/loadEventToBeModified", this.id);
       } catch (error) {
         this.isError = true;
         this.snackbarMessage = error;
@@ -163,7 +163,7 @@ export default {
           this.id,
           this.organizer.id
         );
-        await this.$store.dispatch("events/loadSelectedEvent", this.id);
+        await this.$store.dispatch("events/loadEventToBeModified", this.id);
         this.snackbarMessage = "Image removed successfully.";
         this.snackBarColor = "#3DB834";
         this.showSnackbar = true;
