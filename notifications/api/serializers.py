@@ -1,16 +1,11 @@
 from rest_framework import serializers
 
-from notifications.models import Notification, NotificationItem
-
-
-class NotificationItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NotificationItem
-        exclude = ['user', 'notification']
+from notifications.models import Notification
 
 
 class NotificationSerializer(serializers.ModelSerializer):
     modified_event_id = serializers.SerializerMethodField(read_only=True)
+    user_has_read = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Notification
@@ -18,3 +13,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     def get_modified_event_id(self, instance):
         return instance.event_id
+
+    def get_user_has_read(self, instance):
+        user = self.context['request'].user
+        return instance.notification_item_notification.all().get(user=user).user_has_read
