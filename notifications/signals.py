@@ -15,20 +15,22 @@ def create_notification_for_participants_and_interested(sender, instance, using,
             notification = Notification(event=instance)
             if instance.status == 'A' and old_event.status == 'A':
                 notification.type = "changed"
-                notification.message = f'The event {instance.name} has been changed. Please, check the event details page.'
+                notification.message = f'The event "{instance.name}" has been changed. Please, check the event ' \
+                                       f'details page. '
             elif instance.status == 'A' and old_event.status == 'S':
                 notification.type = "now available"
-                notification.message = f'The event {instance.name} has scheduled and now is available! Please, check the ' \
+                notification.message = f'The event "{instance.name}" has scheduled and now is available! Please, ' \
+                                       f'check the ' \
                                        f'event details page. '
             elif instance.status == 'S' and old_event.status == 'A':
                 notification.type = "TBA"
-                notification.message = f'The organizer will reschedule the event {instance.name}. Stay tuned!'
+                notification.message = f'The organizer will reschedule the event "{instance.name}". Stay tuned!'
             elif instance.status == 'C' and (old_event.status == 'A' or old_event.status == 'S'):
                 notification.type = "canceled"
-                notification.message = f'The organizer has canceled the event {instance.name}.'
+                notification.message = f'The organizer has canceled the event "{instance.name}".'
             elif instance.status == 'A' and old_event.status == 'C':
                 notification.type = "re-added"
-                notification.message = f'The organizer has re-added the canceled event {instance.name}.'
+                notification.message = f'The organizer has re-added the canceled event "{instance.name}".'
             elif (instance.status == 'S' and old_event.status == 'S') \
                     or (instance.status == 'C' and old_event.status == 'C'):
                 return

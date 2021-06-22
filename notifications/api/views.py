@@ -27,4 +27,4 @@ class UserNotificationsReadView(APIView):
         for notification in user_notification_items:
             notification.user_has_read = True
             notification.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response({"message": "notifications set as read."}, status=status.HTTP_200_OK)
