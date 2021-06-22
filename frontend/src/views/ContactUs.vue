@@ -6,7 +6,7 @@
     :message="snackbarMessage"
     @close="snackbarFalse"
   ></snackbar>
-  <div class="p-5">
+  <div class="container">
     <h2 class="title">Contact Us</h2>
     <h3 class="subtitle">
       Hello <span class="username">@{{ username }}</span
