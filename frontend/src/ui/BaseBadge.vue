@@ -1,6 +1,6 @@
 <template>
   <div class="chip mx-2 my-2" :class="categoryStyle">
-    <div class="row justify-content-around p-1">
+    <div class="row justify-content-around">
       <div v-if="category">
         {{ category.category }}
       </div>
