@@ -11,6 +11,6 @@ export default createStore({
   modules: {
     events: EventsModule,
     user: UserModule,
-    organizer: OrganizerModule
+    organizer: OrganizerModule,
   },
 });

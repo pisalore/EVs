@@ -7,6 +7,7 @@ import FAQ from "../views/FAQ";
 import Events from "../views/Events";
 import UserProfile from "../views/UserProfile";
 import UserProfileEdit from "../views/UserProfileEdit";
+import Notifications from "../views/Notifications";
 import EventDetail from "../views/EventDetail";
 import CreateEvent from "../views/CreateEvent";
 import EditEvent from "../views/EventEdit";
@@ -42,6 +43,11 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: UserProfile,
+  },
+  {
+    path: "/notifications",
+    name: "Notifications",
+    component: Notifications,
   },
   {
     path: "/edit-profile",
