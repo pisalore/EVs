@@ -7,6 +7,7 @@ class Notification(models.Model):
     type = models.CharField(max_length=20)
     message = models.CharField(max_length=128)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(EvUser, through='NotificationItem')
 
     def __str__(self):
