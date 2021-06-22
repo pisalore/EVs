@@ -40,6 +40,15 @@
                             <a class="dropdown-item logout-link" href="{% url 'logout' %}">Logout</a>
                         </div>
                     </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <div>
+                                <a class="nav-link" href="/events">{{ request.user.unread_notifications_number }} <i
+                                        class="material-icons-outlined">
+                                    notifications </i></a>
+                            </div>
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>

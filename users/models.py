@@ -15,3 +15,7 @@ class EvUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    @property
+    def unread_notifications_number(self):
+        return EvUser.objects.filter(username=self.username, notification_item_user__user_has_read=False).count()
