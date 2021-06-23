@@ -7,8 +7,8 @@
     class="spinner"
   ></pulse-loader>
   <div v-else>
-    <div v-if="selectedEvent" class="ml-3" style="overflow: hidden">
-      <div class="col-xl-12 container-fluid">
+    <div v-if="selectedEvent" style="overflow: hidden">
+      <div class="col-xl-12">
         <div class="row" style="height: 40%">
           <div class="col-xl-6 p-0 m-0">
             <h1 class="event-title my-3">{{ selectedEvent.name }}</h1>
@@ -36,7 +36,7 @@
                 </span>
               </div>
             </div>
-            <div :class="{ 'text-center': isMobile }" class="categories-div">
+            <div :class="{ 'text-center': isMobile }">
               <base-badge
                 v-for="category in selectedEvent.categories"
                 :key="category.id"
@@ -66,8 +66,11 @@
               }"
             />
           </div>
-          <div v-if="isMobile && loggedUser">
-            <div class="my-3 text-center">
+          <div
+            v-if="isMobile && loggedUser"
+            class="col-xl-8 d-flex justify-content-around"
+          >
+            <div class="my-3">
               <base-action-button
                 v-if="loggedUser.is_the_event_organizer"
                 :icon="'create'"
@@ -75,34 +78,36 @@
                 @click="editEvent"
                 class="my-1"
               ></base-action-button>
-              <base-action-button
-                v-if="!loggedUser.is_the_event_organizer"
-                :icon="'event_available'"
-                :label="'Going'"
-                :user-going="userIsGoing"
-                @click="goingToggle"
-                class="mx-1 my-1"
-              ></base-action-button>
-              <base-action-button
-                v-if="
-                  !loggedUser.user_is_going &&
-                  !loggedUser.is_the_event_organizer
-                "
-                :icon="'favorite'"
-                :label="'Like'"
-                :user-interested="userIsInterested"
-                @click="likeToggle"
-                class="mx-1 my-1"
-              ></base-action-button>
+              <div class="row">
+                <base-action-button
+                  v-if="!loggedUser.is_the_event_organizer"
+                  :icon="'event_available'"
+                  :label="'Going'"
+                  :user-going="userIsGoing"
+                  @click="goingToggle"
+                  class="mx-1 my-1"
+                ></base-action-button>
+                <base-action-button
+                  v-if="
+                    !loggedUser.user_is_going &&
+                    !loggedUser.is_the_event_organizer
+                  "
+                  :icon="'favorite'"
+                  :label="'Like'"
+                  :user-interested="userIsInterested"
+                  @click="likeToggle"
+                  class="mx-1 my-1"
+                ></base-action-button>
+              </div>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xl-6 p-0">
-            <div class="mt-2 separator">
+            <div class="separator">
               <h1 class="subtitle">Main information</h1>
             </div>
-            <div class="main-info">
+            <div class="m-2">
               <div class="d-flex">
                 <base-badge
                   :content="'Organizer'"
@@ -138,42 +143,40 @@
                 </div>
               </div>
             </div>
-            <div class="ev-description mt-">
-              <div class="mt-4 pr-5">
-                <h1 class="subtitle">Event detail</h1>
-                <p class="description">{{ selectedEvent.description }}</p>
-                <div v-if="!isMobile && loggedUser">
-                  <base-action-button
-                    v-if="loggedUser.is_the_event_organizer"
-                    :icon="'create'"
-                    :label="'Edit'"
-                    @click="editEvent"
-                    class="action-button edit-action-button"
-                  ></base-action-button>
-                  <base-action-button
-                    v-if="
-                      !loggedUser.is_the_event_organizer &&
-                      !loggedUser.is_organizer
-                    "
-                    :icon="'event_available'"
-                    :label="'Going'"
-                    :user-going="userIsGoing"
-                    @click="goingToggle"
-                    class="action-button going-action-button"
-                  ></base-action-button>
-                  <base-action-button
-                    v-if="
-                      !selectedEvent.user_is_going &&
-                      !loggedUser.is_the_event_organizer &&
-                      !loggedUser.is_organizer
-                    "
-                    :icon="'favorite'"
-                    :label="'Like'"
-                    :user-interested="userIsInterested"
-                    @click="likeToggle"
-                    class="action-button like-action-button"
-                  ></base-action-button>
-                </div>
+            <div class="separator pr-5">
+              <h1 class="subtitle">Event detail</h1>
+              <p class="description">{{ selectedEvent.description }}</p>
+              <div v-if="!isMobile && loggedUser">
+                <base-action-button
+                  v-if="loggedUser.is_the_event_organizer"
+                  :icon="'create'"
+                  :label="'Edit'"
+                  @click="editEvent"
+                  class="action-button edit-action-button"
+                ></base-action-button>
+                <base-action-button
+                  v-if="
+                    !loggedUser.is_the_event_organizer &&
+                    !loggedUser.is_organizer
+                  "
+                  :icon="'event_available'"
+                  :label="'Going'"
+                  :user-going="userIsGoing"
+                  @click="goingToggle"
+                  class="action-button going-action-button"
+                ></base-action-button>
+                <base-action-button
+                  v-if="
+                    !selectedEvent.user_is_going &&
+                    !loggedUser.is_the_event_organizer &&
+                    !loggedUser.is_organizer
+                  "
+                  :icon="'favorite'"
+                  :label="'Like'"
+                  :user-interested="userIsInterested"
+                  @click="likeToggle"
+                  class="action-button like-action-button"
+                ></base-action-button>
               </div>
             </div>
           </div>
@@ -363,7 +366,7 @@ img {
 }
 
 .desktop-img-height {
-  height: 16vw;
+  height: 17vw;
 }
 
 .event-title {
@@ -401,11 +404,6 @@ img {
   margin-top: 20px;
 }
 
-.main-info {
-  border-bottom: 0.5px solid #bdbdbd;
-  margin-right: 25px;
-}
-
 .info {
   font-size: 18px;
 }
@@ -433,6 +431,5 @@ img {
 }
 .separator {
   border-top: 0.5px solid #bdbdbd;
-  margin-right: 25px;
 }
 </style>

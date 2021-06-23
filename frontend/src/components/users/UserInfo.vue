@@ -21,27 +21,23 @@
       </div>
       <div class="col-xl-7">
         <div class="user-main-info">
-          <div class="container">
-            <div class="row p-3">
-              <div class="col-1 material-icons-outlined icon">info</div>
-              <div class="col-11">{{ headerFirstInfo }}</div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">info</div>
+            <div class="col-11 break-word">{{ headerFirstInfo }}</div>
+          </div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">
+              alternate_email
             </div>
-            <div class="row p-3">
-              <div class="col-1 material-icons-outlined icon">
-                alternate_email
-              </div>
-              <div class="col-11">{{ user.email }}</div>
-            </div>
-            <div class="row p-3">
-              <div class="col-1 material-icons-outlined icon">
-                location_city
-              </div>
-              <div class="col-11">{{ user.city }}</div>
-            </div>
-            <div class="row p-3">
-              <div class="col-1 material-icons-outlined icon">done_outline</div>
-              <div class="col-11">Join EVs on {{ joinedDate }}</div>
-            </div>
+            <div class="col-11 break-word">{{ user.email }}</div>
+          </div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">location_city</div>
+            <div class="col-11 break-word">{{ user.city }}</div>
+          </div>
+          <div class="row p-3">
+            <div class="col-1 material-icons-outlined icon">done_outline</div>
+            <div class="col-11 break-word">Join EVs on {{ joinedDate }}</div>
           </div>
         </div>
       </div>
@@ -377,5 +373,8 @@ img {
   font-size: 24px;
   line-height: 28px;
   color: #000000;
+}
+.break-word {
+  word-wrap: break-word;
 }
 </style>
