@@ -5,7 +5,7 @@ from users.models import EvUser
 
 class Notification(models.Model):
     type = models.CharField(max_length=20)
-    message = models.CharField(max_length=128)
+    message = models.CharField(max_length=300)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     notified = models.ManyToManyField(EvUser, through='NotificationItem')
