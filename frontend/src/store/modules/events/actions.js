@@ -63,6 +63,19 @@ export default {
     const response = await apiService(endpoint);
     context.commit("setManagedEvent", response);
   },
+  setSearchedCity(context, payload) {
+    console.log(payload);
+    context.commit("setSearchedCity", payload);
+  },
+  setSearchedFromDate(context, payload) {
+    context.commit("setSearchedFromDate", payload);
+  },
+  setSearchedToDate(context, payload) {
+    context.commit("setSearchedToDate", payload);
+  },
+  setSearchedCategories(context, payload) {
+    context.commit("setSearchedCategories", payload);
+  },
   resetSearchedCity(context) {
     context.commit("events/setSearchedCity", null);
   },

@@ -27,6 +27,15 @@ export default {
   getSearchedCity(state) {
     return state.searchedCity;
   },
+  getSearchedFromDate(state) {
+    return state.searchedFromDate;
+  },
+  getSearchedToDate(state) {
+    return state.searchedToDate;
+  },
+  getSearchedCategories(state) {
+    return state.searchedCategories;
+  },
   getDetailEvent(state) {
     return state.selectedDetailEvent;
   },

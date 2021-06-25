@@ -15,6 +15,9 @@ export default {
       expiringEvents: [],
       nextExpiringEventsLink: null,
       searchedCity: null,
+      searchedFromDate: null,
+      searchedToDate: null,
+      searchedCategories: [],
       selectedDetailEvent: null,
       managedEvent: null,
     };
