@@ -46,6 +46,15 @@ export default {
   setSearchedCity(state, payload) {
     state.searchedCity = payload;
   },
+  setSearchedFromDate(state, payload) {
+    state.searchedFromDate = payload;
+  },
+  setSearchedToDate(state, payload) {
+    state.searchedToDate = payload;
+  },
+  setSearchedCategories(state, payload) {
+    state.searchedCategories = payload;
+  },
   setDetailEvent(state, payload) {
     state.selectedDetailEvent = payload;
   },

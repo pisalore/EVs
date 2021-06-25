@@ -291,11 +291,15 @@ class FilterEventsTest(APITestCase):
 
         cls.S = Event.objects.create(organizer=cls.organizer,
                                      name="TestEvent2S",
-                                     status="S", )
+                                     status="S",
+                                     start_date=datetime.date.today().__str__(),
+                                     )
 
         cls.C = Event.objects.create(organizer=cls.organizer,
                                      name="TestEvent3C",
-                                     status="C", )
+                                     status="C",
+                                     start_date=datetime.date.today().__str__(),
+                                     )
 
         cls.A1.categories.add(Category.objects.get(id=6))
         cls.A2.categories.add(Category.objects.get(id=6), Category.objects.get(id=7), Category.objects.get(id=8))

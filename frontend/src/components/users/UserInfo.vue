@@ -17,7 +17,7 @@
           alt="Avatar"
         />
         <img v-else :src="user.profile_image.document" alt="Avatar" />
-        <p class="text-center mt-2 username">@{{ user.username }}</p>
+        <p class="text-center mt-2 username break-word">@{{ user.username }}</p>
       </div>
       <div class="col-xl-7">
         <div class="user-main-info">

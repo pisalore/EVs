@@ -95,7 +95,7 @@
             <div class="py-2">
               <button
                 @click="clearAllFilters"
-                type="submit"
+                type="button"
                 class="btn btn-lg btn-outline-danger mx-2"
               >
                 Clear
@@ -168,18 +168,25 @@ export default {
         let searchString = "api/events/?";
         if (this.filterCity) {
           searchString += `venue=${this.filterCity}`;
+          this.$store.dispatch("events/setSearchedCity", this.filterCity);
         }
         if (this.fromDate) {
           searchString += `&start_date=${this.fromDate}`;
+          this.$store.dispatch("events/setSearchedFromDate", this.fromDate);
         }
         if (this.toDate) {
           searchString += `&end_date=${this.toDate}`;
+          this.$store.dispatch("events/setSearchedToDate", this.toDate);
         }
         if (this.searchCategories.length) {
           searchString += "&categories=";
           this.searchCategories.forEach((category) => {
             searchString += `${category.id}&`;
           });
+          this.$store.dispatch(
+            "events/setSearchedCategories",
+            this.searchCategories
+          );
         }
         if (searchString.charAt(-1) === "&") {
           searchString.slice(0, -1);
@@ -205,7 +212,12 @@ export default {
   async created() {
     let endpoint = "api/categories/";
     this.categories = await apiService(endpoint);
-    this.filterCity = this.$store.getters["events/getSearchedCity"];
+    this.filterCity = await this.$store.getters["events/getSearchedCity"];
+    this.fromDate = await this.$store.getters["events/getSearchedFromDate"];
+    this.toDate = await this.$store.getters["events/getSearchedToDate"];
+    this.searchCategories = await this.$store.getters[
+      "events/getSearchedCategories"
+    ];
   },
 };
 </script>

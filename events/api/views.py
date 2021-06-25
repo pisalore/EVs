@@ -8,6 +8,7 @@ from rest_framework.exceptions import MethodNotAllowed
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
+from django.db.models import Q
 
 from events.api.filters import EventFilter
 from events.api.serializers import CategorySerializer, EventSerializer, EventImageSerializer, EventSerializerAction
@@ -32,7 +33,8 @@ class EventViewSet(viewsets.ModelViewSet):
     # Ordering by date using passed query params and search in date range
     def get_queryset(self):
         queryset = Event.objects.all()
-        start_date = self.request.query_params.get('start_date', datetime.date.today().__str__())
+        today = datetime.date.today().__str__()
+        start_date = self.request.query_params.get('start_date', None)
         end_date = self.request.query_params.get('end_date', None)
         ordering = self.request.query_params.get('ordering', 'start_date')
         if start_date and end_date:
@@ -41,7 +43,9 @@ class EventViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(start_date__gte=start_date)
         elif end_date:
             queryset = queryset.filter(start_date__lte=end_date)
-        return queryset.filter(status='A').order_by(ordering)
+        return queryset.filter(status='A')\
+            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today))\
+            .order_by(ordering)
 
 
 class ExpiringEventsListAPIView(generics.ListAPIView):
@@ -50,8 +54,9 @@ class ExpiringEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
+        today = datetime.datetime.now().date()
         return Event.objects.filter(status='A') \
-            .filter(start_date__gte=datetime.datetime.now().date()).order_by('start_date')
+            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today)).order_by('start_date')
 
 
 class MostParticipatedEventsListAPIView(generics.ListAPIView):
@@ -60,9 +65,10 @@ class MostParticipatedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
+        today = datetime.datetime.now().date()
         return Event.objects.all().annotate(participants_count=Count('participants')) \
             .filter(status='A') \
-            .filter(start_date__gte=datetime.datetime.now()) \
+            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today)) \
             .order_by('-participants_count')
 
 
@@ -72,9 +78,10 @@ class MostInterestedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
+        today = datetime.datetime.now().date()
         return Event.objects.all().annotate(interested_count=Count('interested')) \
             .filter(status='A') \
-            .filter(start_date__gte=datetime.datetime.now()) \
+            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today)) \
             .order_by('-interested_count')
 
 
