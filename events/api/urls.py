@@ -1,4 +1,5 @@
 from django.urls import include, path
+
 from rest_framework.routers import DefaultRouter
 from events.api.views import CategoryListAPI, EventImageUpdateView, EventViewSet, ExpiringEventsListAPIView, \
     EventGoingAPIView, EventInterestAPIView, OrganizerEventsPersonalAreaViewSet, MostParticipatedEventsListAPIView, \
