@@ -33,18 +33,26 @@ class EventViewSet(viewsets.ModelViewSet):
     # Ordering by date using passed query params and search in date range
     def get_queryset(self):
         queryset = Event.objects.all()
-        today = datetime.date.today().__str__()
         start_date = self.request.query_params.get('start_date', None)
         end_date = self.request.query_params.get('end_date', None)
         ordering = self.request.query_params.get('ordering', 'start_date')
         if start_date and end_date:
-            queryset = queryset.filter(start_date__range=[start_date, end_date])
+            # inside
+            inside_queryset = queryset.filter(start_date__range=[start_date, end_date],
+                                              finish_date__range=[start_date, end_date])
+            ome_day_queryset = queryset.filter(start_date__range=[start_date, end_date])
+            start_before_queryset = queryset.filter(start_date__lte=start_date,
+                                                    finish_date__range=[start_date, end_date])
+            end_after_queryset = queryset.filter(start_date__range=[start_date, end_date],
+                                                 finish_date__gte=end_date)
+            contains_queryset = queryset.filter(start_date__lte=start_date,
+                                                finish_date__gte=end_date)
+            queryset = ome_day_queryset | inside_queryset | start_before_queryset | end_after_queryset | contains_queryset
         elif start_date:
             queryset = queryset.filter(start_date__gte=start_date)
         elif end_date:
             queryset = queryset.filter(start_date__lte=end_date)
-        return queryset.filter(status='A')\
-            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today))\
+        return queryset.filter(status='A') \
             .order_by(ordering)
 
 
@@ -163,7 +171,7 @@ class UserEventsPersonalAreaGoingListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects.order_by('start_date')\
+        return Event.objects.order_by('start_date') \
             .filter(participants__username=username, start_date__gte=datetime.datetime.now()).filter(status='A')
 
 
@@ -174,8 +182,8 @@ class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects.order_by('start_date')\
-            .filter(interested__username=username,  start_date__gte=datetime.datetime.now()).filter(status='A')
+        return Event.objects.order_by('start_date') \
+            .filter(interested__username=username, start_date__gte=datetime.datetime.now()).filter(status='A')
 
 
 class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
@@ -185,10 +193,10 @@ class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects\
-            .filter(participants__username=username)\
-            .filter(start_date__lt=datetime.datetime.now())\
-            .filter(status='A')\
+        return Event.objects \
+            .filter(participants__username=username) \
+            .filter(start_date__lt=datetime.datetime.now()) \
+            .filter(status='A') \
             .order_by('start_date')
 
 
