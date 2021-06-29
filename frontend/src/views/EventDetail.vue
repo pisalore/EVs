@@ -354,7 +354,8 @@ img {
 }
 
 .desktop-img-height {
-  height: 17vw;
+  min-height: 20vw;
+  max-height: 22vw;
 }
 
 .event-title {

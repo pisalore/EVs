@@ -259,6 +259,6 @@ export default {
 }
 
 .desktop-img-height {
-  height: 16vw;
+  height: 18vw;
 }
 </style>
