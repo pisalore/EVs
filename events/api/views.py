@@ -33,15 +33,15 @@ class EventViewSet(viewsets.ModelViewSet):
 
     # Ordering by date using passed query params and search in date range
     def get_queryset(self):
-        queryset = Event.objects.all()
+        # get all future events
+        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gte=TODAY)
+        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gte=TODAY)
+        queryset = one_day_events | periodic_events
+        # get optional query strings
         start_date = self.request.query_params.get('start_date', None)
         end_date = self.request.query_params.get('end_date', None)
         ordering = self.request.query_params.get('ordering', 'start_date')
-        if not start_date and not end_date:
-            one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gte=TODAY)
-            periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gte=TODAY)
-            queryset = one_day_events | periodic_events
-        elif start_date and end_date:
+        if start_date and end_date:
             inside_queryset = queryset.filter(start_date__range=[start_date, end_date],
                                               finish_date__range=[start_date, end_date])
             ome_day_queryset = queryset.filter(start_date__range=[start_date, end_date])
