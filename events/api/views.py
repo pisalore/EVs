@@ -37,8 +37,11 @@ class EventViewSet(viewsets.ModelViewSet):
         start_date = self.request.query_params.get('start_date', None)
         end_date = self.request.query_params.get('end_date', None)
         ordering = self.request.query_params.get('ordering', 'start_date')
-        if start_date and end_date:
-            # inside
+        if not start_date and not end_date:
+            one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gte=TODAY)
+            periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gte=TODAY)
+            queryset = one_day_events | periodic_events
+        elif start_date and end_date:
             inside_queryset = queryset.filter(start_date__range=[start_date, end_date],
                                               finish_date__range=[start_date, end_date])
             ome_day_queryset = queryset.filter(start_date__range=[start_date, end_date])
@@ -49,9 +52,9 @@ class EventViewSet(viewsets.ModelViewSet):
             contains_queryset = queryset.filter(start_date__lte=start_date,
                                                 finish_date__gte=end_date)
             queryset = ome_day_queryset | inside_queryset | start_before_queryset | end_after_queryset | contains_queryset
-        elif start_date:
+        elif start_date and not end_date:
             queryset = queryset.filter(start_date__gte=start_date)
-        elif end_date:
+        elif end_date and not start_date:
             queryset = queryset.filter(start_date__lte=end_date)
         return queryset.filter(status='A') \
             .order_by(ordering)
