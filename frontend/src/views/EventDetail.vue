@@ -108,35 +108,23 @@
               <h1 class="subtitle">Main information</h1>
             </div>
             <div class="m-2">
-              <div class="d-flex">
-                <base-badge
-                  :content="'Organizer'"
-                  :categoryStyle="badgeStyle()"
-                  :type="'badge'"
-                ></base-badge>
-                <div class="ml-auto mt-4 p-1 info">
+              <div class="row text-left my-3">
+                <div class="col info-label">Organizer</div>
+                <div class="col-xl-6 break-word mt-2">
                   {{ selectedEvent.organizer_username }}
                 </div>
               </div>
-              <div class="d-flex">
-                <base-badge
-                  :content="'Website'"
-                  :categoryStyle="badgeStyle()"
-                  :type="'badge'"
-                ></base-badge>
-                <div class="ml-auto mt-4 p-1 info">
+              <div class="row text-left my-3">
+                <div class="col info-label ">Website</div>
+                <div class="col-xl-6 break-word mt-2">
                   <a :href="selectedEvent.event_website">{{
                     selectedEvent.event_website
                   }}</a>
                 </div>
               </div>
-              <div class="d-flex mb-3">
-                <base-badge
-                  :content="'Tickets'"
-                  :categoryStyle="badgeStyle()"
-                  :type="'badge'"
-                ></base-badge>
-                <div class="ml-auto mt-4 p-1 info">
+              <div class="row mb-3 text-left my-3">
+                <div class="col info-label ">Tickets</div>
+                <div class="col-xl-6 break-word mt-2">
                   <a :href="selectedEvent.tickets_website">{{
                     selectedEvent.tickets_website
                   }}</a>
@@ -431,5 +419,13 @@ img {
 }
 .separator {
   border-top: 0.5px solid #bdbdbd;
+}
+.break-word {
+  word-wrap: break-word;
+}
+.info-label {
+  color: #1f6dad;
+  font-weight: bold;
+  font-size: 24px;
 }
 </style>
