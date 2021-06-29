@@ -1,6 +1,6 @@
 <template>
   <div class="card col-xl-3 mx-3 my-2" style="width: 18rem">
-    <div class="card-body" @click="eventDetail">
+    <div class="card-body d-flex flex-column" @click="eventDetail">
       <h3 class="card-title">{{ name }}</h3>
       <h4 class="card-organizer">{{ organizer }}</h4>
       <h5 class="card-venue">@{{ venue }}</h5>
@@ -23,7 +23,7 @@
           alt=""
         />
       </div>
-      <div class="mt-2" v-if="!expired">
+      <div class="mt-auto" v-if="!expired">
         <div class="row d-flex justify-content-around pt-4">
           <div>
             <span class="px-2" style="color: #e32822">
