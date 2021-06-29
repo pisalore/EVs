@@ -16,4 +16,4 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     def get_user_has_read(self, instance):
         user = self.context['request'].user
-        return instance.notification_item_notification.all().get(user=user).user_has_read
+        return instance.notification_item_notification.all().filter(user=user).first().user_has_read

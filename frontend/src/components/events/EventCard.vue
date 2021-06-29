@@ -211,6 +211,8 @@ export default {
 
 .card-img-top {
   border-radius: 20px;
+  width: 100%;
+  height: 8vw;
 }
 
 .simple-card-button {

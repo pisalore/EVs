@@ -8,11 +8,11 @@
         <slot></slot>
       </div>
     </div>
-    <div class="d-flex justify-content-end px-4 mt-2 discover">
-      <div v-if="next" @click="loadNextEvents">
+    <div class="d-flex justify-content-end px-4 mt-2">
+      <div class="discover" v-if="next" @click="loadNextEvents">
         <p>Discover more...</p>
       </div>
-      <div v-else class="my-4">
+      <div v-else class="all-showed my-4">
         <span>All events are showed for this category.</span>
       </div>
     </div>
@@ -104,7 +104,15 @@ p:hover {
 
 .discover {
   font-style: normal;
-  font-weight: 300;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #1A01CC;
+}
+
+.all-showed {
+  font-style: normal;
+  font-weight: 500;
   font-size: 24px;
   line-height: 28px;
 }
