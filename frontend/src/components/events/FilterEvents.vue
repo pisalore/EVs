@@ -167,6 +167,7 @@ export default {
       if (this.searchIsValid) {
         let searchString = "api/events/?";
         if (this.filterCity) {
+          this.filterCity = this.filterCity.charAt(0).toUpperCase() + this.filterCity.slice(1);
           searchString += `venue=${this.filterCity}`;
           this.$store.dispatch("events/setSearchedCity", this.filterCity);
         }
