@@ -197,9 +197,11 @@ export default {
         );
       }
       await this.$emit("searched");
-      document
-        .getElementById("results")
-        .scrollIntoView({ block: "end", behavior: "smooth" });
+      if (this.searchIsValid) {
+        document
+          .getElementById("results")
+          .scrollIntoView({ block: "end", behavior: "smooth" });
+      }
     },
     async clearAllFilters() {
       this.filterCity = "";
