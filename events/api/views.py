@@ -1,20 +1,21 @@
 import datetime
 
-from rest_framework import generics, status, viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import MethodNotAllowed
-
-from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status, viewsets
+from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from events.api.filters import EventFilter
-from events.api.serializers import CategorySerializer, EventSerializer, EventImageSerializer, EventSerializerAction
-from events.api.permissions import IsEventOrganizerOrReadOnly
 from events.api.pagination import EventSetPagination
+from events.api.permissions import IsEventOrganizerOrReadOnly
+from events.api.serializers import CategorySerializer, EventSerializer, EventImageSerializer, EventSerializerAction
 from events.models import Category, Event
+
+TODAY = datetime.datetime.now().date()
 
 
 class CategoryListAPI(generics.ListAPIView):
@@ -62,9 +63,8 @@ class ExpiringEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        today = datetime.datetime.now().date()
         return Event.objects.filter(status='A') \
-            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today)).order_by('start_date')
+            .filter(Q(start_date__gte=TODAY) | Q(finish_date__gte=TODAY)).order_by('start_date')
 
 
 class MostParticipatedEventsListAPIView(generics.ListAPIView):
@@ -73,10 +73,9 @@ class MostParticipatedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        today = datetime.datetime.now().date()
         return Event.objects.all().annotate(participants_count=Count('participants')) \
             .filter(status='A') \
-            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today)) \
+            .filter(Q(start_date__gte=TODAY) | Q(finish_date__gte=TODAY)) \
             .order_by('-participants_count')
 
 
@@ -86,10 +85,9 @@ class MostInterestedEventsListAPIView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        today = datetime.datetime.now().date()
         return Event.objects.all().annotate(interested_count=Count('interested')) \
             .filter(status='A') \
-            .filter(Q(start_date__gte=today) | Q(finish_date__gte=today)) \
+            .filter(Q(start_date__gte=TODAY) | Q(finish_date__gte=TODAY)) \
             .order_by('-interested_count')
 
 
@@ -171,8 +169,12 @@ class UserEventsPersonalAreaGoingListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects.order_by('start_date') \
-            .filter(participants__username=username, start_date__gte=datetime.datetime.now()).filter(status='A')
+        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gt=TODAY)
+        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gt=TODAY)
+        return (one_day_events | periodic_events) \
+            .order_by('start_date') \
+            .filter(participants__username=username) \
+            .filter(status='A')
 
 
 class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
@@ -182,8 +184,13 @@ class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects.order_by('start_date') \
-            .filter(interested__username=username, start_date__gte=datetime.datetime.now()).filter(status='A')
+        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gt=TODAY)
+        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gt=TODAY)
+        return (one_day_events | periodic_events)\
+            .order_by('start_date')\
+            .filter(interested__username=username)\
+            .filter(status='A')
+
 
 
 class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
