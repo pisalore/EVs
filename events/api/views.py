@@ -169,8 +169,8 @@ class UserEventsPersonalAreaGoingListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gt=TODAY)
-        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gt=TODAY)
+        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gte=TODAY)
+        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gte=TODAY)
         return (one_day_events | periodic_events) \
             .order_by('start_date') \
             .filter(participants__username=username) \
@@ -184,13 +184,12 @@ class UserEventsPersonalAreaInterestedListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gt=TODAY)
-        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gt=TODAY)
+        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__gte=TODAY)
+        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__gte=TODAY)
         return (one_day_events | periodic_events)\
             .order_by('start_date')\
             .filter(interested__username=username)\
             .filter(status='A')
-
 
 
 class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
@@ -200,11 +199,12 @@ class UserEventsPersonalAreaExpiredListView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.request.user.username
-        return Event.objects \
+        one_day_events = Event.objects.exclude(finish_date__isnull=False).filter(start_date__lt=TODAY)
+        periodic_events = Event.objects.exclude(finish_date__isnull=True).filter(finish_date__lt=TODAY)
+        return (one_day_events | periodic_events) \
+            .order_by('start_date') \
             .filter(participants__username=username) \
-            .filter(start_date__lt=datetime.datetime.now()) \
-            .filter(status='A') \
-            .order_by('start_date')
+            .filter(status='A')
 
 
 class OrganizerEventsPersonalAreaViewSet(viewsets.ModelViewSet):
