@@ -29,7 +29,7 @@ export default {
         if (!this.userGoing) {
           return this.label;
         } else {
-          return "Ungoing";
+          return "Not going";
         }
       } else if (this.label === "Like") {
         if (!this.userInterested) {

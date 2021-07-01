@@ -49,7 +49,7 @@ def send_request_email(**email):
     send_mail(
         f'{username} - request',
         message_content,
-        user_email,
-        [settings.EMAIL_HOST_USER],
+        settings.DEFAULT_FROM_EMAIL,
+        [settings.DEFAULT_FROM_EMAIL],
         fail_silently=False,
     )
