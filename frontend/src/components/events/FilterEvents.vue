@@ -167,7 +167,8 @@ export default {
       if (this.searchIsValid) {
         let searchString = "api/events/?";
         if (this.filterCity) {
-          this.filterCity = this.filterCity.charAt(0).toUpperCase() + this.filterCity.slice(1);
+          this.filterCity =
+            this.filterCity.charAt(0).toUpperCase() + this.filterCity.slice(1);
           searchString += `venue=${this.filterCity}`;
           this.$store.dispatch("events/setSearchedCity", this.filterCity);
         }
@@ -180,9 +181,8 @@ export default {
           this.$store.dispatch("events/setSearchedToDate", this.toDate);
         }
         if (this.searchCategories.length) {
-          searchString += "&categories=";
           this.searchCategories.forEach((category) => {
-            searchString += `${category.id}&`;
+            searchString += `&categories=${category.id}`;
           });
           this.$store.dispatch(
             "events/setSearchedCategories",
@@ -210,6 +210,11 @@ export default {
       this.fromDate = null;
       this.searchCategories = [];
       this.searchIsValid = false;
+      await this.$store.dispatch("events/setSearchedCity", null);
+      await this.$store.dispatch("events/setSearchedCategories", []);
+      await this.$store.dispatch("events/setSearchedFromDate", null);
+      await this.$store.dispatch("events/setSearchedToDate", null);
+      await this.searchEventsUsingFilters();
     },
   },
   async created() {
