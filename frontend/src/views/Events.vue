@@ -105,8 +105,8 @@ export default {
     },
   },
   async created() {
-    const state = this.$store.getters["events/getShowedEventsInEventsPage"];
-    if (!state.length) {
+    const searchedCity = this.$store.getters["events/getSearchedCity"];
+    if (!searchedCity) {
       this.isLoading = true;
       await this.$store.dispatch(
         "events/loadEventsInPageEvents",

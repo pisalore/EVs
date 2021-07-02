@@ -134,7 +134,6 @@ export default {
       let today = new Date().setHours(0, 0, 0, 0);
       let eventStartDate = new Date(this.start_date).setHours(0, 0, 0, 0);
       let eventFinishDate = new Date(this.end_date).setHours(0, 0, 0, 0);
-      console.log(eventStartDate, eventFinishDate);
       if (this.start_date && !this.end_date) {
         return eventStartDate < today;
       }

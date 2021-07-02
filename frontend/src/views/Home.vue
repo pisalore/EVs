@@ -240,7 +240,8 @@ export default {
       if (!this.searchFieldIsNotEmpty) {
         return;
       }
-      const city = this.searchedCity.charAt(0).toUpperCase() + this.searchedCity.slice(1);
+      const city =
+        this.searchedCity.charAt(0).toUpperCase() + this.searchedCity.slice(1);
       this.isLoading = true;
       await this.$store.dispatch("events/searchEventsByCity", city);
       this.isLoading = false;
