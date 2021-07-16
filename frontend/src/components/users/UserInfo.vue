@@ -171,7 +171,7 @@
           :user_going="ev.user_is_going"
           :user_interested="ev.user_is_interested"
           :status="ev.status"
-          :published="false"
+          :published="true"
         >
         </event-card>
       </events-slot>

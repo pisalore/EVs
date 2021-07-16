@@ -17,7 +17,8 @@
     <div v-if="event" class="col-xl-12 row">
       <div v-if="event.status === 'A'" class="title">
         Edit -
-        <a :href="`/events/${event.id}`">{{ event.name }}</a>
+        <a v-if="!expired" :href="`/events/${event.id}`">{{ event.name }}</a>
+        <a v-else>{{ event.name }}</a>
       </div>
       <div v-else class="title">
         Edit -
@@ -127,6 +128,18 @@ export default {
           navigator.userAgent
         ) || window.screen.width < 760
       );
+    },
+    expired() {
+      let today = new Date().setHours(0, 0, 0, 0);
+      let eventStartDate = new Date(this.event.start_date).setHours(0, 0, 0, 0);
+      let eventFinishDate = new Date(this.event.finish_date).setHours(0, 0, 0, 0);
+      if (this.event.start_date && !this.event.finish_date) {
+        return eventStartDate < today;
+      }
+      if (this.event.start_date && this.event.finish_date) {
+        return eventFinishDate < today;
+      }
+      return false;
     },
   },
   methods: {

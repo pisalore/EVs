@@ -95,11 +95,13 @@ export default {
   },
   methods: {
     eventDetail() {
-      if (this.published) {
+      console.log(this.userInfo)
+      if (this.published && !this.expired) {
         this.$router.push({
           path: `/events/${this.id}`,
         });
-      } else {
+      }
+      if (this.expired && this.userInfo.is_organizer) {
         this.$router.push({
           path: `/event-edit/${this.id}`,
         });

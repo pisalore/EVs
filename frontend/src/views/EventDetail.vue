@@ -246,7 +246,6 @@ export default {
         startDate += `, at ${startHour}`;
       }
       let endDate = this.selectedEvent.finish_date;
-      console.log(endDate);
       if (endDate) {
         endDate = new Date(this.selectedEvent.finish_date).toLocaleDateString(
           "en",
